@@ -1,0 +1,29 @@
+POST http://localhost:3000/api/user/signup
+Content-Type: application/json
+
+{
+  "user": "shpa",
+  "pass": "123"
+}
+###
+
+POST http://localhost:3000/api/user/signin
+Content-Type: application/json
+
+{
+"user": "shpa",
+"pass": "123"
+}
+###
+
+POST http://localhost:3000/api/user/auth
+Content-Type:  application/json
+
+{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2OTgyNTM3MzgsIm5iZiI6MTY5ODI1MzczOCwiZXhwIjoxNjk4MzQwMTM4LCJpc3MiOiJTdXJyZWFsREIiLCJOUyI6ImRuZCIsIkRCIjoiZG5kIiwiU0MiOiJ1c2VyIiwiSUQiOiJ1c2VyOmN2dmxtbmJnZHFmOTUwMXJmbDk5In0.R4qS4hZCUs0dxOAWD1gSQoARPepOxenHtxGp_T_IZYAIr5IiSciF1zPyuoAKONgWyM1_wno8rakif_xGxFFk5A"}
+
+###
+
+
+GET http://localhost:3000/api/
+Accept: application/json
+###
