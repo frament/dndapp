@@ -20,9 +20,7 @@ POST http://localhost:3000/api/user/auth
 Content-Type:  application/json
 
 {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2OTgyNTQ2MDYsIm5iZiI6MTY5ODI1NDYwNiwiZXhwIjoxNjk4MzQxMDA2LCJpc3MiOiJTdXJyZWFsREIiLCJOUyI6ImRuZCIsIkRCIjoiZG5kIiwiU0MiOiJ1c2VyIiwiSUQiOiJ1c2VyOmN2dmxtbmJnZHFmOTUwMXJmbDk5In0.lqNiUXaa31gB-WyTl6FDYEXxntF6A3zZIqRVNlpygwBu7tDaK-TqX4OOTLf900E0sB04hyxJZHHB8AheKR1P9A"}
-
 ###
-
 
 GET http://localhost:3000/api/
 Accept: application/json
