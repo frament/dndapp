@@ -6,7 +6,7 @@ import {
 import { appRoutes } from './app.routes';
 import {initServicesFactory} from "./init-service-factory";
 import {DataBaseService} from "./data-base.service";
-import {UserService} from "./user/user.service";
+import {UserService} from "./auth/user.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [

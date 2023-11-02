@@ -1,5 +1,5 @@
 import {DataBaseService} from "./data-base.service";
-import {UserService} from "./user/user.service";
+import {UserService} from "./auth/user.service";
 
 export function initServicesFactory(
   databaseService: DataBaseService,

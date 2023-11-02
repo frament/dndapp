@@ -1,4 +1,10 @@
 <div class="text-3xl font-bold">Герои</div>
 <div class="flex-col">
   <div class="" *ngFor="let hero of heroes">{{hero.name}}</div>
+  <button (click)="addHero()"> + </button>
+</div>
+<div class="text-3xl font-bold">Комнаты</div>
+<div class="flex-col">
+  <div class="" *ngFor="let room of rooms">{{room.name}}</div>
+  <button (click)="addRoom()"> + </button>
 </div>

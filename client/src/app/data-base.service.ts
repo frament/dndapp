@@ -12,20 +12,9 @@ export class DataBaseService {
   }
 
   async select<T>(query: string, vars?: Record<string, unknown>): Promise<T[]>{
-    return (await this.db.query(query, vars))[0].result as unknown as T[] ?? [];
+    return (await this.db.query<[Array<T & Record<any, any>>]>(query, vars))[0].result ?? [];
   }
-  selectAll = this.db.select;
-  query = this.db.query;
-  delete = this.db.delete;
-  patch = this.db.patch;
-  merge = this.db.merge;
-  update = this.db.update;
-  insert = this.db.insert;
-  create = this.db.create;
-  kill = this.db.kill;
-  listenLive = this.db.listenLive;
-  live = this.db.live;
-  unset = this.db.unset;
-  let = this.db.let;
-  info = this.db.info;
+  async selectOne<T>(query: string, vars?: Record<string, unknown>): Promise<T|null>{
+    return (await this.select<T>(query, vars))[0] ?? null;
+  }
 }
