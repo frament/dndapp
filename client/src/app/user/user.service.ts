@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {DataBaseService} from "./data-base.service";
+import {DataBaseService} from "../data-base.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +10,15 @@ export class UserService {
 
   user:any;
 
-  async getuser(user:string){
-    const queries = [
-      `SELECT * FROM ONLY name:${user};`,
-      `SELECT * FROM user WHERE name = '${user}'`,
-      `SELECT * FROM user`,
-    ];
-    for (const q of queries) {
-        console.log(q);
-        const t = await this.surreal.db.select(q);
-        console.log(t);
-    }
+  async loadUser(){
+    this.user = (await this.surreal.db.query<{name:string, email:string}[]>('select id, email, name from only $auth'))?.[0].result;
   }
 
   async signup(name:string, password:string, email:string): Promise<void> {
     try {
       const token = await this.surreal.db.signup({NS:'dnd', DB:'dnd', SC:'user', name, password, email});
       localStorage.setItem('user_jwt_token', token);
+      await this.loadUser();
     } catch (e) {
       console.error(e);
     }
@@ -36,18 +28,29 @@ export class UserService {
     try{
       const token = await this.surreal.db.signin({NS:'dnd', DB:'dnd', SC:'user', email, password});
       if (token) localStorage.setItem('user_jwt_token', token);
+      await this.loadUser();
     } catch (e) {
       console.error(e);
     }
+  }
+
+  async logout(): Promise<void>{
+    localStorage.removeItem('user_jwt_token');
+    this.user = undefined;
+    await this.surreal.db.authenticate('null');
   }
 
   async auth() {
     const token = localStorage.getItem('user_jwt_token');
     if (!token) return false;
     try {
-      return  await this.surreal.db.authenticate(token);
+      const result = await this.surreal.db.authenticate(token);
+      if (result && !this.user) await this.loadUser();
+      if (!result) await this.logout();
+      return result;
     } catch (e) {
-      localStorage.removeItem('user_jwt_token')
+      localStorage.removeItem('user_jwt_token');
+      console.error(e);
       return false;
     }
   }

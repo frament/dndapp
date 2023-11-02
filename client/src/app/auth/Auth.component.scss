@@ -1,0 +1,20 @@
+:host{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.form-signin{
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input{
+  display: flex;
+  flex-direction: column;
+}

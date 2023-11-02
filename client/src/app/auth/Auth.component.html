@@ -1,1 +1,35 @@
-<p>Auth works!</p>
+<div *ngIf="mode === 'signin'" class="form-signin">
+  <div class="text-3xl font-bold">Вход</div>
+  <div class="input">
+    <label>email</label>
+    <input class="p-1.5 block w-full min-w-[250px] rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="email" autocomplete="email" [(ngModel)]="mail">
+  </div>
+  <div class="input">
+    <label>Пароль</label>
+    <input class="p-1.5 block w-full min-w-[250px] rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="text" autocomplete="current-password" [(ngModel)]="pass">
+  </div>
+  <button class="submit-button" (click)="signin()" (keydown.enter)="signin()">ок</button>
+  <button class="switch-signup-button" (click)="mode = 'signup'">регистрация</button>
+</div>
+
+<div *ngIf="mode === 'signup'" class="form-signup">
+  <div class="text-3xl font-bold">Регистрация</div>
+  <div class="input">
+    <label>email</label>
+    <input class="p-1.5 block w-full min-w-[250px] rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="email" autocomplete="email" [(ngModel)]="mail" >
+  </div>
+  <div class="input">
+    <label>Имя</label>
+    <input class="p-1.5 block w-full min-w-[250px] rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="text" autocomplete="username" [(ngModel)]="user">
+  </div>
+  <div class="input">
+    <label>Пароль</label>
+    <input class="p-1.5 block w-full min-w-[250px] rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="text" autocomplete="new-password" [(ngModel)]="pass">
+  </div>
+  <button class="submit-button" (click)="signup()">ок</button>
+</div>
+
+<div *ngIf="mode === 'error'" class="form-signup">
+  <span>Не правильное имя пользоввателя или пароль!</span>
+  <button class="submit-button" (click)="mode = 'signin'">ок</button>
+</div>

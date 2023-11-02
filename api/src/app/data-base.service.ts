@@ -10,7 +10,7 @@ export class DataBaseService {
       auth:  { user: 'admin', pass: 'admin' }
     });
     // await this.firstTimeInit();
-    setInterval(async () => console.log(await this.db.select('select * from user;')), 10000);
+    // setInterval(async () => console.log(await this.db.select('select * from user;')), 10000);
   }
 
   async firstTimeInit():Promise<void>{
