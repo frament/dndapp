@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Surreal} from "surrealdb.js";
 
+export type LiveActionType = "CREATE" | "UPDATE" | "DELETE" | "CLOSE";
+
 @Injectable({
   providedIn: 'root'
 })

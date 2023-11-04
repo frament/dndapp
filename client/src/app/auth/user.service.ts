@@ -8,7 +8,7 @@ export class UserService {
 
   constructor(private surreal: DataBaseService) { }
 
-  user:any;
+  user:any = undefined;
 
   async loadUser(){
     this.user = (await this.surreal.db.query<{name:string, email:string}[]>('select id, email, name from only $auth'))?.[0].result;
@@ -35,6 +35,7 @@ export class UserService {
   }
 
   async logout(): Promise<void>{
+    console.log('logout');
     localStorage.removeItem('user_jwt_token');
     this.user = undefined;
     await this.surreal.db.authenticate('null');

@@ -1,23 +1,9 @@
 :host{
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   height: 100%;
 }
 
-.form-signin{
-  padding: 16px;
-  border-radius: 6px;
-  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.input{
-  display: flex;
-  flex-direction: column;
-}
 .input-input{
   @apply p-1.5 block w-full min-w-[250px] rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-slate-900 text-white;
 }

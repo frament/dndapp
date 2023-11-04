@@ -1,0 +1,15 @@
+:host{
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.right-container{
+  min-width: 400px;
+}
+.left-container{
+  background-color: bisque;
+  flex: 1 1 auto;
+}
+.right-switch-button{
+  @apply cursor-pointer hover:bg-slate-100 hover:dark:bg-slate-700 p-3 rounded-md text-center flex-1;
+}

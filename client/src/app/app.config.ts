@@ -10,6 +10,7 @@ import {UserService} from "./auth/user.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {provide: UserService, useClass: UserService},
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     {
       provide: APP_INITIALIZER,

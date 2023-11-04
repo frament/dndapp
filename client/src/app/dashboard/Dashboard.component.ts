@@ -4,6 +4,7 @@ import {Hero} from "../heroes/Hero";
 import {HeroesService} from "../heroes/heroes.service";
 import {Room} from "../rooms/room";
 import {RoomService} from "../rooms/room.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'dndapp-dashboard',
@@ -14,7 +15,8 @@ import {RoomService} from "../rooms/room.service";
 })
 export class DashboardComponent implements OnInit{
   constructor(private heroesService: HeroesService,
-              private roomsService: RoomService) {}
+              private roomsService: RoomService,
+              private router: Router) {}
 
   heroes: Hero[] = [];
   rooms: Room[] = [];
@@ -31,6 +33,10 @@ export class DashboardComponent implements OnInit{
   async addRoom(): Promise<void>{
     await this.roomsService.add({name:'test'+this.rooms.length});
     this.rooms = await this.roomsService.getList();
+  }
+
+  async goToRoom(id:string):Promise<void>{
+    await this.router.navigateByUrl('/room/'+id.replace('rooms:',''));
   }
 
 }

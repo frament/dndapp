@@ -1,0 +1,12 @@
+<div class="left-container">
+
+</div>
+<div class="right-container flex flex-col">
+  <div class="flex-1 overflow-scroll">
+    <dndapp-chat *ngIf="rightMode === 'chat'"></dndapp-chat>
+  </div>
+  <div class="flex p-2 w-full">
+    <button class="right-switch-button" (click)="rightMode='chat'"><fa-icon [icon]="chatIcon"></fa-icon></button>
+    <button class="right-switch-button" (click)="rightMode='nav'"><fa-icon [icon]="navIcon"></fa-icon></button>
+  </div>
+</div>

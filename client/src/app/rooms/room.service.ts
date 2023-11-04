@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {DataBaseService} from "../data-base.service";
 import {UserService} from "../auth/user.service";
-import {Hero} from "../heroes/Hero";
 import {Room} from "./room";
 
 @Injectable({
