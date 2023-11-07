@@ -1,10 +1,10 @@
 <div #messContainer class="flex flex-1 flex-col overflow-scroll">
   <div class="flex-1"></div>
   <div #messages *ngFor="let mess of messages">
-    <dndapp-text-message *ngIf="mess.type === 'text'" [message]="mess"></dndapp-text-message>
+    <dndapp-text-message *ngIf="mess.type === 'text'" [message]="mess" [userColor]="userColorMap[mess.user]"></dndapp-text-message>
   </div>
 </div>
-<div class="flex">
+<div class="flex gap-2 p-2">
   <input class="input-input" type="text" [(ngModel)]="currentMessage" (keydown.enter)="sendMessage()">
   <button class="p-2" (click)="sendMessage()"><fa-icon [icon]="sendIcon"></fa-icon></button>
 </div>

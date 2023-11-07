@@ -10,7 +10,7 @@ import {
   ViewChildren
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DataBaseService} from "../../data-base.service";
+import {DataBaseService, LiveActionType} from "../../data-base.service";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {UserService} from "../../auth/user.service";
@@ -34,23 +34,33 @@ export interface IRoomLog{
 })
 export class ChatComponent implements OnInit{
   constructor(private surreal: DataBaseService, private user: UserService) {}
-  @Input() roomId: string = '4v33jnr032rwfezkhskt';
+  @Input() roomId: string = '';
   @ViewChild('messContainer') private messContainer!: ElementRef;
   @ViewChildren('messages') messagesEls!: QueryList<any>;
   messages: IRoomLog[] = [];
   sendIcon = faPaperPlane;
   currentMessage:string = '';
 
+  userColorMap:{[user:string]:string} = {};
+
+  getRandomColor():string{
+    return '#'+(Math.random() * 0x1000000 | 0x1000000).toString(16).slice(1);
+  }
+
   async ngOnInit(): Promise<void> {
     this.messages = (await this.surreal.db.query('SELECT id, type, user.name as user, value, version FROM room_logs where room = $room ORDER by version asc;',{room:'rooms:'+this.roomId}))[0]
         .result as unknown as IRoomLog[] ?? [];
+    new Set(this.messages.map(x=>x.user)).forEach(x => this.userColorMap[x] = this.getRandomColor());
     const liveId = (await this.surreal.db.query(`LIVE SELECT id, type, user.name as user, value, version FROM room_logs WHERE room = rooms:${this.roomId}`))[0]
         .result as unknown as string;
     await this.surreal.db.listenLive(liveId,
-      ({ action, result}) => {
-      console.log('q',action, result);
-        if (action === "CREATE"){
-          this.messages.push(result as unknown as IRoomLog);
+      // ({ action, result}) => {
+      (e: any) => {
+        if (e.action === "CREATE"){
+          if (!this.userColorMap.hasOwnProperty(e.result.user)){
+            this.userColorMap[e.result.user] = this.getRandomColor();
+          }
+          this.messages.push(e.result as unknown as IRoomLog);
         }
       })
     this.scrollChat();

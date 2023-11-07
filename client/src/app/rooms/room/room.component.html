@@ -1,9 +1,9 @@
-<div class="left-container">
-
+<div class="left-container"*ngIf="roomId">
+  <dndapp-map [roomId]="roomId"></dndapp-map>
 </div>
-<div class="right-container flex flex-col">
+<div class="right-container flex flex-col" *ngIf="roomId">
   <div class="flex-1 overflow-scroll">
-    <dndapp-chat *ngIf="rightMode === 'chat'"></dndapp-chat>
+    <dndapp-chat *ngIf="rightMode === 'chat'" [roomId]="roomId"></dndapp-chat>
   </div>
   <div class="flex p-2 w-full">
     <button class="right-switch-button" (click)="rightMode='chat'"><fa-icon [icon]="chatIcon"></fa-icon></button>
