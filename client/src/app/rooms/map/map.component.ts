@@ -1,4 +1,13 @@
-import {AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit, ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {NodeLayer} from "./node";
 import {Point} from "./point";
@@ -11,11 +20,20 @@ import {WidthHeight} from "./width-height";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit{
+export class MapComponent {
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
   @Input() roomId:string = '';
-  @ViewChild('svgGrid', { read: ElementRef }) svgGrid!: ElementRef<SVGSVGElement>;
+  // @ViewChild('svgGrid', { read: ElementRef }) svgGrid!: ElementRef<SVGSVGElement>;
 
-  svgMax: WidthHeight = { width: 500, height: 500 };
+  svgGrid!:ElementRef<SVGSVGElement>;
+  @ViewChild('svgGrid', { read: ElementRef })
+  set childSelector(val: ElementRef<SVGSVGElement>) {
+    this.svgGrid = val;
+    val.nativeElement.setAttribute('viewBox', '0 0 ' + val.nativeElement.clientWidth+' '+val.nativeElement.clientHeight);
+    this.setGridWH(val.nativeElement);
+    this.changeDetectorRef.detectChanges();
+  }
+
   gridWH: WidthHeight = { width: 500, height: 500 };
   scale = 1;
   isDraggingGrid = false;
@@ -29,20 +47,8 @@ export class MapComponent implements OnInit{
   nodeLayers: NodeLayer[] = [];
   selectedNodeLayers: NodeLayer[] = [];
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.initSvgWH();
-      this.setGridWH();
-    }, 500);
-  }
-
-  initSvgWH(){
-    this.svgMax.width = this.svgGrid.nativeElement.clientWidth ?? 500;
-    this.svgMax.height = this.svgGrid.nativeElement.clientHeight ?? 500;
-  }
-
-  setGridWH(){
-    const viewBoxList = this.svgGrid.nativeElement.getAttribute('viewBox')?.split(' ');
+  setGridWH(svg:SVGSVGElement){
+    const viewBoxList = (svg ?? this.svgGrid?.nativeElement)?.getAttribute('viewBox')?.split(' ');
     if (!viewBoxList) return;
     const newWith = parseFloat(Math.abs(parseInt(viewBoxList[0], 10) + parseInt(viewBoxList[2], 10)).toFixed(2));
     if (newWith > this.gridWH.width) this.gridWH.width = newWith;
@@ -51,7 +57,7 @@ export class MapComponent implements OnInit{
   }
 
   @HostListener( 'document:pointerup', [ '$event' ] )
-  public upHandle(event: PointerEvent) {
+  public upHandle() {
     this.isDraggingGrid = false;
     this.isDraggingNodeLayer = false;
     this.draggingNodeLayer = undefined;
@@ -67,6 +73,10 @@ export class MapComponent implements OnInit{
     }
   }
 
+  roundVScale(value:number, scale:number):number{
+    return Math.round(value / scale) * scale;
+  }
+
   @HostListener( 'document:pointermove', [ '$event' ] )
   public moveHandle(pointerEvent: PointerEvent){
     pointerEvent.preventDefault();
@@ -75,13 +85,13 @@ export class MapComponent implements OnInit{
     if (!this.isDraggingGrid && this.isDraggingNodeLayer) {
       const viewBoxList = this.svgGrid.nativeElement.getAttribute('viewBox')?.split(' ');
       if (!viewBoxList) return;
-      const aspX = (parseInt(viewBoxList[2], 10) / this.svgMax.width);
-      const aspY = (parseInt(viewBoxList[3], 10) / this.svgMax.height);
+      const aspX = (parseInt(viewBoxList[2], 10) / this.svgGrid.nativeElement.clientWidth);
+      const aspY = (parseInt(viewBoxList[3], 10) / this.svgGrid.nativeElement.clientHeight);
       if (!this.draggingNodeLayer) return;
       // move NodeLayer
       if (pointerEvent.offsetX) {
-        this.draggingNodeLayer.positionX = Math.round((pointerEvent.offsetX * aspX) + parseInt(viewBoxList[0], 10)) ;
-        this.draggingNodeLayer.positionY = Math.round((pointerEvent.offsetY * aspY) + parseInt(viewBoxList[1], 10)) ;
+        this.draggingNodeLayer.positionX = this.roundVScale((pointerEvent.offsetX * aspX) + parseInt(viewBoxList[0], 10), 50) ;
+        this.draggingNodeLayer.positionY = this.roundVScale((pointerEvent.offsetY * aspY) + parseInt(viewBoxList[1], 10), 50) ;
       } else {
         const { left, top } = (pointerEvent.srcElement as Element).getBoundingClientRect();
         this.draggingNodeLayer.positionX = pointerEvent.clientX - left + parseInt(viewBoxList[0], 10);
@@ -123,7 +133,7 @@ export class MapComponent implements OnInit{
     if (viewBoxList[1].startsWith('-')) viewBoxList[1] = '0';
     const viewBox = viewBoxList.join(' ');
     this.svgGrid.nativeElement.setAttribute('viewBox', viewBox);
-    this.setGridWH();
+    this.setGridWH(this.svgGrid.nativeElement);
   }
 
   clickHandleGrid(pointerEvent: MouseEvent) {
@@ -190,7 +200,7 @@ export class MapComponent implements OnInit{
       .map(s => s.toFixed(2))
       .join(' ');
     svg.setAttribute('viewBox', scaledViewBox);
-    this.setGridWH();
+    this.setGridWH(svg);
   }
   // zoomAtPoint
   cutoffScaledMin(scaledMin: number): number{
