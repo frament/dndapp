@@ -1,7 +1,8 @@
-import {Component, ElementRef, HostListener, Input, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {NodeLayer} from "./node";
 import {Point} from "./point";
+import {WidthHeight} from "./width-height";
 
 @Component({
   selector: 'dndapp-map',
@@ -10,12 +11,13 @@ import {Point} from "./point";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent {
+export class MapComponent implements OnInit{
   @Input() roomId:string = '';
   @ViewChild('svgGrid', { read: ElementRef }) svgGrid!: ElementRef<SVGSVGElement>;
-  gridMaxWidth: number = 500;
-  gridMaxHeight: number = 500;
 
+  svgMax: WidthHeight = { width: 500, height: 500 };
+  gridWH: WidthHeight = { width: 500, height: 500 };
+  scale = 1;
   isDraggingGrid = false;
   gridDownClientX!: number;
   gridDownClientY!: number;
@@ -27,8 +29,25 @@ export class MapComponent {
   nodeLayers: NodeLayer[] = [];
   selectedNodeLayers: NodeLayer[] = [];
 
-  round(v:number):number {
-    return Math.round(v / 10) * 10;
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.initSvgWH();
+      this.setGridWH();
+    }, 500);
+  }
+
+  initSvgWH(){
+    this.svgMax.width = this.svgGrid.nativeElement.clientWidth ?? 500;
+    this.svgMax.height = this.svgGrid.nativeElement.clientHeight ?? 500;
+  }
+
+  setGridWH(){
+    const viewBoxList = this.svgGrid.nativeElement.getAttribute('viewBox')?.split(' ');
+    if (!viewBoxList) return;
+    const newWith = parseFloat(Math.abs(parseInt(viewBoxList[0], 10) + parseInt(viewBoxList[2], 10)).toFixed(2));
+    if (newWith > this.gridWH.width) this.gridWH.width = newWith;
+    const newHeight = parseFloat(Math.abs(parseInt(viewBoxList[1], 10) + parseInt(viewBoxList[3], 10)).toFixed(2));
+    if (newHeight > this.gridWH.height) this.gridWH.height = newHeight;
   }
 
   @HostListener( 'document:pointerup', [ '$event' ] )
@@ -56,13 +75,13 @@ export class MapComponent {
     if (!this.isDraggingGrid && this.isDraggingNodeLayer) {
       const viewBoxList = this.svgGrid.nativeElement.getAttribute('viewBox')?.split(' ');
       if (!viewBoxList) return;
-      const aspX = (parseInt(viewBoxList[2], 10) / this.gridMaxWidth);
-      const aspY = (parseInt(viewBoxList[3], 10) / this.gridMaxHeight);
+      const aspX = (parseInt(viewBoxList[2], 10) / this.svgMax.width);
+      const aspY = (parseInt(viewBoxList[3], 10) / this.svgMax.height);
       if (!this.draggingNodeLayer) return;
       // move NodeLayer
       if (pointerEvent.offsetX) {
-        this.draggingNodeLayer.positionX = this.round((pointerEvent.offsetX * aspX) + parseInt(viewBoxList[0], 10)) ;
-        this.draggingNodeLayer.positionY = this.round((pointerEvent.offsetY * aspY) + parseInt(viewBoxList[1], 10)) ;
+        this.draggingNodeLayer.positionX = Math.round((pointerEvent.offsetX * aspX) + parseInt(viewBoxList[0], 10)) ;
+        this.draggingNodeLayer.positionY = Math.round((pointerEvent.offsetY * aspY) + parseInt(viewBoxList[1], 10)) ;
       } else {
         const { left, top } = (pointerEvent.srcElement as Element).getBoundingClientRect();
         this.draggingNodeLayer.positionX = pointerEvent.clientX - left + parseInt(viewBoxList[0], 10);
@@ -98,28 +117,13 @@ export class MapComponent {
   updateViewBoxMin(dx: number, dy: number): void {
     const viewBoxList = this.svgGrid?.nativeElement?.getAttribute('viewBox')?.split(' ');
     if (!viewBoxList) return;
-    viewBoxList[0] = '' + this.cutoffDragRangeX(parseInt(viewBoxList[0], 10) - dx);
-    viewBoxList[1] = '' + this.cutoffDragRangeY(parseInt(viewBoxList[1], 10) - dy);
+    viewBoxList[0] = '' + (parseInt(viewBoxList[0], 10) - dx * this.scale);
+    viewBoxList[1] = '' + (parseInt(viewBoxList[1], 10) - dy * this.scale);
+    if (viewBoxList[0].startsWith('-')) viewBoxList[0] = '0';
+    if (viewBoxList[1].startsWith('-')) viewBoxList[1] = '0';
     const viewBox = viewBoxList.join(' ');
     this.svgGrid.nativeElement.setAttribute('viewBox', viewBox);
-  }
-
-  cutoffDragRangeX(draggingPoint: number): number{
-    if (draggingPoint < 0) {
-      return 0;
-    } else if (draggingPoint > (this.gridMaxWidth+1)) {
-      return this.gridMaxWidth + 1;
-    }
-    return draggingPoint;
-  }
-
-  cutoffDragRangeY(draggingPoint: number): number{
-    if (draggingPoint < 0) {
-      return 0;
-    } else if (draggingPoint > (this.gridMaxHeight +1)) {
-      return this.gridMaxHeight+1;
-    }
-    return draggingPoint;
+    this.setGridWH();
   }
 
   clickHandleGrid(pointerEvent: MouseEvent) {
@@ -142,12 +146,19 @@ export class MapComponent {
     this.zoomAtPoint(position, this.svgGrid.nativeElement, scale);
   }
 
+  getCenter(): Point {
+    return {
+      x: Math.round(this.svgGrid.nativeElement.clientWidth/ 2),
+      y: Math.round(this.svgGrid.nativeElement.clientHeight / 2),
+    }
+  }
+
   zoomInButton(){
-    this.zoomAtPoint({x:50,y:50}, this.svgGrid.nativeElement, -1);
+    this.zoomAtPoint(this.getCenter(), this.svgGrid.nativeElement, 0.5);
   }
 
   zoomOutButton(){
-    this.zoomAtPoint({x:50,y:50}, this.svgGrid.nativeElement, 1);
+    this.zoomAtPoint(this.getCenter(), this.svgGrid.nativeElement, 2);
   }
 
   getEventPosition(wheel: WheelEvent): Point {
@@ -164,6 +175,7 @@ export class MapComponent {
   }
 
   zoomAtPoint(point: Point, svg: SVGSVGElement, scale: number): void {
+    this.scale = this.scale * scale;
     const sx = point.x / svg.clientWidth;
     const sy = point.y / svg.clientHeight;
     if (!svg.getAttribute('viewBox')) return;
@@ -172,22 +184,17 @@ export class MapComponent {
     const y = minY + height * sy;
     const scaledMinX = this.cutoffScaledMin(x + scale * (minX - x));
     const scaledMinY = this.cutoffScaledMin(y + scale * (minY - y));
-    const scaledWidth = this.cutoffScaledLength(width * scale);
-    const scaledHeight = this.cutoffScaledHeight(height * scale);
+    const scaledWidth = width * scale; // this.cutoffScaledLength(width * scale);
+    const scaledHeight = height * scale; // this.cutoffScaledHeight(height * scale);
     const scaledViewBox = [scaledMinX, scaledMinY, scaledWidth, scaledHeight]
       .map(s => s.toFixed(2))
       .join(' ');
     svg.setAttribute('viewBox', scaledViewBox);
+    this.setGridWH();
   }
   // zoomAtPoint
   cutoffScaledMin(scaledMin: number): number{
     return scaledMin >= 0 ? scaledMin : 0;
-  }
-  cutoffScaledLength(length: number): number{
-    return length <= 750 ? length : 750;
-  }
-  cutoffScaledHeight(length: number): number{
-    return length <= 750 ? length : 750;
   }
 
   //////////////////////////////////////////////////////////////////////////////

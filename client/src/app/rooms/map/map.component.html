@@ -8,7 +8,7 @@
      (pointermove)="moveHandleGrid($event)"
      (wheel)="wheelHandleGrid($event)"
      (click)="clickHandleGrid($event)"
-     [attr.viewBox]="'0 0 '+gridMaxWidth+' '+gridMaxHeight"
+     [attr.viewBox]="'0 0 '+svgMax.width+' '+svgMax.height"
      style="width: 100%; height: 100%"
      #svgGrid>
   <defs>
@@ -20,7 +20,7 @@
       <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
     </pattern>
   </defs>
-  <rect width="100%" height="100%" fill="url(#grid)" />
+  <rect [attr.width]="gridWH.width" [attr.height]="gridWH.height" fill="url(#grid)" />
   <!-- node -->
   <defs>
     <filter id="shadow">
