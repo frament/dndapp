@@ -11,12 +11,12 @@ export class UserService {
   user:any = undefined;
 
   async loadUser(){
-    this.user = (await this.surreal.db.query<{name:string, email:string}[]>('select id, email, name from only $auth'))?.[0].result;
+    this.user = (await this.surreal.db.query<{name:string, email:string}[]>('select id, email, name from only $auth'))?.[0];
   }
 
   async signup(name:string, password:string, email:string): Promise<void> {
     try {
-      const token = await this.surreal.db.signup({NS:'dnd', DB:'dnd', SC:'user', name, password, email});
+      const token = await this.surreal.db.signup({namespace:'dnd', database:'dnd', scope:'user', name, password, email});
       localStorage.setItem('user_jwt_token', token);
       await this.loadUser();
     } catch (e) {
@@ -26,7 +26,7 @@ export class UserService {
 
   async signin(email:string, password:string): Promise<void> {
     try{
-      const token = await this.surreal.db.signin({NS:'dnd', DB:'dnd', SC:'user', email, password});
+      const token = await this.surreal.db.signin({namespace:'dnd', database:'dnd', scope:'user', email, password});
       if (token) localStorage.setItem('user_jwt_token', token);
       await this.loadUser();
     } catch (e) {

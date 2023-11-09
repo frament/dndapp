@@ -1,7 +1,8 @@
 import {APP_INITIALIZER, ApplicationConfig} from '@angular/core';
 import {
-  provideRouter,
+  provideRouter, withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
+  withViewTransitions
 } from '@angular/router';
 import { appRoutes } from './app.routes';
 import {initServicesFactory} from "./init-service-factory";
@@ -11,7 +12,11 @@ import {UserService} from "./auth/user.service";
 export const appConfig: ApplicationConfig = {
   providers: [
     {provide: UserService, useClass: UserService},
-    provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
+    provideRouter(appRoutes,
+      withEnabledBlockingInitialNavigation(),
+      withComponentInputBinding(),
+      withViewTransitions(),
+      ),
     {
       provide: APP_INITIALIZER,
       useFactory: initServicesFactory,

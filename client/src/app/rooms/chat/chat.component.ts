@@ -48,11 +48,9 @@ export class ChatComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    this.messages = (await this.surreal.db.query('SELECT id, type, user.name as user, value, version FROM room_logs where room = $room ORDER by version asc;',{room:'rooms:'+this.roomId}))[0]
-        .result as unknown as IRoomLog[] ?? [];
+    this.messages = (await this.surreal.db.query('SELECT id, type, user.name as user, value, version FROM room_logs where room = $room ORDER by version asc;',{room:'rooms:'+this.roomId}))[0] as unknown as IRoomLog[] ?? [];
     new Set(this.messages.map(x=>x.user)).forEach(x => this.userColorMap[x] = this.getRandomColor());
-    const liveId = (await this.surreal.db.query(`LIVE SELECT id, type, user.name as user, value, version FROM room_logs WHERE room = rooms:${this.roomId}`))[0]
-        .result as unknown as string;
+    const liveId = (await this.surreal.db.query(`LIVE SELECT id, type, user.name as user, value, version FROM room_logs WHERE room = rooms:${this.roomId}`))[0] as unknown as string;
     await this.surreal.db.listenLive(liveId,
       // ({ action, result}) => {
       (e: any) => {

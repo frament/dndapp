@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ChatComponent} from "../chat/chat.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
@@ -18,15 +18,12 @@ export class RoomComponent implements OnInit, OnDestroy{
   rightMode: 'chat'|'nav' = 'chat';
   chatIcon = faMessage;
   navIcon = faCoffee;
-  roomId: string = '';
+  @Input('id') roomId: string = '';
   paramsSub: Subscription|undefined;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.paramsSub = this.route.params.subscribe((x: Params)=>{
-      this.roomId = x['id'];
-    });
   }
 
   ngOnDestroy(): void {
