@@ -4,7 +4,6 @@ import {ChatComponent} from "../chat/chat.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {faCoffee, faMessage} from "@fortawesome/free-solid-svg-icons";
 import {MapComponent} from "../map/map.component";
-import {ActivatedRoute, Params} from "@angular/router";
 import {Subscription} from "rxjs";
 
 @Component({
