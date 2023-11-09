@@ -1,8 +1,6 @@
 import {
-  AfterViewChecked, AfterViewInit,
   Component,
   ElementRef,
-  inject,
   Input,
   OnInit,
   QueryList,
@@ -10,7 +8,7 @@ import {
   ViewChildren
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DataBaseService, LiveActionType} from "../../data-base.service";
+import {DataBaseService} from "../../data-base.service";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {UserService} from "../../auth/user.service";
