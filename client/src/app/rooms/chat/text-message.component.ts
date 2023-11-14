@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {IRoomLog} from "./chat.component";
+import {IRoomLog} from "../room.service";
 
 @Component({
   selector: 'dndapp-text-message',

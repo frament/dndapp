@@ -35,7 +35,6 @@ export class UserService {
   }
 
   async logout(): Promise<void>{
-    console.log('logout');
     localStorage.removeItem('user_jwt_token');
     this.user = undefined;
     await this.surreal.db.authenticate('null');

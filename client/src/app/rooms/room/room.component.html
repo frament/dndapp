@@ -4,9 +4,10 @@
 <div class="right-container flex flex-col" *ngIf="roomId">
   <div class="flex-1 overflow-scroll">
     <dndapp-chat *ngIf="rightMode === 'chat'" [roomId]="roomId"></dndapp-chat>
+    <dndapp-hero *ngIf="rightMode === 'hero'" [roomId]="roomId"></dndapp-hero>
   </div>
   <div class="flex p-2 w-full">
     <button class="right-switch-button" (click)="rightMode='chat'"><fa-icon [icon]="chatIcon"></fa-icon></button>
-    <button class="right-switch-button" (click)="rightMode='nav'"><fa-icon [icon]="navIcon"></fa-icon></button>
+    <button class="right-switch-button" (click)="rightMode='hero'"><fa-icon [icon]="heroIcon"></fa-icon></button>
   </div>
 </div>

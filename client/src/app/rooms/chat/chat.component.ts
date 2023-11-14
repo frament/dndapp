@@ -1,6 +1,6 @@
 import {
-  Component,
-  ElementRef,
+  Component, effect,
+  ElementRef, inject,
   Input,
   OnInit,
   QueryList,
@@ -14,14 +14,7 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {UserService} from "../../auth/user.service";
 import {FormsModule} from "@angular/forms";
 import {TextMessageComponent} from "./text-message.component";
-
-export interface IRoomLog{
-  room:string;
-  type:string;
-  user:string;
-  value:any;
-  version:Date;
-}
+import {RoomService} from "../room.service";
 
 @Component({
   selector: 'dndapp-chat',
@@ -35,9 +28,17 @@ export class ChatComponent implements OnInit{
   @Input() roomId: string = '';
   @ViewChild('messContainer') private messContainer!: ElementRef;
   @ViewChildren('messages') messagesEls!: QueryList<any>;
-  messages: IRoomLog[] = [];
   sendIcon = faPaperPlane;
   currentMessage:string = '';
+  roomService = inject(RoomService);
+
+  roomInitEffect = effect(()  => {
+    const tst = this.roomService.currentRoom();
+    console.log(tst);
+    if (!tst) return;
+    this.userColorMap[tst.admin] = this.getRandomColor();
+    tst.users.map(x => this.userColorMap[x] = this.getRandomColor());
+  });
 
   userColorMap:{[user:string]:string} = {};
 
@@ -46,19 +47,7 @@ export class ChatComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    this.messages = (await this.surreal.db.query('SELECT id, type, user.name as user, value, version FROM room_logs where room = $room ORDER by version asc;',{room:'rooms:'+this.roomId}))[0] as unknown as IRoomLog[] ?? [];
-    new Set(this.messages.map(x=>x.user)).forEach(x => this.userColorMap[x] = this.getRandomColor());
-    const liveId = (await this.surreal.db.query(`LIVE SELECT id, type, user.name as user, value, version FROM room_logs WHERE room = rooms:${this.roomId}`))[0] as unknown as string;
-    await this.surreal.db.listenLive(liveId,
-      // ({ action, result}) => {
-      (e: any) => {
-        if (e.action === "CREATE"){
-          if (!this.userColorMap.hasOwnProperty(e.result.user)){
-            this.userColorMap[e.result.user] = this.getRandomColor();
-          }
-          this.messages.push(e.result as unknown as IRoomLog);
-        }
-      })
+    await this.roomService.setCurrentRoom(this.roomId);
     this.scrollChat();
     this.messagesEls.changes.subscribe(() => this.scrollChat());
   }

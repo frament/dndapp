@@ -1,6 +1,6 @@
 <div #messContainer class="flex flex-1 flex-col overflow-scroll">
   <div class="flex-1"></div>
-  <div #messages *ngFor="let mess of messages">
+  <div #messages *ngFor="let mess of roomService.currentRoomLogs()">
     <dndapp-text-message *ngIf="mess.type === 'text'" [message]="mess" [userColor]="userColorMap[mess.user]"></dndapp-text-message>
   </div>
 </div>
