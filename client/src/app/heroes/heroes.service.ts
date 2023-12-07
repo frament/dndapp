@@ -18,6 +18,10 @@ export class HeroesService {
     return this.surreal.selectOne<Hero>('select id, name from heroes where id = $id;',{id});
   }
 
+  async delete(id:string): Promise<void>{
+    await this.surreal.db.delete(id);
+  }
+
   async add(hero: Partial<Hero>): Promise<Hero> {
     const [result] = await this.surreal.db.insert('heroes', {...hero, user: this.user.user.id});
     return result as unknown as Hero;

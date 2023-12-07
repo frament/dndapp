@@ -2,6 +2,7 @@
   <button (click)="addNodeLayer()">add</button>
   <button (click)="zoomInButton()">+</button>
   <button (click)="zoomOutButton()">-</button>
+  <button (click)="setBgImage()">iii</button>
 </div>
 <svg
      (pointerdown)="downHandleGrid($event)"
@@ -20,6 +21,7 @@
       <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
     </pattern>
   </defs>
+  <image #bgImage x="0" y="0" width="1000" height="1000"/>
   <rect [attr.width]="gridWH.width" [attr.height]="gridWH.height" fill="url(#grid)" />
   <!-- node -->
   <defs>
@@ -43,6 +45,7 @@
       [attr.ry]="nodeLayer.ry"
       stroke="black"
       stroke-width="0.1"
+      [attr.transform]="nodeLayer.rotate ? 'rotate('+nodeLayer.rotate+'deg)':''"
       [attr.fill]="nodeLayer.color"
       [attr.filter]="nodeLayer.shadowFilter">
     </rect>

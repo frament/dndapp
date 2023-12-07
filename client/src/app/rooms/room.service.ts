@@ -58,7 +58,6 @@ export class RoomService {
       'SELECT users.* FROM ONLY $room',
       {room:'rooms:'+roomId}
     ))[0] as unknown as any[];
-    console.log(users);
   }
 
   async subRoomLogs(roomId:string): Promise<void>{

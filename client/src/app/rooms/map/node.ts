@@ -11,3 +11,7 @@ export interface NodeLayer {
   isSelected: boolean;
   shadowFilter: string;
 }
+
+export interface BaseNode {
+
+}

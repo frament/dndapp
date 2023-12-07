@@ -8,6 +8,7 @@ import { appRoutes } from './app.routes';
 import {initServicesFactory} from "./init-service-factory";
 import {DataBaseService} from "./data-base.service";
 import {UserService} from "./auth/user.service";
+import {FileService} from "./files/file.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_INITIALIZER,
       useFactory: initServicesFactory,
-      deps:[DataBaseService, UserService],
+      deps:[DataBaseService, UserService, FileService],
       multi: true
     }],
 };

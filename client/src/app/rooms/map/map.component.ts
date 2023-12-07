@@ -1,17 +1,16 @@
 import {
-  AfterContentInit,
-  AfterViewInit, ChangeDetectorRef,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  HostListener,
+  HostListener, inject,
   Input,
-  OnInit,
   ViewChild
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {NodeLayer} from "./node";
 import {Point} from "./point";
 import {WidthHeight} from "./width-height";
+import {FileService} from "../../files/file.service";
 
 @Component({
   selector: 'dndapp-map',
@@ -24,6 +23,18 @@ export class MapComponent {
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
   @Input() roomId:string = '';
   // @ViewChild('svgGrid', { read: ElementRef }) svgGrid!: ElementRef<SVGSVGElement>;
+
+  @ViewChild('bgImage') bgImage!: any;
+
+
+  files = inject(FileService)
+
+
+  async setBgImage(){
+    const list = await this.files.getFileList();
+    const file = await this.files.getFile(list[0]);
+    this.bgImage.nativeElement.setAttribute('href', URL.createObjectURL(file));
+  }
 
   svgGrid!:ElementRef<SVGSVGElement>;
   @ViewChild('svgGrid', { read: ElementRef })

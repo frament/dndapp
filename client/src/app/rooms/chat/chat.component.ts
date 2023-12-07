@@ -33,11 +33,10 @@ export class ChatComponent implements OnInit{
   roomService = inject(RoomService);
 
   roomInitEffect = effect(()  => {
-    const tst = this.roomService.currentRoom();
-    console.log(tst);
-    if (!tst) return;
-    this.userColorMap[tst.admin] = this.getRandomColor();
-    tst.users.map(x => this.userColorMap[x] = this.getRandomColor());
+    const room = this.roomService.currentRoom();
+    if (!room) return;
+    this.userColorMap[room.admin] = this.getRandomColor();
+    room.users.map(x => this.userColorMap[x] = this.getRandomColor());
   });
 
   userColorMap:{[user:string]:string} = {};

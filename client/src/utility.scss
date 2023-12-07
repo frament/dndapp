@@ -1,0 +1,9 @@
+.def-init{
+  @apply bg-white dark:bg-slate-800 text-slate-900 dark:text-white;
+}
+.button{
+  @apply cursor-pointer hover:bg-slate-100 hover:dark:bg-slate-700 p-3 rounded-md text-center;
+}
+.button-bordered{
+  @apply ring-1 ring-inset ring-gray-300;
+}

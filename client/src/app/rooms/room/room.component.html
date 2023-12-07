@@ -3,11 +3,13 @@
 </div>
 <div class="right-container flex flex-col" *ngIf="roomId">
   <div class="flex-1 overflow-scroll">
-    <dndapp-chat *ngIf="rightMode === 'chat'" [roomId]="roomId"></dndapp-chat>
-    <dndapp-hero *ngIf="rightMode === 'hero'" [roomId]="roomId"></dndapp-hero>
+    <dndapp-chat *ngIf="rightMode === 'chat'" [roomId]="roomId" />
+    <dndapp-hero *ngIf="rightMode === 'hero'" [roomId]="roomId" />
+    <dndapp-scene-items *ngIf="rightMode === 'scene-items'" [roomId]="roomId"/>
   </div>
-  <div class="flex p-2 w-full">
+  <div class="flex p-2 w-full gap-1.5">
     <button class="right-switch-button" (click)="rightMode='chat'"><fa-icon [icon]="chatIcon"></fa-icon></button>
     <button class="right-switch-button" (click)="rightMode='hero'"><fa-icon [icon]="heroIcon"></fa-icon></button>
+    <button class="right-switch-button" (click)="rightMode='scene-items'"><fa-icon [icon]="sceneIcon"></fa-icon></button>
   </div>
 </div>

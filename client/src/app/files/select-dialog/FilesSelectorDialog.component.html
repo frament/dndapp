@@ -1,0 +1,10 @@
+<div class="def-init w-full flex flex-col p-4 rounded-md gap-4">
+  <div class="flex flex-col w-full gap-2" *ngIf="mode === 'list'">
+    <button class="button button-bordered" (click)="mode = 'add'">Добавить файл</button>
+    <button class="button" *ngFor="let file of list()" (click)="selectFile(file)">{{file}}</button>
+  </div>
+  <div class="flex flex-col w-full gap-2" *ngIf="mode === 'add'">
+    <button class="button button-bordered" (click)="mode = 'list'">назад</button>
+    <input id="preview" type="file" (change)="openfile($event)" />
+  </div>
+</div>

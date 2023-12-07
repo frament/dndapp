@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Hero} from "../heroes/Hero";
 import {HeroesService} from "../heroes/heroes.service";
 import {Room} from "../rooms/room";
 import {RoomService} from "../rooms/room.service";
 import {Router} from "@angular/router";
+import {Dialog} from "@angular/cdk/dialog";
+import {FilesSelectorDialogComponent} from "../files/select-dialog/FilesSelectorDialog.component";
 
 @Component({
   selector: 'dndapp-dashboard',
@@ -14,10 +16,9 @@ import {Router} from "@angular/router";
   styleUrls: ['./Dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit{
-  constructor(private heroesService: HeroesService,
-              private roomsService: RoomService,
-              private router: Router) {}
-
+  heroesService = inject(HeroesService);
+  roomsService = inject(RoomService);
+  router = inject(Router);
   heroes: Hero[] = [];
   rooms: Room[] = [];
   async ngOnInit(): Promise<void> {
@@ -30,6 +31,11 @@ export class DashboardComponent implements OnInit{
     this.heroes = await this.heroesService.getList();
   }
 
+  async deleteHero(id:string): Promise<void> {
+    await this.heroesService.delete(id);
+    this.heroes = await this.heroesService.getList();
+  }
+
   async addRoom(): Promise<void>{
     await this.roomsService.add({name:'test'+this.rooms.length});
     this.rooms = await this.roomsService.getList();
@@ -37,6 +43,12 @@ export class DashboardComponent implements OnInit{
 
   async goToRoom(id:string):Promise<void>{
     await this.router.navigateByUrl('/room/'+id.replace('rooms:',''));
+  }
+
+  dialog = inject(Dialog)
+
+  showDialog(){
+    this.dialog.open(FilesSelectorDialogComponent);
   }
 
 }
