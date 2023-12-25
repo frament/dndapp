@@ -43,6 +43,7 @@ export class MapComponent {
     // this.svgGrid.nativeElement.setAttribute('viewBox', `0 0 ${img.width} ${img.height}`);
     this.setGridWH(this.svgGrid.nativeElement);
     this.img = img;
+    console.log(this.svgGrid.nativeElement.getAttribute('viewbox'))
   }
 
   svgGrid!:ElementRef<SVGSVGElement>;
@@ -149,8 +150,8 @@ export class MapComponent {
     if (!viewBoxList) return;
     const minWidth = parseInt(viewBoxList[0], 10) - dx * this.scale;
     const minHeight = parseInt(viewBoxList[1], 10) - dy * this.scale;
-    viewBoxList[0] = '' + this.cutoffScaledMinWidth(minWidth, parseFloat(viewBoxList[2]));
-    viewBoxList[1] = '' + this.cutoffScaledMinWidth(minHeight, parseFloat(viewBoxList[3]));
+    viewBoxList[0] = '' + this.cutoffScaledMinWidth(minWidth);
+    viewBoxList[1] = '' + this.cutoffScaledMinHeight(minHeight);
     /*viewBoxList[0] = '' + (parseInt(viewBoxList[0], 10) - dx * this.scale);
     viewBoxList[1] = '' + (parseInt(viewBoxList[1], 10) - dy * this.scale);
     if (viewBoxList[0].startsWith('-')) viewBoxList[0] = '0';
@@ -210,6 +211,9 @@ export class MapComponent {
 
   zoomAtPoint(point: Point, svg: SVGSVGElement, scale: number): void {
     // this.scale = this.scale * scale;
+    this.scale = this.cutoffMaxScale(this.scale * scale);
+    console.log(this.svgGrid.nativeElement.parentElement);
+    // const mm = this.getMaxMinHeight();
     const sx = point.x / svg.clientWidth;
     const sy = point.y / svg.clientHeight;
     if (!svg.getAttribute('viewBox')) return;
@@ -218,28 +222,59 @@ export class MapComponent {
     const y = minY + height * sy;
     let scaledWidth = this.cutoffScaledWidth(width * scale); // this.cutoffScaledLength(width * scale);
     let scaledHeight = this.cutoffScaledHeight(height * scale); // this.cutoffScaledHeight(height * scale);
-    const scaledMinX = this.cutoffScaledMinWidth(x + scale * (minX - x), scaledWidth);
-    const scaledMinY = this.cutoffScaledMinHeight(y + scale * (minY - y), scaledHeight);
+    const scaledMinX = this.cutoffScaledMinWidth(x + scale * (minX - x));
+    const scaledMinY = this.cutoffScaledMinHeight(y + scale * (minY - y));
     const scaledViewBox = [scaledMinX, scaledMinY, scaledWidth, scaledHeight]
       .map(s => s.toFixed(2))
       .join(' ');
-    this.scale = scaledHeight / svg.clientWidth;
     svg.setAttribute('viewBox', scaledViewBox);
     this.setGridWH(svg);
   }
+
+  getScaleLeader(): 'height' | 'width' {
+    if (!this.img || !this.svgGrid.nativeElement.parentElement){ return 'height'; }
+    const widthScale = this.img.width / this.svgGrid.nativeElement.parentElement.clientWidth;
+    const heightScale = this.img.height / this.svgGrid.nativeElement.parentElement.clientHeight;
+    return widthScale < heightScale ? 'width' : 'height';
+  }
+
+  getMaxMinHeight(): number {
+    if (!this.img){ return 1000; }
+    const result = this.img.height / this.scale - (this.svgGrid.nativeElement.parentElement?.clientHeight ?? 0);
+    console.log('mm', `${this.img.height} / ${this.scale} - (${this.svgGrid.nativeElement.parentElement?.clientHeight ?? 0})`, result);
+    return result;
+  }
+
   // zoomAtPoint
-  cutoffScaledMinWidth(scaledMin: number, scaledWidth: number): number{
+  cutoffScaledMinWidth(scaledMin: number): number{
     if (scaledMin < 0) { return 0; }
     if (!this.img){ return scaledMin; }
-    const maxMinWidth = this.img.width - scaledWidth;
+    const maxMinWidth = (this.img.width - (this.svgGrid.nativeElement.parentElement?.clientWidth ?? 0)) / this.scale;
     return maxMinWidth > scaledMin ? scaledMin : maxMinWidth;
   }
 
-  cutoffScaledMinHeight(scaledMin: number, scaledHeight: number): number{
+  cutoffScaledMinHeight(scaledMin: number): number{
     if (scaledMin < 0) { return 0; }
     if (!this.img){ return scaledMin; }
-    const maxMinHeight = this.img.height - scaledHeight;
+    // const maxMinHeight = (this.img.height - (this.svgGrid.nativeElement.parentElement?.clientHeight ?? 0)) / this.scale;
+    const maxMinHeight = this.getMaxMinHeight();
+
+    // console.log(`scale: ${this.scale}`, `maxMinHeight:${maxMinHeight}`, `min:${scaledMin}`);
     return maxMinHeight > scaledMin ? scaledMin : maxMinHeight;
+  }
+
+  cutoffMaxScale(scale:number): number {
+    if (scale <= 0) { return 1; }
+    if (!this.img) { return scale; }
+    const scaleLEader = this.getScaleLeader();
+    const max = scaleLEader === 'height'
+      ? this.img?.height / (this.svgGrid.nativeElement.parentElement?.clientHeight ?? 1)
+      : this.img?.width / (this.svgGrid.nativeElement.parentElement?.clientWidth ?? 1);
+
+    const l2 = 'client'+ scaleLEader.replace(scaleLEader[0], scaleLEader[0].toUpperCase());
+    // @ts-ignore
+    console.log(this.img[scaleLEader], this.svgGrid.nativeElement.parentElement[l2], scale, max, scaleLEader);
+    return scale > max ? max : scale;
   }
 
   cutoffScaledWidth(width: number): number{

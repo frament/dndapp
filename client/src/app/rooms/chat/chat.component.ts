@@ -1,5 +1,5 @@
 import {
-  Component, effect,
+  Component, computed, effect,
   ElementRef, inject,
   Input,
   OnInit,
@@ -32,6 +32,16 @@ export class ChatComponent implements OnInit{
   roomService = inject(RoomService);
   surreal = inject(DataBaseService);
   user = inject(UserService);
+  userColorMap:{[user:string]:string} = {};
+  maxChatMessages = 50;
+
+  shownMessages = computed(() =>
+    this.roomService.currentRoomLogs().slice(
+      this.roomService.currentRoomLogs().length - this.maxChatMessages < 0
+          ? 0 : this.roomService.currentRoomLogs().length - this.maxChatMessages,
+      this.roomService.currentRoomLogs().length,
+    )
+  )
 
   constructor() {
     effect(()  => {
@@ -41,8 +51,6 @@ export class ChatComponent implements OnInit{
       room.users.map(x => this.userColorMap[x] = this.getRandomColor());
     });
   }
-
-  userColorMap:{[user:string]:string} = {};
 
   getRandomColor():string{
     return '#'+(Math.random() * 0x1000000 | 0x1000000).toString(16).slice(1);

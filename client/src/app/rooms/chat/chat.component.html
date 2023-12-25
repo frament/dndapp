@@ -1,6 +1,6 @@
 <div #messContainer class="flex flex-1 flex-col overflow-scroll">
   <div class="flex-1"></div>
-  @for (mess of roomService.currentRoomLogs(); track mess.id) {
+  @for (mess of shownMessages(); track mess.id) {
     @switch (mess.type){
       @case ('text') {
         <dndapp-text-message #messages [message]="mess" [userColor]="userColorMap[mess.user]"></dndapp-text-message>
