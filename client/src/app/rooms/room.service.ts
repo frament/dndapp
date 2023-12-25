@@ -1,9 +1,11 @@
 import {Injectable, signal} from '@angular/core';
 import {DataBaseService} from "../data-base.service";
 import {UserService} from "../auth/user.service";
-import {Room} from "./room";
+import {IRoom, Room} from "./room";
+import {IUser} from "../auth/user";
 
-export interface IRoomLog{
+export type IRoomLog = {
+  id:string;
   room:string;
   type:string;
   user:string;
@@ -26,7 +28,7 @@ export class RoomService {
   }
 
   async add(room: Partial<Room>): Promise<Room> {
-    const [result] = await this.surreal.db.insert('rooms', {...room, admin: this.user.user.id, tst1:[this.user.user.id]});
+    const [result] = await this.surreal.db.insert('rooms', {...room, admin: this.user.user?.id, tst1:[this.user.user?.id]});
     return result as unknown as Room;
   }
 
@@ -41,43 +43,33 @@ export class RoomService {
     await this.subRoomUsers(roomId);
   }
 
-  async subRoom(roomId:string):Promise<void>{
-    const room = (await this.surreal.db.query(
-      'SELECT id, name, users, admin FROM ONLY $room',
-      {room:'rooms:'+roomId}
-    ))[0] as unknown as Room;
-    this.currentRoom.set(room);
+  async subRoom(room:string):Promise<void>{
+    const [roomReal] = await this.surreal.db.query<[IRoom]>(
+      'SELECT id, name, users, admin FROM ONLY $room', {room}
+    );
+    this.currentRoom.set(roomReal);
   }
 
   async addUserToRoom(roomId:string, userId:string):Promise<void>{
     await this.surreal.db.query('UPDATE $roomId SET users += $userId;', {roomId,userId});
   }
 
-  async subRoomUsers(roomId:string):Promise<void>{
-    const users = (await this.surreal.db.query(
-      'SELECT users.* FROM ONLY $room',
-      {room:'rooms:'+roomId}
-    ))[0] as unknown as any[];
+  async subRoomUsers(room:string):Promise<void>{
+    const [users] = await this.surreal.db.query<[IUser[]]>(
+      'SELECT users.* FROM ONLY $room', {room}
+    );
+    this.currentRoomUsers.set(users);
   }
 
-  async subRoomLogs(roomId:string): Promise<void>{
-    const logs = (await this.surreal.db.query(
-      'SELECT * FROM room_logs where room = $room ORDER by version asc;',
-      {room:'rooms:'+roomId}
-    ))[0] as unknown as IRoomLog[];
-    const liveId = (await this.surreal.db.query(
-      'LIVE SELECT * FROM room_logs WHERE room = $room',
-      {room:'rooms:'+roomId}
-    ))[0] as unknown as string;
+  async subRoomLogs(room:string): Promise<void>{
+    const sql = `SELECT * FROM room_logs WHERE room = ${room}`;
+    const [liveId] = await this.surreal.db.query<[string]>('LIVE '+sql);
+    await this.surreal.db.listenLive<IRoomLog>(liveId, ({ action, result}) => {
+      if (action === "CREATE" && result){
+        this.currentRoomLogs.update(old =>  [...old, result]);
+      }
+    });
+    const [logs] = await this.surreal.db.query<[IRoomLog[]]>(sql+' ORDER by version asc;');
     this.currentRoomLogs.set(logs);
-    await this.surreal.db.listenLive(liveId,
-      ({ action, result}) => {
-        if (action === "CREATE"){
-          this.currentRoomLogs.update(old => {
-            old.push(result as unknown as IRoomLog);
-            return old;
-          })
-        }
-      })
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {DataBaseService} from "../data-base.service";
+import {IUser} from "./user";
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,10 @@ export class UserService {
 
   constructor(private surreal: DataBaseService) { }
 
-  user:any = undefined;
+  user:IUser|undefined = undefined;
 
   async loadUser(){
-    this.user = (await this.surreal.db.query<{name:string, email:string}[]>('select id, email, name from only $auth'))?.[0];
+    [this.user] = await this.surreal.db.query<[IUser]>('select id, email, name from only $auth');
   }
 
   async signup(name:string, password:string, email:string): Promise<void> {

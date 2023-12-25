@@ -54,6 +54,19 @@ export class FileService {
     })
   }
 
+  getImageFormFile(file:File|Blob): Promise<HTMLImageElement>{
+    return new Promise<HTMLImageElement>( resolve => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        const img = new Image();
+        img.src = reader.result as string;
+        img.addEventListener('load', () => resolve(img));
+      })
+      reader.readAsDataURL(file);
+    });
+
+  }
+
   async getFile(name:string): Promise<File> {
     return new Promise<any>((resolve,reject) => {
       const request = this.db.transaction("files").objectStore("files").get(name);

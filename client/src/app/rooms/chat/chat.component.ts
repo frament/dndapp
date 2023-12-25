@@ -24,20 +24,23 @@ import {RoomService} from "../room.service";
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit{
-  constructor(private surreal: DataBaseService, private user: UserService) {}
   @Input() roomId: string = '';
   @ViewChild('messContainer') private messContainer!: ElementRef;
   @ViewChildren('messages') messagesEls!: QueryList<any>;
   sendIcon = faPaperPlane;
   currentMessage:string = '';
   roomService = inject(RoomService);
+  surreal = inject(DataBaseService);
+  user = inject(UserService);
 
-  roomInitEffect = effect(()  => {
-    const room = this.roomService.currentRoom();
-    if (!room) return;
-    this.userColorMap[room.admin] = this.getRandomColor();
-    room.users.map(x => this.userColorMap[x] = this.getRandomColor());
-  });
+  constructor() {
+    effect(()  => {
+      const room = this.roomService.currentRoom();
+      if (!room) return;
+      this.userColorMap[room.admin] = this.getRandomColor();
+      room.users.map(x => this.userColorMap[x] = this.getRandomColor());
+    });
+  }
 
   userColorMap:{[user:string]:string} = {};
 
@@ -46,16 +49,17 @@ export class ChatComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    await this.roomService.setCurrentRoom(this.roomId);
+    await this.roomService.setCurrentRoom('rooms:'+this.roomId);
     this.scrollChat();
     this.messagesEls.changes.subscribe(() => this.scrollChat());
   }
 
   async sendMessage():Promise<void>{
+    if (!this.user.user) { return; }
     await this.surreal.db.insert('room_logs',{
       room: 'rooms:'+this.roomId,
       type: 'text',
-      user: this.user.user.id,
+      user: this.user.user?.id,
       value: this.currentMessage,
     });
     this.currentMessage = '';

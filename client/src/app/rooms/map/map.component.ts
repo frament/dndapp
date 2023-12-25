@@ -29,11 +29,20 @@ export class MapComponent {
 
   files = inject(FileService)
 
+  img: HTMLImageElement|undefined;
+
 
   async setBgImage(){
     const list = await this.files.getFileList();
     const file = await this.files.getFile(list[0]);
+
+    const img = await this.files.getImageFormFile(file);
+    this.bgImage.nativeElement.setAttribute('width', img.width);
+    this.bgImage.nativeElement.setAttribute('height',img.height);
     this.bgImage.nativeElement.setAttribute('href', URL.createObjectURL(file));
+    // this.svgGrid.nativeElement.setAttribute('viewBox', `0 0 ${img.width} ${img.height}`);
+    this.setGridWH(this.svgGrid.nativeElement);
+    this.img = img;
   }
 
   svgGrid!:ElementRef<SVGSVGElement>;
@@ -61,9 +70,9 @@ export class MapComponent {
   setGridWH(svg:SVGSVGElement){
     const viewBoxList = (svg ?? this.svgGrid?.nativeElement)?.getAttribute('viewBox')?.split(' ');
     if (!viewBoxList) return;
-    const newWith = parseFloat(Math.abs(parseInt(viewBoxList[0], 10) + parseInt(viewBoxList[2], 10)).toFixed(2));
+    const newWith = this.img?.width ?? parseFloat(Math.abs(parseInt(viewBoxList[0], 10) + parseInt(viewBoxList[2], 10)).toFixed(2));
     if (newWith > this.gridWH.width) this.gridWH.width = newWith;
-    const newHeight = parseFloat(Math.abs(parseInt(viewBoxList[1], 10) + parseInt(viewBoxList[3], 10)).toFixed(2));
+    const newHeight = this.img?.height ?? parseFloat(Math.abs(parseInt(viewBoxList[1], 10) + parseInt(viewBoxList[3], 10)).toFixed(2));
     if (newHeight > this.gridWH.height) this.gridWH.height = newHeight;
   }
 
@@ -138,10 +147,14 @@ export class MapComponent {
   updateViewBoxMin(dx: number, dy: number): void {
     const viewBoxList = this.svgGrid?.nativeElement?.getAttribute('viewBox')?.split(' ');
     if (!viewBoxList) return;
-    viewBoxList[0] = '' + (parseInt(viewBoxList[0], 10) - dx * this.scale);
+    const minWidth = parseInt(viewBoxList[0], 10) - dx * this.scale;
+    const minHeight = parseInt(viewBoxList[1], 10) - dy * this.scale;
+    viewBoxList[0] = '' + this.cutoffScaledMinWidth(minWidth, parseFloat(viewBoxList[2]));
+    viewBoxList[1] = '' + this.cutoffScaledMinWidth(minHeight, parseFloat(viewBoxList[3]));
+    /*viewBoxList[0] = '' + (parseInt(viewBoxList[0], 10) - dx * this.scale);
     viewBoxList[1] = '' + (parseInt(viewBoxList[1], 10) - dy * this.scale);
     if (viewBoxList[0].startsWith('-')) viewBoxList[0] = '0';
-    if (viewBoxList[1].startsWith('-')) viewBoxList[1] = '0';
+    if (viewBoxList[1].startsWith('-')) viewBoxList[1] = '0';*/
     const viewBox = viewBoxList.join(' ');
     this.svgGrid.nativeElement.setAttribute('viewBox', viewBox);
     this.setGridWH(this.svgGrid.nativeElement);
@@ -169,7 +182,7 @@ export class MapComponent {
 
   getCenter(): Point {
     return {
-      x: Math.round(this.svgGrid.nativeElement.clientWidth/ 2),
+      x: Math.round(this.svgGrid.nativeElement.clientWidth / 2),
       y: Math.round(this.svgGrid.nativeElement.clientHeight / 2),
     }
   }
@@ -196,26 +209,49 @@ export class MapComponent {
   }
 
   zoomAtPoint(point: Point, svg: SVGSVGElement, scale: number): void {
-    this.scale = this.scale * scale;
+    // this.scale = this.scale * scale;
     const sx = point.x / svg.clientWidth;
     const sy = point.y / svg.clientHeight;
     if (!svg.getAttribute('viewBox')) return;
     const [minX, minY, width, height] = (svg.getAttribute('viewBox')??'').split(' ').map(s => parseFloat(s));
     const x = minX + width * sx;
     const y = minY + height * sy;
-    const scaledMinX = this.cutoffScaledMin(x + scale * (minX - x));
-    const scaledMinY = this.cutoffScaledMin(y + scale * (minY - y));
-    const scaledWidth = width * scale; // this.cutoffScaledLength(width * scale);
-    const scaledHeight = height * scale; // this.cutoffScaledHeight(height * scale);
+    let scaledWidth = this.cutoffScaledWidth(width * scale); // this.cutoffScaledLength(width * scale);
+    let scaledHeight = this.cutoffScaledHeight(height * scale); // this.cutoffScaledHeight(height * scale);
+    const scaledMinX = this.cutoffScaledMinWidth(x + scale * (minX - x), scaledWidth);
+    const scaledMinY = this.cutoffScaledMinHeight(y + scale * (minY - y), scaledHeight);
     const scaledViewBox = [scaledMinX, scaledMinY, scaledWidth, scaledHeight]
       .map(s => s.toFixed(2))
       .join(' ');
+    this.scale = scaledHeight / svg.clientWidth;
     svg.setAttribute('viewBox', scaledViewBox);
     this.setGridWH(svg);
   }
   // zoomAtPoint
-  cutoffScaledMin(scaledMin: number): number{
-    return scaledMin >= 0 ? scaledMin : 0;
+  cutoffScaledMinWidth(scaledMin: number, scaledWidth: number): number{
+    if (scaledMin < 0) { return 0; }
+    if (!this.img){ return scaledMin; }
+    const maxMinWidth = this.img.width - scaledWidth;
+    return maxMinWidth > scaledMin ? scaledMin : maxMinWidth;
+  }
+
+  cutoffScaledMinHeight(scaledMin: number, scaledHeight: number): number{
+    if (scaledMin < 0) { return 0; }
+    if (!this.img){ return scaledMin; }
+    const maxMinHeight = this.img.height - scaledHeight;
+    return maxMinHeight > scaledMin ? scaledMin : maxMinHeight;
+  }
+
+  cutoffScaledWidth(width: number): number{
+    if (width < 0) { return 0; }
+    if (!this.img){ return width; }
+    return this.img.width - width >= 0 ? width : this.img.width;
+  }
+
+  cutoffScaledHeight(height: number): number{
+    if (height < 0) { return 0; }
+    if (!this.img){ return height; }
+    return this.img.height - height >= 0 ? height : this.img.height;
   }
 
   //////////////////////////////////////////////////////////////////////////////

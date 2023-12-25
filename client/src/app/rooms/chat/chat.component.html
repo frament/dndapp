@@ -1,8 +1,12 @@
 <div #messContainer class="flex flex-1 flex-col overflow-scroll">
   <div class="flex-1"></div>
-  <div #messages *ngFor="let mess of roomService.currentRoomLogs()">
-    <dndapp-text-message *ngIf="mess.type === 'text'" [message]="mess" [userColor]="userColorMap[mess.user]"></dndapp-text-message>
-  </div>
+  @for (mess of roomService.currentRoomLogs(); track mess.id) {
+    @switch (mess.type){
+      @case ('text') {
+        <dndapp-text-message #messages [message]="mess" [userColor]="userColorMap[mess.user]"></dndapp-text-message>
+      }
+    }
+  }
 </div>
 <div class="flex gap-2 p-2">
   <input class="input-input" type="text" [(ngModel)]="currentMessage" (keydown.enter)="sendMessage()">

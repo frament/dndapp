@@ -23,7 +23,7 @@ export class HeroesService {
   }
 
   async add(hero: Partial<Hero>): Promise<Hero> {
-    const [result] = await this.surreal.db.insert('heroes', {...hero, user: this.user.user.id});
+    const [result] = await this.surreal.db.insert('heroes', {...hero, user: this.user.user?.id});
     return result as unknown as Hero;
   }
 }
