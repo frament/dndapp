@@ -1,4 +1,4 @@
-export interface WidthHeight {
+export type WidthHeight = {
     width: number;
     height: number;
 }

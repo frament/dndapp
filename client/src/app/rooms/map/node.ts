@@ -1,4 +1,4 @@
-export interface NodeLayer {
+export type NodeLayer = {
   id: string;
   width: number;
   height: number;
