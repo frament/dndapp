@@ -2,7 +2,10 @@
   <button (click)="addNodeLayer()">add</button>
   <button (click)="zoomInButton()">+</button>
   <button (click)="zoomOutButton()">-</button>
-  <button (click)="setBgImage()">iii</button>
+<!--  <button (click)="setBgImage()">iii</button>-->
+</div>
+<div class="title">
+  <h3>{{roomService.currentScene()?.name}}</h3>
 </div>
 <svg
      (pointerdown)="downHandleGrid($event)"

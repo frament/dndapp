@@ -1,10 +1,10 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component,
+  Component, computed, effect,
   ElementRef,
   HostListener, inject,
-  Input,
+  Input, signal,
   ViewChild
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,11 @@ import {NodeLayer} from "./node";
 import {Point} from "./point";
 import {WidthHeight} from "./width-height";
 import {FileService} from "../../files/file.service";
+import {IMaxDimensions, ScaleHelper} from "./svg-helpers/scale-helper";
+import {RoomService} from "../room.service";
+import {SceneService} from "../scene/scene.service";
+
+type MapModes = 'navigate'|'move_items';
 
 @Component({
   selector: 'dndapp-map',
@@ -21,20 +26,34 @@ import {FileService} from "../../files/file.service";
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit{
-  constructor(private changeDetectorRef: ChangeDetectorRef, private hostRef: ElementRef) {}
+  constructor(private changeDetectorRef: ChangeDetectorRef, private hostRef: ElementRef) {
+    effect(async () => {
+      if (!this.roomService.currentRoom() || !this.roomService.currentScene()){ return; }
+      const fileName = this.sceneService.getSceneBackgroundFileName(
+        this.roomService.currentRoom()?.id as string,
+        this.roomService.currentScene()?.id as string
+      );
+      await this.setBgImage(fileName);
+    });
+  }
 
   @Input() roomId:string = '';
   @ViewChild('bgImage') bgImage!: any;
 
+  roomService = inject(RoomService);
+  sceneService = inject(SceneService);
+
+  mode = signal<MapModes>('navigate');
+  title = computed(() => this.roomService.currentScene()?.name ?? '');
 
   files = inject(FileService)
 
   img: HTMLImageElement|undefined;
 
 
-  async setBgImage(){
-    const list = await this.files.getFileList();
-    const file = await this.files.getFile(list[0]);
+  async setBgImage(fileName:string){
+    const file = await this.files.getFile(fileName);
+    if (!file) { return; }
     const img = await this.files.getImageFormFile(file);
     this.bgImage.nativeElement.setAttribute('width', img.width);
     this.bgImage.nativeElement.setAttribute('height',img.height);
@@ -56,7 +75,7 @@ export class MapComponent implements AfterViewInit{
 
   lastResizeEvent: number = 0;
   @HostListener('window:resize', ['$event'])
-  resize(event:any){
+  resize(){
     this.lastResizeEvent = new Date().getTime();
     setTimeout(() => {
       if (new Date().getTime() - this.lastResizeEvent > 99){
@@ -70,7 +89,7 @@ export class MapComponent implements AfterViewInit{
   }
 
   gridWH: WidthHeight = { width: 500, height: 500 };
-  maxDimensions = {
+  maxDimensions: IMaxDimensions  = {
     scale: 8,
     scaleLeader: 'height',
     minWidthBorder: 1000,
@@ -78,37 +97,7 @@ export class MapComponent implements AfterViewInit{
   };
 
   updateMaxDimansions():void {
-    this.updateMaxScale();
-    this.updateMinBorders();
-  }
-
-  updateMaxScale(): void {
-    if (this.img){
-      this.maxDimensions.scaleLeader =
-        (this.img.width / this.hostRef.nativeElement.clientWidth) < (this.img.height / this.hostRef.nativeElement.clientHeight)
-          ? 'width' : 'height';
-      this.maxDimensions.scale = this.maxDimensions.scaleLeader === 'height'
-        ? this.img.height / this.hostRef.nativeElement.clientHeight
-        : this.img.width  / this.hostRef.nativeElement.clientWidth;
-    } else {
-      this.maxDimensions.scaleLeader = this.hostRef.nativeElement.clientWidth < this.hostRef.nativeElement.clientHeight
-        ? 'width' : 'height';
-      this.maxDimensions.scale = 8;
-    }
-  }
-
-  updateMinBorders(): void {
-    if (this.img){
-      this.maxDimensions.minWidthBorder  =
-        this.img.width  - this.hostRef.nativeElement.clientWidth * this.scale;
-      this.maxDimensions.minHeightBorder =
-        this.img.height - this.hostRef.nativeElement.clientHeight * this.scale;
-    } else {
-      this.maxDimensions.minWidthBorder  =
-        (this.hostRef.nativeElement.clientWidth * 8) - this.hostRef.nativeElement.clientWidth * this.scale;
-      this.maxDimensions.minHeightBorder =
-        (this.hostRef.nativeElement.clientHeight * 8) - this.hostRef.nativeElement.clientHeight * this.scale;
-    }
+    this.maxDimensions = ScaleHelper.updateMaxDimansions(this.hostRef.nativeElement, this.scale, this.img);
   }
 
   scale = 1;
@@ -204,8 +193,8 @@ export class MapComponent implements AfterViewInit{
     if (!viewBoxList) return;
     const minWidth = parseInt(viewBoxList[0], 10) - dx * this.scale;
     const minHeight = parseInt(viewBoxList[1], 10) - dy * this.scale;
-    viewBoxList[0] = '' + this.cutoffScaledMinWidth(minWidth);
-    viewBoxList[1] = '' + this.cutoffScaledMinHeight(minHeight);
+    viewBoxList[0] = '' + ScaleHelper.cutoffScaledMinWidth(minWidth, this.scale, this.maxDimensions, this.img);
+    viewBoxList[1] = '' + ScaleHelper.cutoffScaledMinHeight(minHeight, this.scale, this.maxDimensions, this.img);
     const viewBox = viewBoxList.join(' ');
     this.svgGrid.nativeElement.setAttribute('viewBox', viewBox);
     this.setGridWH(this.svgGrid.nativeElement);
@@ -260,55 +249,11 @@ export class MapComponent implements AfterViewInit{
   }
 
   zoomAtPoint(point: Point, svg: SVGSVGElement, scale: number): void {
-    this.scale = this.cutoffMaxScale(this.scale * scale);
-    this.updateMinBorders();
-    const sx = point.x / svg.clientWidth;
-    const sy = point.y / svg.clientHeight;
-    if (!svg.getAttribute('viewBox')) return;
-    const [minX, minY, width, height] = (svg.getAttribute('viewBox')??'').split(' ').map(s => parseFloat(s));
-    const x = minX + width * sx;
-    const y = minY + height * sy;
-    let scaledWidth = this.cutoffScaledWidth(width * scale); // this.cutoffScaledLength(width * scale);
-    let scaledHeight = this.cutoffScaledHeight(height * scale); // this.cutoffScaledHeight(height * scale);
-    const scaledMinX = this.cutoffScaledMinWidth(x + scale * (minX - x));
-    const scaledMinY = this.cutoffScaledMinHeight(y + scale * (minY - y));
-    const scaledViewBox = [scaledMinX, scaledMinY, scaledWidth, scaledHeight]
-      .map(s => s.toFixed(2))
-      .join(' ');
+    this.scale = ScaleHelper.cutoffMaxScale(this.scale * scale, this.maxDimensions, this.img);
+    this.updateMaxDimansions();
+    const scaledViewBox = ScaleHelper.zoomViewBoxAtPoint(svg.getAttribute('viewBox')??'', point, svg, scale, this.maxDimensions, this.img);
     svg.setAttribute('viewBox', scaledViewBox);
     this.setGridWH(svg);
-  }
-
-  cutoffScaledMinWidth(scaledMin: number): number {
-    if (scaledMin < 0) { return 0; }
-    if (!this.img){ return scaledMin; }
-    if (this.maxDimensions.scaleLeader === 'width' && this.scale >= this.maxDimensions.scale){ return 0; }
-    return this.maxDimensions.minWidthBorder > scaledMin ? scaledMin : this.maxDimensions.minWidthBorder;
-  }
-
-  cutoffScaledMinHeight(scaledMin: number): number{
-    if (scaledMin < 0) { return 0; }
-    if (!this.img){ return scaledMin; }
-    if (this.maxDimensions.scaleLeader === 'height' && this.scale >= this.maxDimensions.scale){ return 0; }
-    return this.maxDimensions.minHeightBorder > scaledMin ? scaledMin : this.maxDimensions.minHeightBorder;
-  }
-
-  cutoffMaxScale(scale:number): number {
-    if (scale <= 0) { return 1; }
-    if (!this.img) { return scale; }
-    return scale > this.maxDimensions.scale ? this.maxDimensions.scale : scale;
-  }
-
-  cutoffScaledWidth(width: number): number{
-    if (width < 0) { return 0; }
-    if (!this.img){ return width; }
-    return this.img.width - width >= 0 ? width : this.img.width;
-  }
-
-  cutoffScaledHeight(height: number): number{
-    if (height < 0) { return 0; }
-    if (!this.img){ return height; }
-    return this.img.height - height >= 0 ? height : this.img.height;
   }
 
   //////////////////////////////////////////////////////////////////////////////

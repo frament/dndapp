@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import {FileService} from "../file.service";
 import {DIALOG_DATA, DialogRef} from '@angular/cdk/dialog';
 
-export interface IFileDialogData {
-  prefix?:string;
-}
+export type IFileDialogData = { prefix?:string;};
 
 @Component({
   selector: 'dndapp-files-selector-dialog',

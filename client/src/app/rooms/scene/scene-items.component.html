@@ -1,3 +1,10 @@
+<select [(ngModel)]="selectedSceneName" (ngModelChange)="setScene($event)">
+  @for (scene of scenes(); track scene.id){
+    <option [value]="scene.id">{{scene.name}}</option>
+  }
+</select>
+<button class="button" (click)="addScene()">Добавить сцену</button>
+
 <button class="button" (click)="addPlayer()">Игрок</button>
 <button class="button" (click)="addNPC()">NPC</button>
 <button class="button" (click)="addEnemy()">Враг</button>

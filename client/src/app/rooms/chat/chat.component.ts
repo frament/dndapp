@@ -57,7 +57,6 @@ export class ChatComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    await this.roomService.setCurrentRoom('rooms:'+this.roomId);
     this.scrollChat();
     this.messagesEls.changes.subscribe(() => this.scrollChat());
   }

@@ -3,6 +3,7 @@ import {DataBaseService} from "../data-base.service";
 import {UserService} from "../auth/user.service";
 import {IRoom, Room} from "./room";
 import {IUser} from "../auth/user";
+import {IScene} from "./scene/scene";
 
 export type IRoomLog = {
   id:string;
@@ -35,6 +36,7 @@ export class RoomService {
   currentRoomLogs = signal<IRoomLog[]>([]);
   currentRoom = signal<Room|undefined>(undefined);
   currentRoomUsers = signal<any[]>([]);
+  currentScene = signal<IScene|undefined>(undefined);
 
   async setCurrentRoom(roomId:string):Promise<void>{
     await this.subRoom(roomId);

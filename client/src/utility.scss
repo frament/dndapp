@@ -7,3 +7,10 @@
 .button-bordered{
   @apply ring-1 ring-inset ring-gray-300;
 }
+.input-input{
+  @apply p-1.5 block w-full min-w-[250px] rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-slate-900 text-white;
+}
+.input{
+  display: flex;
+  flex-direction: column;
+}

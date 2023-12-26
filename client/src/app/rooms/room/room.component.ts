@@ -8,6 +8,7 @@ import {Subscription} from "rxjs";
 import {HeroComponent} from "../hero/hero.component";
 import {SceneItemsComponent} from "../scene/scene-items.component";
 import {UserService} from "../../auth/user.service";
+import {RoomService} from "../room.service";
 
 @Component({
   selector: 'dndapp-room',
@@ -24,10 +25,13 @@ export class RoomComponent implements OnInit, OnDestroy{
   @Input('id') roomId: string = '';
   paramsSub: Subscription|undefined;
   user = inject(UserService);
+  roomService = inject(RoomService);
 
   constructor() {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    console.log(this.roomId);
+    await this.roomService.setCurrentRoom('rooms:'+this.roomId);
   }
 
   ngOnDestroy(): void {

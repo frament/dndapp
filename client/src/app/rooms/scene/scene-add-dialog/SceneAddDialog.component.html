@@ -1,0 +1,12 @@
+<div class="def-init w-full flex flex-col p-4 rounded-md gap-4 shadow-2xl">
+  <div class="text-3xl font-bold">Добавить сцену</div>
+  <div class="input">
+    <label>Название</label>
+    <input class="input-input" type="email" autocomplete="none" [(ngModel)]="name" (ngModelChange)="_name.set($event)">
+  </div>
+  <div class="input">
+    <label>Фон</label>
+    <input id="preview" type="file" (change)="openfile($event)" />
+  </div>
+  <button [disabled]="okDisabled()" class="button submit-button" (click)="saveChanges()">ок</button>
+</div>
