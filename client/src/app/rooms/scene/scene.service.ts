@@ -89,7 +89,7 @@ export class SceneService {
   }
 
   async addNode(options: Partial<IBaseNode> = {}) {
-    const base: BaseNode = new BaseNode({...options});
+    const base: BaseNode = new BaseNode({...options, id:undefined});
     const [result] = (await this.surreal.db.insert<IBaseNode, Partial<IBaseNode>>('scenes_nodes', base));
     this.sceneNodes.update(all =>
       [
