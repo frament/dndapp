@@ -1,0 +1,758 @@
+{
+  "version": "6.0",
+  "nxVersion": "19.5.7",
+  "deps": {
+    "@angular/animations": "~18.1.4",
+    "@angular/cdk": "^18.1.4",
+    "@angular/common": "~18.1.4",
+    "@angular/compiler": "~18.1.4",
+    "@angular/core": "~18.1.4",
+    "@angular/forms": "~18.1.4",
+    "@angular/platform-browser": "~18.1.4",
+    "@angular/platform-browser-dynamic": "~18.1.4",
+    "@angular/router": "~18.1.4",
+    "@fortawesome/angular-fontawesome": "^0.15.0",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@nestjs/common": "^10.3.10",
+    "@nestjs/core": "^10.3.10",
+    "@nestjs/platform-express": "^10.3.10",
+    "axios": "^1.7.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "simple-peer": "^9.11.1",
+    "surrealdb.js": "^0.11.1",
+    "tslib": "^2.6.3",
+    "zone.js": "~0.14.10",
+    "@angular-devkit/build-angular": "18.1.4",
+    "@angular-devkit/core": "18.1.4",
+    "@angular-devkit/schematics": "18.1.4",
+    "@angular-eslint/eslint-plugin": "~18.2.0",
+    "@angular-eslint/eslint-plugin-template": "~18.2.0",
+    "@angular-eslint/template-parser": "~18.2.0",
+    "@angular/cli": "18.1.4",
+    "@angular/compiler-cli": "~18.1.4",
+    "@angular/language-service": "~18.1.4",
+    "@nestjs/schematics": "^10.1.3",
+    "@nestjs/testing": "^10.3.10",
+    "@nx/angular": "19.5.7",
+    "@nx/eslint": "19.5.7",
+    "@nx/eslint-plugin": "19.5.7",
+    "@nx/jest": "19.5.7",
+    "@nx/js": "19.5.7",
+    "@nx/nest": "19.5.7",
+    "@nx/node": "19.5.7",
+    "@nx/webpack": "19.5.7",
+    "@nx/workspace": "19.5.7",
+    "@schematics/angular": "~18.1.4",
+    "@swc-node/register": "~1.10.9",
+    "@swc/core": "~1.7.6",
+    "@types/jest": "^29.5.12",
+    "@types/node": "~22.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.1",
+    "@typescript-eslint/parser": "^8.0.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "~9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-node": "^29.7.0",
+    "jest-preset-angular": "~14.2.2",
+    "jsonc-eslint-parser": "^2.4.0",
+    "nx": "19.5.7",
+    "postcss": "^8.4.41",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.9",
+    "ts-jest": "^29.2.4",
+    "ts-node": "10.9.2",
+    "typescript": "~5.5.4"
+  },
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": "jest.config.ts",
+        "hash": "12333515226966617182"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
+      },
+      {
+        "file": "README.md",
+        "hash": "757075822870446297"
+      },
+      {
+        "file": "nx.json",
+        "hash": "1028776348829327204"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12501089702037106008"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "235626400633494639"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "16936441711144470533"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "18315524891129148814"
+      },
+      {
+        "file": "package.json",
+        "hash": "17064416657291713631"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "7241533202796050538"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "7257979429042441994"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "10765517735483396229"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "9826843943950976168"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "6542905494607064895"
+      },
+      {
+        "file": "tailwind.config.js",
+        "hash": "4578120752925562001"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "9430166341120122740"
+      }
+    ],
+    "projectFileMap": {
+      "api": [
+        {
+          "file": "api/.eslintrc.json",
+          "hash": "11808533155536463924"
+        },
+        {
+          "file": "api/jest.config.ts",
+          "hash": "10410655590686536064"
+        },
+        {
+          "file": "api/project.json",
+          "hash": "1863469258418927434"
+        },
+        {
+          "file": "api/src/app/app.controller.spec.ts",
+          "hash": "9499997688052526633",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "api/src/app/app.controller.ts",
+          "hash": "15276891910009544695",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "api/src/app/app.module.ts",
+          "hash": "366354733060812715",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "api/src/app/app.service.spec.ts",
+          "hash": "8587461140686713758",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "api/src/app/app.service.ts",
+          "hash": "1105021467405428582",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "api/src/app/data-base.service.ts",
+          "hash": "3522698815750037392",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:surrealdb.js"
+          ]
+        },
+        {
+          "file": "api/src/app/user.controller.ts",
+          "hash": "9081832861611303954",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:surrealdb.js"
+          ]
+        },
+        {
+          "file": "api/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "api/src/main.ts",
+          "hash": "16364066265253830606",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "api/tests.http",
+          "hash": "11050084085337721142"
+        },
+        {
+          "file": "api/tsconfig.app.json",
+          "hash": "12134917424893484864"
+        },
+        {
+          "file": "api/tsconfig.json",
+          "hash": "9420862676426701392"
+        },
+        {
+          "file": "api/tsconfig.spec.json",
+          "hash": "17313551537729802733"
+        },
+        {
+          "file": "api/webpack.config.js",
+          "hash": "10619490397189790225",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "client": [
+        {
+          "file": "client/.eslintrc.json",
+          "hash": "5546400922877940307"
+        },
+        {
+          "file": "client/jest.config.ts",
+          "hash": "1808517484211620016"
+        },
+        {
+          "file": "client/project.json",
+          "hash": "2828394629862647854"
+        },
+        {
+          "file": "client/src/app/app.component.html",
+          "hash": "17816966185630879015"
+        },
+        {
+          "file": "client/src/app/app.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "client/src/app/app.component.spec.ts",
+          "hash": "1284699184960814131",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "client/src/app/app.component.ts",
+          "hash": "3872255600413837030",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "client/src/app/app.config.ts",
+          "hash": "10484514265215262029",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "client/src/app/app.routes.ts",
+          "hash": "4055724468862753315",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "client/src/app/auth/Auth.component.html",
+          "hash": "14778687205568323395"
+        },
+        {
+          "file": "client/src/app/auth/Auth.component.scss",
+          "hash": "7624978731284282266"
+        },
+        {
+          "file": "client/src/app/auth/Auth.component.spec.ts",
+          "hash": "16525319627041707072",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/auth/Auth.component.ts",
+          "hash": "6798835450794002584",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "client/src/app/auth/auth.guard.ts",
+          "hash": "15302122441998723697",
+          "deps": [
+            "npm:@angular/router",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/auth/user.ts",
+          "hash": "741737587645986104"
+        },
+        {
+          "file": "client/src/app/dashboard/Dashboard.component.html",
+          "hash": "14631214907511265487"
+        },
+        {
+          "file": "client/src/app/dashboard/Dashboard.component.scss",
+          "hash": "3571251966046386223"
+        },
+        {
+          "file": "client/src/app/dashboard/Dashboard.component.ts",
+          "hash": "3828865081896641564",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:@angular/cdk"
+          ]
+        },
+        {
+          "file": "client/src/app/files/select-dialog/FilesSelectorDialog.component.html",
+          "hash": "16964740298873770344"
+        },
+        {
+          "file": "client/src/app/files/select-dialog/FilesSelectorDialog.component.scss",
+          "hash": "17388102113962211363"
+        },
+        {
+          "file": "client/src/app/files/select-dialog/FilesSelectorDialog.component.ts",
+          "hash": "12906358894319278967",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/cdk"
+          ]
+        },
+        {
+          "file": "client/src/app/heroes/Hero.ts",
+          "hash": "14616839029104763885"
+        },
+        {
+          "file": "client/src/app/heroes/hero/hero-editor.component.html",
+          "hash": "15695263413840597059"
+        },
+        {
+          "file": "client/src/app/heroes/hero/hero-editor.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "client/src/app/heroes/hero/hero-editor.component.ts",
+          "hash": "14609885151461008662",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "client/src/app/heroes/heroes.service.ts",
+          "hash": "16912563478144647681",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/chat/chat.component.html",
+          "hash": "11625953184773907624"
+        },
+        {
+          "file": "client/src/app/rooms/chat/chat.component.scss",
+          "hash": "7301242685471580312"
+        },
+        {
+          "file": "client/src/app/rooms/chat/chat.component.ts",
+          "hash": "16571346651111436465",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@fortawesome/free-solid-svg-icons",
+            "npm:@fortawesome/angular-fontawesome",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/chat/text-message.component.ts",
+          "hash": "8540956422550718975",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/hero/hero.component.html",
+          "hash": "15695263413840597059"
+        },
+        {
+          "file": "client/src/app/rooms/hero/hero.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "client/src/app/rooms/hero/hero.component.ts",
+          "hash": "13856252281945937563",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/map/map-components/scenes/MapScenes.component.html",
+          "hash": "12818616836242116018"
+        },
+        {
+          "file": "client/src/app/rooms/map/map-components/scenes/MapScenes.component.scss",
+          "hash": "5295508235980136097"
+        },
+        {
+          "file": "client/src/app/rooms/map/map-components/scenes/MapScenes.component.ts",
+          "hash": "2525729590432265947",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/cdk",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/map/map-components/zoom/MapZoom.component.html",
+          "hash": "8146630582888685406"
+        },
+        {
+          "file": "client/src/app/rooms/map/map-components/zoom/MapZoom.component.scss",
+          "hash": "31483254787783753"
+        },
+        {
+          "file": "client/src/app/rooms/map/map-components/zoom/MapZoom.component.ts",
+          "hash": "16570416341454243011",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/map/map.component.html",
+          "hash": "94856726564316683"
+        },
+        {
+          "file": "client/src/app/rooms/map/map.component.scss",
+          "hash": "5662324290615210967"
+        },
+        {
+          "file": "client/src/app/rooms/map/map.component.ts",
+          "hash": "1005217139430933607",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/map/map.service.ts",
+          "hash": "16244888691912937802",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/map/node.ts",
+          "hash": "16295611143194362377"
+        },
+        {
+          "file": "client/src/app/rooms/map/point.ts",
+          "hash": "15682372562138441200"
+        },
+        {
+          "file": "client/src/app/rooms/map/svg-helpers/scale-helper.ts",
+          "hash": "11640364849721015568"
+        },
+        {
+          "file": "client/src/app/rooms/map/width-height.ts",
+          "hash": "2850817153263013830"
+        },
+        {
+          "file": "client/src/app/rooms/room.service.ts",
+          "hash": "5136858904185009437",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/room.ts",
+          "hash": "17396996798283769407"
+        },
+        {
+          "file": "client/src/app/rooms/room/room.component.html",
+          "hash": "15931792994314823920"
+        },
+        {
+          "file": "client/src/app/rooms/room/room.component.scss",
+          "hash": "12143408241332193329"
+        },
+        {
+          "file": "client/src/app/rooms/room/room.component.ts",
+          "hash": "12741948135966523103",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@fortawesome/angular-fontawesome",
+            "npm:@fortawesome/free-solid-svg-icons"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/rooms.component.html",
+          "hash": "4269178920200112662"
+        },
+        {
+          "file": "client/src/app/rooms/rooms.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "client/src/app/rooms/rooms.component.ts",
+          "hash": "14263920909121320884",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-add-dialog/SceneAddDialog.component.html",
+          "hash": "1447951065048860982"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-add-dialog/SceneAddDialog.component.scss",
+          "hash": "17388102113962211363"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-add-dialog/SceneAddDialog.component.ts",
+          "hash": "5262580824323582855",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/forms",
+            "npm:@angular/cdk"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-items.component.scss",
+          "hash": "6215731854743895516"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene.service.ts",
+          "hash": "5976090525559022448",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene.ts",
+          "hash": "5123589426979917725"
+        },
+        {
+          "file": "client/src/app/services/data-base.service.ts",
+          "hash": "12399791629012443567",
+          "deps": [
+            "npm:@angular/core",
+            "npm:surrealdb.js"
+          ]
+        },
+        {
+          "file": "client/src/app/services/file.service.ts",
+          "hash": "3019081192358593074",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/services/init-service-factory.ts",
+          "hash": "236384843294795715"
+        },
+        {
+          "file": "client/src/app/services/p2p.service.ts",
+          "hash": "12781681830944039794",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/app/services/user.service.ts",
+          "hash": "14747988483379257639",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "client/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "client/src/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "client/src/index.html",
+          "hash": "4652950020520615187"
+        },
+        {
+          "file": "client/src/main.ts",
+          "hash": "16635586463787978962",
+          "deps": [
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "client/src/styles.scss",
+          "hash": "8260758437577607562"
+        },
+        {
+          "file": "client/src/test-setup.ts",
+          "hash": "12935735732682149507",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "client/src/utility.scss",
+          "hash": "17198413898518939837"
+        },
+        {
+          "file": "client/src/vars.scss",
+          "hash": "11833467003185204578"
+        },
+        {
+          "file": "client/tsconfig.app.json",
+          "hash": "13344354189090010831"
+        },
+        {
+          "file": "client/tsconfig.editor.json",
+          "hash": "17511610827034788226"
+        },
+        {
+          "file": "client/tsconfig.json",
+          "hash": "9214405122105252331"
+        },
+        {
+          "file": "client/tsconfig.spec.json",
+          "hash": "2129196202529263968"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-items/scene-items.component.html",
+          "hash": "15101452562968899963"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-items/scene-items.component.ts",
+          "hash": "15777990776603944248",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/cdk",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.ts",
+          "hash": "11458203535629962173",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.scss",
+          "hash": "13706004508728869135"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.html",
+          "hash": "10802756861524942408"
+        }
+      ],
+      "api-e2e": [
+        {
+          "file": "api-e2e/.eslintrc.json",
+          "hash": "11808533155536463924"
+        },
+        {
+          "file": "api-e2e/jest.config.ts",
+          "hash": "2076893759250098545"
+        },
+        {
+          "file": "api-e2e/project.json",
+          "hash": "5295657025016135421"
+        },
+        {
+          "file": "api-e2e/src/api/api.spec.ts",
+          "hash": "110394728024017389",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "api-e2e/src/support/global-setup.ts",
+          "hash": "2568409276037275290"
+        },
+        {
+          "file": "api-e2e/src/support/global-teardown.ts",
+          "hash": "5275447082211835490"
+        },
+        {
+          "file": "api-e2e/src/support/test-setup.ts",
+          "hash": "10984585515912236441",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "api-e2e/tsconfig.json",
+          "hash": "2346920493880922870"
+        },
+        {
+          "file": "api-e2e/tsconfig.spec.json",
+          "hash": "14226830188665428950"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+[NX Daemon Server] - 2024-08-09T11:19:11.426Z - Started listening on: /var/folders/xd/gh1448fs0tzdklq5yzvsrjbc0000gn/T/34314c9f7665695d5fa4/d.sock
+[NX Daemon Server] - 2024-08-09T11:19:11.431Z - [WATCHER]: Subscribed to changes within: /Users/petershuwalov/rep/dndapp (native)
+[NX Daemon Server] - 2024-08-09T11:19:11.435Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-08-09T11:19:11.436Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-08-09T11:19:11.438Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-08-09T11:19:11.440Z - [REQUEST]: Responding to the client. handleGlob
+[NX Daemon Server] - 2024-08-09T11:19:11.441Z - Done responding to the client handleGlob
+[NX Daemon Server] - 2024-08-09T11:19:11.441Z - Handled GLOB. Handling time: 1. Response time: 1.
+[NX Daemon Server] - 2024-08-09T11:19:11.482Z - [REQUEST]: Responding to the client. handleNxWorkspaceFiles
+[NX Daemon Server] - 2024-08-09T11:19:11.483Z - Done responding to the client handleNxWorkspaceFiles
+[NX Daemon Server] - 2024-08-09T11:19:11.483Z - Handled GET_NX_WORKSPACE_FILES. Handling time: 0. Response time: 1.
+[NX Daemon Server] - 2024-08-09T11:19:12.083Z - Closed a connection. Number of open connections: 0
