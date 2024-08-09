@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Hero} from "../heroes/Hero";
 import {HeroesService} from "../heroes/heroes.service";
@@ -19,26 +19,26 @@ export class DashboardComponent implements OnInit{
   heroesService = inject(HeroesService);
   roomsService = inject(RoomService);
   router = inject(Router);
-  heroes: Hero[] = [];
-  rooms: Room[] = [];
+  heroes = signal<Hero[]>([]);
+  rooms = signal<Room[]>([]);
   async ngOnInit(): Promise<void> {
-    this.heroes = await this.heroesService.getList();
-    this.rooms = await this.roomsService.getList();
+    this.heroes.set(await this.heroesService.getList());
+    this.rooms.set(await this.roomsService.getList());
   }
 
   async addHero(): Promise<void>{
-    await this.heroesService.add({name:'test'+this.heroes.length});
-    this.heroes = await this.heroesService.getList();
+    await this.heroesService.add({name:'test'+this.heroes().length});
+    this.heroes.set(await this.heroesService.getList());
   }
 
   async deleteHero(id:string): Promise<void> {
     await this.heroesService.delete(id);
-    this.heroes = await this.heroesService.getList();
+    this.heroes.set(await this.heroesService.getList());
   }
 
   async addRoom(): Promise<void>{
-    await this.roomsService.add({name:'test'+this.rooms.length});
-    this.rooms = await this.roomsService.getList();
+    await this.roomsService.add({name:'test'+this.rooms().length});
+    this.rooms.set(await this.roomsService.getList());
   }
 
   async goToRoom(id:string):Promise<void>{

@@ -16,26 +16,26 @@ export type IAddSceneData = {roomId:string};
   styleUrl: './SceneAddDialog.component.scss',
 })
 export class SceneAddDialogComponent {
-  constructor(private dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: IAddSceneData) {}
+  dialogRef = inject(DialogRef)
+  data = inject<IAddSceneData>(DIALOG_DATA);
   service = inject(SceneService);
   fileService = inject(FileService);
-  name: string = '';
-  okDisabled = computed(() => !this._name() || !this.data.roomId || !this._file());
-  _name = signal<string>('');
-  _file = signal<File|undefined>(undefined);
+  okDisabled = computed(() => !this.name() || !this.data.roomId || !this.file());
+  name = signal<string>('');
+  file = signal<File|undefined>(undefined);
 
   async saveChanges() {
-    const new_scene: Partial<IScene> = {name: this.name, room: this.data.roomId};
+    const new_scene: Partial<IScene> = {name: this.name(), room: this.data.roomId};
     await this.service.addScene(new_scene);
     const newScene = this.service.roomScenes().find(x=> x.name === new_scene.name);
-    if (!newScene || !this._file()){this.dialogRef.close(); return; }
+    if (!newScene || !this.file()){this.dialogRef.close(); return; }
     const fileprefix = this.service.getSceneBackgroundFileName(this.data.roomId, newScene.id);
-    await this.fileService.saveFile(fileprefix, this._file() as File);
+    await this.fileService.saveFile(fileprefix, this.file() as File);
     this.dialogRef.close();
   }
 
   async openfile(event:any) {
-    this._file.set(event.target.files[0]);
+    this.file.set(event.target.files[0]);
   }
 
 }

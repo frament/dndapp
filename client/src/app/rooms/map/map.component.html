@@ -4,14 +4,27 @@
   <button (click)="zoomOutButton()">-</button>
   <button (click)="setBgImage()">iii</button>
 </div>-->
-<div class="top-left flex flex-col">
- <dndapp-map-scenes></dndapp-map-scenes>
+<div class="top flex flex-row">
+  <div class="top-left">
+    <dndapp-map-scenes></dndapp-map-scenes>
+  </div>
+  <div class="top-center">
+    <h3 class="title">{{sceneService.currentScene()?.name}}</h3>
+  </div>
+  <div class="top-right">
+    <button></button>
+  </div>
 </div>
-<div class="bottom-left flex flex-row">
-  <dndapp-map-zoom (zoom)="zoom($event)"></dndapp-map-zoom>
-</div>
-<div class="title">
-  <h3>{{sceneService.currentScene()?.name}}</h3>
+<div class="bottom flex flex-row">
+  <div class="bottom-left">
+    <dndapp-map-zoom (zoom)="zoom($event)"></dndapp-map-zoom>
+  </div>
+  <div class="bottom-center">
+
+  </div>
+  <div class="bottom-right">
+
+  </div>
 </div>
 <svg
      (pointerdown)="downHandleGrid($event)"
@@ -30,7 +43,7 @@
     </pattern>
   </defs>
   <image #bgImage x="0" y="0" width="1000" height="1000"/>
-  <rect [attr.width]="gridWH.width" [attr.height]="gridWH.height" fill="url(#grid)" />
+  <rect [attr.width]="gridWH().width" [attr.height]="gridWH().height" fill="url(#grid)" />
   <!-- node -->
   <defs>
     <filter id="shadow">
@@ -40,22 +53,24 @@
       <feDropShadow dx="4" dy="4" stdDeviation="0" flood-color="rgba(0, 0, 0, .5)" flood-opacity="0.7"/>
     </filter>
   </defs>
-  <g *ngFor="let nodeLayer of nodeLayers">
-    <rect
-      (pointerdown)="downHandleNodeLayer($event, nodeLayer)"
-      (click)="clickHandleNodeLayer($event, nodeLayer)"
-      [attr.id]="nodeLayer.id"
-      [attr.x]="nodeLayer.positionX - nodeLayer.width / 2"
-      [attr.y]="nodeLayer.positionY - nodeLayer.height / 2"
-      [attr.width]="nodeLayer.width"
-      [attr.height]="nodeLayer.height"
-      [attr.rx]="nodeLayer.rx"
-      [attr.ry]="nodeLayer.ry"
-      stroke="black"
-      stroke-width="0.1"
-      [attr.transform]="nodeLayer.rotate ? 'rotate('+nodeLayer.rotate+'deg)':''"
-      [attr.fill]="nodeLayer.color"
-      [attr.filter]="nodeLayer.shadowFilter">
-    </rect>
-  </g>
+  @for(nodeLayer of nodeLayers; track nodeLayer.id){
+    <g>
+      <rect
+        (pointerdown)="downHandleNodeLayer($event, nodeLayer)"
+        (click)="clickHandleNodeLayer($event, nodeLayer)"
+        [attr.id]="nodeLayer.id"
+        [attr.x]="nodeLayer.positionX - nodeLayer.width / 2"
+        [attr.y]="nodeLayer.positionY - nodeLayer.height / 2"
+        [attr.width]="nodeLayer.width"
+        [attr.height]="nodeLayer.height"
+        [attr.rx]="nodeLayer.rx"
+        [attr.ry]="nodeLayer.ry"
+        stroke="black"
+        stroke-width="0.1"
+        [attr.transform]="nodeLayer.rotate ? 'rotate('+nodeLayer.rotate+'deg)':''"
+        [attr.fill]="nodeLayer.color"
+        [attr.filter]="nodeLayer.shadowFilter">
+      </rect>
+    </g>
+  }
 </svg>

@@ -1,10 +1,18 @@
 <div class="def-init w-full flex flex-col p-4 rounded-md gap-4">
-  <div class="flex flex-col w-full gap-2" *ngIf="mode === 'list'">
-    <button class="button button-bordered" (click)="mode = 'add'">Добавить файл</button>
-    <button class="button" *ngFor="let file of list()" (click)="selectFile(file)">{{file}}</button>
-  </div>
-  <div class="flex flex-col w-full gap-2" *ngIf="mode === 'add'">
-    <button class="button button-bordered" (click)="mode = 'list'">назад</button>
-    <input id="preview" type="file" (change)="openfile($event)" />
-  </div>
+  @switch (mode()){
+    @case ('list'){
+      <div class="flex flex-col w-full gap-2">
+        <button class="button button-bordered" (click)="mode.set('add')">Добавить файл</button>
+        @for(file of list(); track $index){
+          <button class="button" (click)="selectFile(file)">{{file}}</button>
+        }
+      </div>
+    }
+    @case ('add'){
+      <div class="flex flex-col w-full gap-2">
+        <button class="button button-bordered" (click)="mode.set('list')">назад</button>
+        <input id="preview" type="file" (change)="openfile($event)" />
+      </div>
+    }
+  }
 </div>

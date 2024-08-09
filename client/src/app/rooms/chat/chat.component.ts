@@ -1,10 +1,10 @@
 import {
   Component, computed, effect,
-  ElementRef, inject,
+  ElementRef, inject, input,
   Input,
   OnInit,
-  QueryList,
-  ViewChild,
+  QueryList, signal, viewChild,
+  ViewChild, viewChildren,
   ViewChildren
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -24,11 +24,11 @@ import {RoomService} from "../room.service";
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit{
-  @Input() roomId: string = '';
-  @ViewChild('messContainer') private messContainer!: ElementRef;
-  @ViewChildren('messages') messagesEls!: QueryList<any>;
+  roomId = input.required<string>();
+  private messContainer = viewChild.required<ElementRef>('messContainer');
+  messagesEls = viewChildren<QueryList<any>>('messages');
   sendIcon = faPaperPlane;
-  currentMessage:string = '';
+  currentMessage = signal<string>('');
   roomService = inject(RoomService);
   surreal = inject(DataBaseService);
   user = inject(UserService);
@@ -50,6 +50,10 @@ export class ChatComponent implements OnInit{
       this.userColorMap[room.admin] = this.getRandomColor();
       room.users.map(x => this.userColorMap[x] = this.getRandomColor());
     });
+    effect(() => {
+      this.messagesEls();
+      this.scrollChat();
+    });
   }
 
   getRandomColor():string{
@@ -58,7 +62,7 @@ export class ChatComponent implements OnInit{
 
   async ngOnInit(): Promise<void> {
     this.scrollChat();
-    this.messagesEls.changes.subscribe(() => this.scrollChat());
+    // this.messagesEls().changes.subscribe(() => this.scrollChat());
   }
 
   async sendMessage():Promise<void>{
@@ -67,14 +71,14 @@ export class ChatComponent implements OnInit{
       room: 'rooms:'+this.roomId,
       type: 'text',
       user: this.user.user?.id,
-      value: this.currentMessage,
+      value: this.currentMessage(),
     });
-    this.currentMessage = '';
+    this.currentMessage.set('');
   }
 
   scrollChat(){
     try {
-      this.messContainer.nativeElement.scrollTop = this.messContainer.nativeElement.scrollHeight;
+      this.messContainer().nativeElement.scrollTop = this.messContainer().nativeElement.scrollHeight;
     } catch(err) { }
   }
 }

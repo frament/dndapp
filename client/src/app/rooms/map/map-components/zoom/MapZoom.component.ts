@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
+import {Component, output} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type ZoomValue = 'in'|'out'|number;
@@ -11,5 +11,5 @@ export type ZoomValue = 'in'|'out'|number;
   styleUrl: './MapZoom.component.scss',
 })
 export class MapZoomComponent {
-  @Output() zoom = new EventEmitter<ZoomValue>();
+  zoom = output<ZoomValue>();
 }

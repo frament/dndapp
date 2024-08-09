@@ -19,7 +19,7 @@ export class FilesSelectorDialogComponent implements OnInit{
   service = inject(FileService);
   list = signal<string[]>([]);
   selected: File|undefined;
-  mode: 'list'|'add' = 'list';
+  mode = signal<'list'|'add'>('list');
   async ngOnInit(): Promise<void> {
     await this.setList();
   }

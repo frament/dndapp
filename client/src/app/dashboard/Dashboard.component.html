@@ -1,13 +1,15 @@
 <div class="text-3xl font-bold">Герои</div>
 <div class="flex-col">
-  <button class="button " *ngFor="let hero of heroes" (click)="deleteHero(hero.id)">{{hero.name}}</button>
+  @for (hero of heroes();track hero.id){
+    <button class="button " (click)="deleteHero(hero.id)">{{hero.name}}</button>
+  }
   <button class="button" (click)="addHero()"> + </button>
 </div>
 <div class="text-3xl font-bold">Комнаты</div>
 <div class="flex-col">
-  <button class="button"
-       *ngFor="let room of rooms" (click)="goToRoom(room.id)"
-  >{{room.name}}</button>
+  @for(room of rooms(); track room.id){
+    <button class="button" (click)="goToRoom(room.id)">{{room.name}}</button>
+  }
   <button class="button" (click)="addRoom()"> + </button>
 </div>
 <button (click)="showDialog()">dialog</button>

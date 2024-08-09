@@ -23,18 +23,29 @@ export class SceneService {
   }
 
   async addScene(scene:Partial<IScene>): Promise<void> {
-    const result = await this.surreal.db.insert<IScene, Partial<IScene>>('scenes', scene);
-    await this.setRoomScenes(this.currentRoom);
+    const [result] = await this.surreal.db.insert<IScene, Partial<IScene>>('scenes', scene);
+    this.roomScenes.update(x =>  [...x,result]);
   }
 
   async deleteScene(sceneId:string): Promise<void> {
-    const result = await this.surreal.db.delete(sceneId);
-    await this.setRoomScenes(this.currentRoom);
+    await this.surreal.db.delete(sceneId);
+    this.roomScenes.update(x => x.filter(x => x.id !== sceneId));
+    if (sceneId === this.currentScene()?.id){
+      this.currentScene.set(undefined);
+    }
   }
 
   async updateScene(sceneId:string, scene:Partial<IScene>): Promise<void> {
-    const result = await this.surreal.db.update(sceneId, scene);
-    await this.setRoomScenes(this.currentRoom);
+    const [updated] = await this.surreal.db.merge<IScene>(sceneId, scene);
+    this.roomScenes.update(x => {
+      const t = [...x];
+      t.splice(t.findIndex(c => c.id === sceneId), 1, updated);
+      return t;
+    });
+    // await this.setRoomScenes(this.currentRoom);
+    if (sceneId === this.currentScene()?.id){
+      this.currentScene.set(this.roomScenes().find(x => x.id === sceneId));
+    }
   }
 
   getSceneBackgroundFileName(roomId:string, sceneId:string): string{

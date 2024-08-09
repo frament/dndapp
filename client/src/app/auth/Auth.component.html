@@ -1,35 +1,46 @@
-<div *ngIf="mode === 'signin'" class="form-signin">
-  <div class="text-3xl font-bold">Вход</div>
-  <div class="input">
-    <label>email</label>
-    <input class="input-input" type="email" autocomplete="email" [(ngModel)]="mail">
-  </div>
-  <div class="input">
-    <label>Пароль</label>
-    <input class="input-input" type="text" autocomplete="current-password" [(ngModel)]="pass">
-  </div>
-  <button class="submit-button" (click)="signin()" (keydown.enter)="signin()">ок</button>
-  <button class="switch-signup-button" (click)="mode = 'signup'">регистрация</button>
-</div>
+@switch (mode()){
+  @case ('signin') {
+    <div class="form-signin">
+      <div class="text-3xl font-bold">Вход</div>
+      <div class="input">
+        <label>email</label>
+        <input class="input-input" type="email" autocomplete="email" [(ngModel)]="mail">
+      </div>
+      <div class="input">
+        <label>Пароль</label>
+        <input class="input-input" type="text" autocomplete="current-password" [(ngModel)]="pass">
+      </div>
+      <button class="submit-button" (click)="signin()" (keydown.enter)="signin()">ок</button>
+      <button class="switch-signup-button" (click)="mode.set('signup')">регистрация</button>
+    </div>
+  }
+  @case ('signup') {
+    <div class="form-signup">
+      <div class="text-3xl font-bold">Регистрация</div>
+      <div class="input">
+        <label>email</label>
+        <input class="input-input" type="email" autocomplete="email" [(ngModel)]="mail" >
+      </div>
+      <div class="input">
+        <label>Имя</label>
+        <input class="input-input" type="text" autocomplete="username" [(ngModel)]="user">
+      </div>
+      <div class="input">
+        <label>Пароль</label>
+        <input class="input-input" type="text" autocomplete="new-password" [(ngModel)]="pass">
+      </div>
+      <button class="submit-button" (click)="signup()">ок</button>
+    </div>
+  }
+  @case ('error') {
+    <div class="form-signup">
+      <span>Не правильное имя пользоввателя или пароль!</span>
+      <button class="submit-button" (click)="mode.set('signin')">ок</button>
+    </div>
+  }
+}
 
-<div *ngIf="mode === 'signup'" class="form-signup">
-  <div class="text-3xl font-bold">Регистрация</div>
-  <div class="input">
-    <label>email</label>
-    <input class="input-input" type="email" autocomplete="email" [(ngModel)]="mail" >
-  </div>
-  <div class="input">
-    <label>Имя</label>
-    <input class="input-input" type="text" autocomplete="username" [(ngModel)]="user">
-  </div>
-  <div class="input">
-    <label>Пароль</label>
-    <input class="input-input" type="text" autocomplete="new-password" [(ngModel)]="pass">
-  </div>
-  <button class="submit-button" (click)="signup()">ок</button>
-</div>
 
-<div *ngIf="mode === 'error'" class="form-signup">
-  <span>Не правильное имя пользоввателя или пароль!</span>
-  <button class="submit-button" (click)="mode = 'signin'">ок</button>
-</div>
+
+
+

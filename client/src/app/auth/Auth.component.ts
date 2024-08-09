@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {UserService} from "../services/user.service";
 import {Router} from "@angular/router";
@@ -14,31 +14,31 @@ import {FormsModule} from "@angular/forms";
 })
 export class AuthComponent{
   constructor(private userService: UserService, private router: Router) {}
-  mode:'signin'|'signup'|'error' = "signin";
-  user:string = '';
-  pass:string = '';
-  mail:string = '';
+  mode = signal<'signin'|'signup'|'error'>("signin");
+  user = signal<string>('');
+  pass = signal<string>('');
+  mail = signal<string>('');
 
   async signin():Promise<void> {
     try {
-      await this.userService.signin(this.mail, this.pass);
+      await this.userService.signin(this.mail(), this.pass());
     } catch (e) {
-      this.mode = "error";
+      this.mode.set("error");
     }
-    if (this.mode !== 'error') await this.router.navigateByUrl('/');
+    if (this.mode() !== 'error') await this.router.navigateByUrl('/');
   }
 
   async signup():Promise<void> {
     try {
-      await this.userService.signup(this.user, this.pass, this.mail);
+      await this.userService.signup(this.user(), this.pass(), this.mail());
     } catch (e) {
-      this.mode = "error";
+      this.mode.set("error");
     }
-    if (this.mode !== 'error') await this.router.navigateByUrl('/');
+    if (this.mode() !== 'error') await this.router.navigateByUrl('/');
   }
 
   returnToLogin(){
-    this.mode = 'signin';
+    this.mode.set('signin');
   }
 
 }

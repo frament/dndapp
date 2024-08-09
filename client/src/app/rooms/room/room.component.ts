@@ -1,41 +1,38 @@
-import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ChatComponent} from "../chat/chat.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {faMapLocationDot, faMessage, faPerson} from "@fortawesome/free-solid-svg-icons";
+import {faMapLocationDot, faMessage, faPerson, faWrench} from "@fortawesome/free-solid-svg-icons";
 import {MapComponent} from "../map/map.component";
-import {Subscription} from "rxjs";
 import {HeroComponent} from "../hero/hero.component";
-import {SceneItemsComponent} from "../scene/scene-items.component";
+import {SceneItemsComponent} from "../scene/scene-items/scene-items.component";
 import {UserService} from "../../services/user.service";
 import {RoomService} from "../room.service";
+import {SceneOptionsComponent} from "../scene/scene-options/scene-options.component";
+import {DataBaseService} from "../../services/data-base.service";
+import {SceneService} from "../scene/scene.service";
 
 @Component({
   selector: 'dndapp-room',
   standalone: true,
-  imports: [CommonModule, ChatComponent, FontAwesomeModule, MapComponent, HeroComponent, SceneItemsComponent],
+  imports: [CommonModule, ChatComponent, FontAwesomeModule, MapComponent, HeroComponent, SceneItemsComponent, SceneOptionsComponent],
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss'],
 })
-export class RoomComponent implements OnInit, OnDestroy{
-  rightMode: 'chat'|'hero'|'scene-items' = 'scene-items';
+export class RoomComponent {
+  rightMode = signal<'chat'|'hero'|'scene-items'|'scene-options'>('scene-items');
   chatIcon = faMessage;
   heroIcon = faPerson;
   sceneIcon = faMapLocationDot;
-  @Input('id') roomId: string = '';
-  paramsSub: Subscription|undefined;
+  sceneOptionsIcon = faWrench;
+  roomId = input<string>('',{alias:'id'});
   user = inject(UserService);
   roomService = inject(RoomService);
+  sceneService = inject(SceneService);
 
-  constructor() {}
-
-  async ngOnInit(): Promise<void> {
-    console.log(this.roomId);
-    await this.roomService.setCurrentRoom('rooms:'+this.roomId);
+  constructor() {
+    effect(async () => {
+      await this.roomService.setCurrentRoom('rooms:'+this.roomId());
+    });
   }
-
-  ngOnDestroy(): void {
-    this.paramsSub?.unsubscribe();
-  }
-
 }

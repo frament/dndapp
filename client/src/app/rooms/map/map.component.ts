@@ -3,8 +3,8 @@ import {
   ChangeDetectorRef,
   Component, computed, effect,
   ElementRef,
-  HostListener, inject,
-  Input, signal,
+  HostListener, inject, input,
+  Input, signal, viewChild,
   ViewChild
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -35,7 +35,6 @@ export class MapComponent implements AfterViewInit{
         this.roomService.currentRoom()?.id as string,
         this.sceneService.currentScene()?.id as string
       );
-      console.log(fileName);
       await this.setBgImage(fileName);
     });
     effect(() => {
@@ -43,8 +42,8 @@ export class MapComponent implements AfterViewInit{
     });
   }
 
-  @Input() roomId:string = '';
-  @ViewChild('bgImage') bgImage!: any;
+  roomId = input.required<string>();
+  bgImage = viewChild<any>('bgImage');
 
   roomService = inject(RoomService);
   sceneService = inject(SceneService);
@@ -61,9 +60,9 @@ export class MapComponent implements AfterViewInit{
     const file = await this.files.getFile(fileName);
     if (!file) { return; }
     const img = await this.files.getImageFromFile(file);
-    this.bgImage.nativeElement.setAttribute('width', img.width);
-    this.bgImage.nativeElement.setAttribute('height',img.height);
-    this.bgImage.nativeElement.setAttribute('href', URL.createObjectURL(file));
+    this.bgImage().nativeElement.setAttribute('width', img.width);
+    this.bgImage().nativeElement.setAttribute('height',img.height);
+    this.bgImage().nativeElement.setAttribute('href', URL.createObjectURL(file));
     this.setGridWH(this.svgGrid.nativeElement);
     this.img = img;
     this.updateMaxDimansions();
@@ -94,7 +93,7 @@ export class MapComponent implements AfterViewInit{
     this.updateMaxDimansions();
   }
 
-  gridWH: WidthHeight = { width: 500, height: 500 };
+  gridWH = signal<WidthHeight>({ width: 500, height: 500 });
   maxDimensions: IMaxDimensions  = {
     scale: 8,
     scaleLeader: 'height',
@@ -122,9 +121,9 @@ export class MapComponent implements AfterViewInit{
     const viewBoxList = (svg ?? this.svgGrid?.nativeElement)?.getAttribute('viewBox')?.split(' ');
     if (!viewBoxList) return;
     const newWith = this.img?.width ?? parseFloat(Math.abs(parseInt(viewBoxList[0], 10) + parseInt(viewBoxList[2], 10)).toFixed(2));
-    if (newWith > this.gridWH.width) this.gridWH.width = newWith;
+    if (newWith > this.gridWH().width) this.gridWH.update(x => ({...x, width:newWith}));
     const newHeight = this.img?.height ?? parseFloat(Math.abs(parseInt(viewBoxList[1], 10) + parseInt(viewBoxList[3], 10)).toFixed(2));
-    if (newHeight > this.gridWH.height) this.gridWH.height = newHeight;
+    if (newHeight > this.gridWH().height) this.gridWH.update(x => ({...x, height:newHeight}));
   }
 
   @HostListener( 'document:pointerup', [ '$event' ] )

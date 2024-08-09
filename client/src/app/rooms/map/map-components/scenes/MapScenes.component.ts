@@ -21,11 +21,6 @@ export class MapScenesComponent{
   dialog = inject(Dialog);
   roomId = computed(() => this.roomService.currentRoom()?.id ?? '');
   sceneId = computed(() => this.scenesService.currentScene()?.id ?? '');
-  constructor() {
-    effect(() => {
-      console.log(this.scenes());
-    });
-  }
   addScene() {
     this.dialog.open(SceneAddDialogComponent, {data:{roomId:this.roomId()}});
   }

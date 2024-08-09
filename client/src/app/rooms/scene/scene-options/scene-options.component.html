@@ -1,0 +1,11 @@
+@if (this.sceneService.currentScene()){
+  <div class="input">
+    <label>Название</label>
+    <input class="input-input" type="email" autocomplete="none" [ngModel]="name()" (ngModelChange)="setModelName($event)">
+  </div>
+  <div class="input">
+    <label>Фон</label>
+    <input id="preview" type="file" (change)="openfile($event)" />
+  </div>
+  <button  class="button submit-button" (click)="delete()">удалить</button>
+}

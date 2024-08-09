@@ -1,15 +1,23 @@
-<div class="left-container"*ngIf="roomId">
-  <dndapp-map [roomId]="roomId"></dndapp-map>
-</div>
-<div class="right-container flex flex-col" *ngIf="roomId">
-  <div class="flex-1 overflow-scroll">
-    <dndapp-chat *ngIf="rightMode === 'chat'" [roomId]="roomId" />
-    <dndapp-hero *ngIf="rightMode === 'hero'" [roomId]="roomId" />
-    <dndapp-scene-items *ngIf="rightMode === 'scene-items'" [roomId]="roomId"/>
+@if (roomId()){
+  <div class="left-container">
+    <dndapp-map [roomId]="roomId()"></dndapp-map>
   </div>
-  <div class="flex p-2 w-full gap-1.5">
-    <button class="right-switch-button" (click)="rightMode='chat'"><fa-icon [icon]="chatIcon"></fa-icon></button>
-    <button class="right-switch-button" (click)="rightMode='hero'"><fa-icon [icon]="heroIcon"></fa-icon></button>
-    <button class="right-switch-button" (click)="rightMode='scene-items'"><fa-icon [icon]="sceneIcon"></fa-icon></button>
+  <div class="right-container flex flex-col">
+    <div class="flex-1 overflow-scroll">
+      @switch (rightMode()){
+        @case ('chat'){<dndapp-chat [roomId]="roomId()" />}
+        @case ('hero'){ <dndapp-hero [roomId]="roomId()" />}
+        @case ('scene-items'){<dndapp-scene-items [roomId]="roomId()"/>}
+        @case ('scene-options'){<dndapp-scene-options [roomId]="roomId()"/>}
+      }
+    </div>
+    <div class="flex p-2 w-full gap-1.5">
+      <button class="right-switch-button" (click)="rightMode.set('chat')"><fa-icon [icon]="chatIcon"></fa-icon></button>
+      <button class="right-switch-button" (click)="rightMode.set('hero')"><fa-icon [icon]="heroIcon"></fa-icon></button>
+      <button class="right-switch-button" [disabled]="!this.sceneService.currentScene()" (click)="rightMode.set('scene-items')"><fa-icon [icon]="sceneIcon"></fa-icon></button>
+      <button class="right-switch-button" [disabled]="!this.sceneService.currentScene()" (click)="rightMode.set('scene-options')"><fa-icon [icon]="sceneOptionsIcon"></fa-icon></button>
+    </div>
   </div>
-</div>
+}
+
+
