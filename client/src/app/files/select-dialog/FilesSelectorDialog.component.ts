@@ -1,6 +1,6 @@
 import {Component, Inject, inject, OnInit, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FileService} from "../file.service";
+import {FileService} from "../../services/file.service";
 import {DIALOG_DATA, DialogRef} from '@angular/cdk/dialog';
 
 export type IFileDialogData = { prefix?:string;};

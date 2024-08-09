@@ -1,11 +1,17 @@
-<div class="help-buttons flex flex-col">
+<!--<div class="help-buttons flex flex-col">
   <button (click)="addNodeLayer()">add</button>
   <button (click)="zoomInButton()">+</button>
   <button (click)="zoomOutButton()">-</button>
-<!--  <button (click)="setBgImage()">iii</button>-->
+  <button (click)="setBgImage()">iii</button>
+</div>-->
+<div class="top-left flex flex-col">
+ <dndapp-map-scenes></dndapp-map-scenes>
+</div>
+<div class="bottom-left flex flex-row">
+  <dndapp-map-zoom (zoom)="zoom($event)"></dndapp-map-zoom>
 </div>
 <div class="title">
-  <h3>{{roomService.currentScene()?.name}}</h3>
+  <h3>{{sceneService.currentScene()?.name}}</h3>
 </div>
 <svg
      (pointerdown)="downHandleGrid($event)"

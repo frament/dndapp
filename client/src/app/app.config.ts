@@ -5,10 +5,10 @@ import {
   withViewTransitions
 } from '@angular/router';
 import { appRoutes } from './app.routes';
-import {initServicesFactory} from "./init-service-factory";
-import {DataBaseService} from "./data-base.service";
-import {UserService} from "./auth/user.service";
-import {FileService} from "./files/file.service";
+import {initServicesFactory} from "./services/init-service-factory";
+import {DataBaseService} from "./services/data-base.service";
+import {UserService} from "./services/user.service";
+import {FileService} from "./services/file.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [

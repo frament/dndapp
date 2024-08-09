@@ -8,10 +8,10 @@ import {
   ViewChildren
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DataBaseService} from "../../data-base.service";
+import {DataBaseService} from "../../services/data-base.service";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {UserService} from "../../auth/user.service";
+import {UserService} from "../../services/user.service";
 import {FormsModule} from "@angular/forms";
 import {TextMessageComponent} from "./text-message.component";
 import {RoomService} from "../room.service";

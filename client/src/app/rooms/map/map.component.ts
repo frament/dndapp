@@ -11,29 +11,35 @@ import { CommonModule } from '@angular/common';
 import {NodeLayer} from "./node";
 import {Point} from "./point";
 import {WidthHeight} from "./width-height";
-import {FileService} from "../../files/file.service";
+import {FileService} from "../../services/file.service";
 import {IMaxDimensions, ScaleHelper} from "./svg-helpers/scale-helper";
 import {RoomService} from "../room.service";
 import {SceneService} from "../scene/scene.service";
+import {MapZoomComponent, ZoomValue} from "./map-components/zoom/MapZoom.component";
+import {MapScenesComponent} from "./map-components/scenes/MapScenes.component";
 
 type MapModes = 'navigate'|'move_items';
 
 @Component({
   selector: 'dndapp-map',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MapZoomComponent, MapScenesComponent],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit{
   constructor(private changeDetectorRef: ChangeDetectorRef, private hostRef: ElementRef) {
     effect(async () => {
-      if (!this.roomService.currentRoom() || !this.roomService.currentScene()){ return; }
+      if (!this.roomService.currentRoom() || !this.sceneService.currentScene()){ return; }
       const fileName = this.sceneService.getSceneBackgroundFileName(
         this.roomService.currentRoom()?.id as string,
-        this.roomService.currentScene()?.id as string
+        this.sceneService.currentScene()?.id as string
       );
+      console.log(fileName);
       await this.setBgImage(fileName);
+    });
+    effect(() => {
+      this.nodeLayers  = this.sceneService.sceneNodes();
     });
   }
 
@@ -44,7 +50,7 @@ export class MapComponent implements AfterViewInit{
   sceneService = inject(SceneService);
 
   mode = signal<MapModes>('navigate');
-  title = computed(() => this.roomService.currentScene()?.name ?? '');
+  title = computed(() => this.sceneService.currentScene()?.name ?? '');
 
   files = inject(FileService)
 
@@ -54,7 +60,7 @@ export class MapComponent implements AfterViewInit{
   async setBgImage(fileName:string){
     const file = await this.files.getFile(fileName);
     if (!file) { return; }
-    const img = await this.files.getImageFormFile(file);
+    const img = await this.files.getImageFromFile(file);
     this.bgImage.nativeElement.setAttribute('width', img.width);
     this.bgImage.nativeElement.setAttribute('height',img.height);
     this.bgImage.nativeElement.setAttribute('href', URL.createObjectURL(file));
@@ -227,12 +233,11 @@ export class MapComponent implements AfterViewInit{
     }
   }
 
-  zoomInButton(){
-    this.zoomAtPoint(this.getCenter(), this.svgGrid.nativeElement, 0.5);
-  }
-
-  zoomOutButton(){
-    this.zoomAtPoint(this.getCenter(), this.svgGrid.nativeElement, 2);
+  zoom(event:ZoomValue):void{
+    switch (event) {
+      case 'in': this.zoomAtPoint(this.getCenter(), this.svgGrid.nativeElement, 0.5); break;
+      case 'out': this.zoomAtPoint(this.getCenter(), this.svgGrid.nativeElement, 2); break;
+    }
   }
 
   getEventPosition(wheel: WheelEvent): Point {

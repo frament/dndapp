@@ -1,0 +1,8 @@
+@for (scene of scenes(); track scene.id;){
+  <button class="button-bordered p-1"
+          [class.active] = 'sceneId() === scene.id'
+          [class.rounded-t] = '$first'
+          (click)="setScene(scene.id)"
+  >{{scene.name}}</button>
+}
+<button class="button-bordered p-1 rounded-b" (click)="addScene()">+</button>

@@ -54,7 +54,7 @@ export class FileService {
     })
   }
 
-  getImageFormFile(file:File|Blob): Promise<HTMLImageElement>{
+  getImageFromFile(file:File|Blob): Promise<HTMLImageElement>{
     return new Promise<HTMLImageElement>( resolve => {
       const reader = new FileReader();
       reader.addEventListener('load', () => {

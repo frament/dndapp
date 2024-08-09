@@ -1,4 +1,9 @@
 export type NodeLayer = {
+  isSelected: boolean;
+  shadowFilter: string;
+} & BaseNode;
+
+export type BaseNode = {
   id: string;
   width: number;
   height: number;
@@ -8,10 +13,4 @@ export type NodeLayer = {
   color: string;
   rx: number;
   ry: number;
-  isSelected: boolean;
-  shadowFilter: string;
-}
-
-export interface BaseNode {
-
 }

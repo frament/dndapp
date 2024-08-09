@@ -4,7 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {DIALOG_DATA, DialogRef} from "@angular/cdk/dialog";
 import {SceneService} from "../scene.service";
 import {IScene} from "../scene";
-import {FileService} from "../../../files/file.service";
+import {FileService} from "../../../services/file.service";
 
 export type IAddSceneData = {roomId:string};
 
@@ -27,8 +27,7 @@ export class SceneAddDialogComponent {
   async saveChanges() {
     const new_scene: Partial<IScene> = {name: this.name, room: this.data.roomId};
     await this.service.addScene(new_scene);
-    const list = await this.service.getSceneList(this.data.roomId);
-    const newScene = list.find(x=> x.name === new_scene.name);
+    const newScene = this.service.roomScenes().find(x=> x.name === new_scene.name);
     if (!newScene || !this._file()){this.dialogRef.close(); return; }
     const fileprefix = this.service.getSceneBackgroundFileName(this.data.roomId, newScene.id);
     await this.fileService.saveFile(fileprefix, this._file() as File);

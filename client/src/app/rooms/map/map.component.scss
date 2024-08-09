@@ -3,6 +3,17 @@
   height: 100%;
   overflow: scroll;
 }
+.top-left{
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+.bottom-left{
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+}
+
 .help-buttons{
   position: absolute;
   left: 16px;

@@ -1,4 +1,4 @@
-import {Component, computed, inject, Input, OnInit, signal, ViewChild} from '@angular/core';
+import {Component, computed, inject, input, Input, OnInit, signal, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FilesSelectorDialogComponent, IFileDialogData} from "../../files/select-dialog/FilesSelectorDialog.component";
 import {Dialog, DialogModule} from "@angular/cdk/dialog";
@@ -15,35 +15,16 @@ import {RoomService} from "../room.service";
   templateUrl: './scene-items.component.html',
   styleUrls: ['./scene-items.component.scss'],
 })
-export class SceneItemsComponent implements OnInit {
-  @Input({transform: (v: string) => v.startsWith('rooms:') ? v : 'rooms:'+v}) roomId = '';
-  _roomId = signal<string>('');
+export class SceneItemsComponent {
+  roomId = input<string, string>('', {transform: (v: string) => v.startsWith('rooms:') ? v : 'rooms:'+v});
   dialog = inject(Dialog);
   service = inject(SceneService);
-  roomService = inject(RoomService);
 
-  scenes = signal<IScene[]>([]);
-  selectedSceneName: string = '';
-
-  async ngOnInit() {
-    this.scenes.set(await this.service.getSceneList(this.roomId));
+  async addPlayer(){
+    await this.service.addNode();
   }
-
-  async setScene(ev: string) {
-    const realScene = this.scenes().find(x=> x.id === ev);
-    if (!realScene) { return; }
-    this.selectedSceneName = realScene.name;
-    this.roomService.currentScene.set(realScene);
-  }
-  addScene() {
-    this.dialog.open(SceneAddDialogComponent, {data:{roomId:this.roomId}});
-  }
-
-  addPlayer(){
-
-  }
-  addNPC(){
-
+  async addNPC(){
+    await this.service.setRoomScenes(this.roomId());
   }
   addEnemy(){
 
@@ -51,7 +32,7 @@ export class SceneItemsComponent implements OnInit {
 
   openFileDialog(){
     const dialogRef = this.dialog.open<File, IFileDialogData>(FilesSelectorDialogComponent, {
-      data: {prefix: this.roomId},
+      data: {prefix: this.roomId()},
     });
 
     dialogRef.closed.subscribe( (x:File|undefined) => {

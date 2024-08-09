@@ -1,0 +1,8 @@
+@import "client/src/utility";
+:host{
+  display: flex;
+  flex-direction: column;
+}
+.active{
+  background-color: darkgoldenrod;
+}

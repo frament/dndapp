@@ -2,12 +2,12 @@ import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ChatComponent} from "../chat/chat.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {faCoffee, faMapLocationDot, faMessage, faPerson} from "@fortawesome/free-solid-svg-icons";
+import {faMapLocationDot, faMessage, faPerson} from "@fortawesome/free-solid-svg-icons";
 import {MapComponent} from "../map/map.component";
 import {Subscription} from "rxjs";
 import {HeroComponent} from "../hero/hero.component";
 import {SceneItemsComponent} from "../scene/scene-items.component";
-import {UserService} from "../../auth/user.service";
+import {UserService} from "../../services/user.service";
 import {RoomService} from "../room.service";
 
 @Component({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {DataBaseService} from "../data-base.service";
-import {IUser} from "./user";
+import {DataBaseService} from "./data-base.service";
+import {IUser} from "../auth/user";
 
 @Injectable({
   providedIn: 'root'
