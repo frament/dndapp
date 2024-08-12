@@ -73,76 +73,76 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "7257979429042441994"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "9430166341120122740"
+        "file": "package.json",
+        "hash": "17064416657291713631"
       },
       {
         "file": "tailwind.config.js",
         "hash": "4578120752925562001"
       },
       {
-        "file": "Dockerfile",
-        "hash": "9826843943950976168"
-      },
-      {
-        "file": "package-lock.json",
-        "hash": "7241533202796050538"
-      },
-      {
-        "file": "package.json",
-        "hash": "17064416657291713631"
-      },
-      {
-        "file": ".eslintignore",
-        "hash": "7663861978715868291"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "16936441711144470533"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "6542905494607064895"
-      },
-      {
         "file": ".vscode/extensions.json",
         "hash": "235626400633494639"
       },
       {
-        "file": "jest.config.ts",
-        "hash": "12333515226966617182"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "18315524891129148814"
+        "file": "Dockerfile",
+        "hash": "9826843943950976168"
       },
       {
         "file": ".gitignore",
         "hash": "12501089702037106008"
       },
       {
+        "file": "jest.config.ts",
+        "hash": "12333515226966617182"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "9430166341120122740"
+      },
+      {
         "file": "nx.json",
         "hash": "1028776348829327204"
       },
       {
-        "file": ".prettierrc",
-        "hash": "16267754514737964994"
+        "file": "tsconfig.base.json",
+        "hash": "16936441711144470533"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "10765517735483396229"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "6542905494607064895"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "7257979429042441994"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "7241533202796050538"
       },
       {
         "file": "README.md",
         "hash": "757075822870446297"
       },
       {
-        "file": "docker-compose.yml",
-        "hash": "10765517735483396229"
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "18315524891129148814"
       }
     ],
     "projectFileMap": {
@@ -451,7 +451,7 @@
         },
         {
           "file": "client/src/app/rooms/chat/chat.component.ts",
-          "hash": "15551497630269884858",
+          "hash": "16262870466816390333",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -578,7 +578,7 @@
         },
         {
           "file": "client/src/app/rooms/room/room.component.ts",
-          "hash": "9565754190275690590",
+          "hash": "11405020125905227343",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -612,7 +612,7 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene-add-dialog/SceneAddDialog.component.ts",
-          "hash": "2568883086923837520",
+          "hash": "11432729798354010326",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -630,7 +630,7 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene-items/scene-items.component.ts",
-          "hash": "13256721906005674642",
+          "hash": "6233614011683577273",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
