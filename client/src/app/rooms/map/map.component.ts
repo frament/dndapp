@@ -4,7 +4,7 @@ import {
   Component, computed, effect,
   ElementRef,
   HostListener, inject, input,
-  Input, signal, viewChild,
+  signal, viewChild,
   ViewChild
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,7 @@ import {RoomService} from "../room.service";
 import {SceneService} from "../scene/scene.service";
 import {MapZoomComponent, ZoomValue} from "./map-components/zoom/MapZoom.component";
 import {MapScenesComponent} from "./map-components/scenes/MapScenes.component";
+import {delayedTask} from "../../helpers/DelayedTask";
 
 type MapModes = 'navigate'|'move_items';
 
@@ -28,7 +29,7 @@ type MapModes = 'navigate'|'move_items';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit{
-  constructor(private changeDetectorRef: ChangeDetectorRef, private hostRef: ElementRef) {
+  constructor() {
     effect(async () => {
       if (!this.roomService.currentRoom() || !this.sceneService.currentScene()){ return; }
       const fileName = this.sceneService.getSceneBackgroundFileName(
@@ -37,24 +38,25 @@ export class MapComponent implements AfterViewInit{
       );
       await this.setBgImage(fileName);
     });
-    effect(() => {
-      this.nodeLayers  = this.sceneService.sceneNodes();
-    });
+    effect(() =>{
+      this.nodeLayers.set(this.sceneService.sceneNodes().map(x => new NodeLayer(x)));
+    }, {allowSignalWrites:true});
   }
-
-  roomId = input.required<string>();
-  bgImage = viewChild<any>('bgImage');
-
+  nodelayersHasLength = false;
+  roomId = input.required<string>(); // id комнаты приходит из вне
+  bgImage = viewChild<any>('bgImage'); // бэкграунд
   roomService = inject(RoomService);
   sceneService = inject(SceneService);
-
-  mode = signal<MapModes>('navigate');
-  title = computed(() => this.sceneService.currentScene()?.name ?? '');
-
   files = inject(FileService)
+  private changeDetectorRef = inject(ChangeDetectorRef)
+  private hostRef = inject(ElementRef);
+
+  gridCubeDimension = signal<number>(100); // масштаб сетки - большая часть
+  gridMiniCubeBimension = computed<number>(() => Math.floor(this.gridCubeDimension() / 10)); // масштаб сетки - мелкая часть
+
+  mode = signal<MapModes>('navigate'); // ???
 
   img: HTMLImageElement|undefined;
-
 
   async setBgImage(fileName:string){
     const file = await this.files.getFile(fileName);
@@ -65,7 +67,7 @@ export class MapComponent implements AfterViewInit{
     this.bgImage().nativeElement.setAttribute('href', URL.createObjectURL(file));
     this.setGridWH(this.svgGrid.nativeElement);
     this.img = img;
-    this.updateMaxDimansions();
+    this.updateMaxDimensions();
   }
 
   svgGrid!:ElementRef<SVGSVGElement>;
@@ -77,20 +79,20 @@ export class MapComponent implements AfterViewInit{
     this.changeDetectorRef.detectChanges();
   }
 
-
   lastResizeEvent: number = 0;
   @HostListener('window:resize', ['$event'])
   resize(){
-    this.lastResizeEvent = new Date().getTime();
+    /*this.lastResizeEvent = new Date().getTime();
     setTimeout(() => {
       if (new Date().getTime() - this.lastResizeEvent > 99){
-        this.updateMaxDimansions();
+        this.updateMaxDimensions();
       }
-    }, 100);
+    }, 100);*/
+    delayedTask(() => this.updateMaxDimensions(), 100, 'lastResizeEvent');
   }
 
   ngAfterViewInit(): void {
-    this.updateMaxDimansions();
+    this.updateMaxDimensions();
   }
 
   gridWH = signal<WidthHeight>({ width: 500, height: 500 });
@@ -101,7 +103,7 @@ export class MapComponent implements AfterViewInit{
     minHeightBorder: 1000,
   };
 
-  updateMaxDimansions():void {
+  updateMaxDimensions():void {
     this.maxDimensions = ScaleHelper.updateMaxDimansions(this.hostRef.nativeElement, this.scale, this.img);
   }
 
@@ -114,7 +116,7 @@ export class MapComponent implements AfterViewInit{
   // Node
   isDraggingNodeLayer = false;
   draggingNodeLayer: NodeLayer|undefined;
-  nodeLayers: NodeLayer[] = [];
+  nodeLayers = signal<NodeLayer[]>([]);
   selectedNodeLayers: NodeLayer[] = [];
 
   setGridWH(svg:SVGSVGElement){
@@ -138,7 +140,7 @@ export class MapComponent implements AfterViewInit{
     keyboardEvent.preventDefault();
     if (keyboardEvent.keyCode === 8 || keyboardEvent.keyCode === 46) {
       if (this.selectedNodeLayers.length > 0){
-        this.nodeLayers = this.nodeLayers.filter(nodeLayer => !nodeLayer.isSelected);
+        this.nodeLayers.update(x => x.filter(nodeLayer => !nodeLayer.isSelected));
       }
     }
   }
@@ -148,7 +150,7 @@ export class MapComponent implements AfterViewInit{
   }
 
   @HostListener( 'document:pointermove', [ '$event' ] )
-  public moveHandle(pointerEvent: PointerEvent){
+  public async moveHandle(pointerEvent: PointerEvent){
     pointerEvent.preventDefault();
     pointerEvent.stopPropagation();
     if (!this.isDraggingGrid && this.isDraggingNodeLayer) {
@@ -162,10 +164,18 @@ export class MapComponent implements AfterViewInit{
         this.draggingNodeLayer.positionX = this.roundVScale((pointerEvent.offsetX * aspX) + parseInt(viewBoxList[0], 10), 50) ;
         this.draggingNodeLayer.positionY = this.roundVScale((pointerEvent.offsetY * aspY) + parseInt(viewBoxList[1], 10), 50) ;
       } else {
-        const { left, top } = (pointerEvent.srcElement as Element).getBoundingClientRect();
+        const { left, top } = (pointerEvent.target as Element).getBoundingClientRect();
         this.draggingNodeLayer.positionX = pointerEvent.clientX - left + parseInt(viewBoxList[0], 10);
         this.draggingNodeLayer.positionY = pointerEvent.clientY - top + parseInt(viewBoxList[1], 10);
       }
+      const nodeUpdate = {
+        id: this.draggingNodeLayer.id,
+        positionX: this.draggingNodeLayer.positionX,
+        positionY: this.draggingNodeLayer.positionY,
+      }
+      delayedTask(async () => {
+        await this.sceneService.updateNode(nodeUpdate);
+      }, 300, 'nodeMove');
     }
   }
 
@@ -254,7 +264,7 @@ export class MapComponent implements AfterViewInit{
 
   zoomAtPoint(point: Point, svg: SVGSVGElement, scale: number): void {
     this.scale = ScaleHelper.cutoffMaxScale(this.scale * scale, this.maxDimensions, this.img);
-    this.updateMaxDimansions();
+    this.updateMaxDimensions();
     const scaledViewBox = ScaleHelper.zoomViewBoxAtPoint(svg.getAttribute('viewBox')??'', point, svg, scale, this.maxDimensions, this.img);
     svg.setAttribute('viewBox', scaledViewBox);
     this.setGridWH(svg);
@@ -298,7 +308,7 @@ export class MapComponent implements AfterViewInit{
     const pY = 50;
 
     const newNodeLayer: NodeLayer = {
-      id: 'node'+this.nodeLayers.length,
+      id: 'node'+this.nodeLayers().length,
       width: w,
       height: h,
       positionX: pX,
@@ -310,6 +320,6 @@ export class MapComponent implements AfterViewInit{
       isSelected: false,
       shadowFilter: 'url(#shadow)'
     }
-    this.nodeLayers.push(newNodeLayer);
+    this.nodeLayers.update(x => [...x, newNodeLayer]);
   }
 }

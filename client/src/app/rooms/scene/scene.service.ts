@@ -1,19 +1,34 @@
-import {effect, Injectable, signal} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {DataBaseService} from "../../services/data-base.service";
-import {UserService} from "../../services/user.service";
 import {IScene} from "./scene";
-import {BaseNode, NodeLayer} from "../map/node";
+import {BaseNode} from "../map/node";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SceneService {
-  constructor(private surreal: DataBaseService, private user: UserService) {}
+  surreal = inject(DataBaseService);
 
   currentScene = signal<IScene|undefined>(undefined);
-  sceneNodes = signal<NodeLayer[]>([]);
+  sceneNodes = signal<BaseNode[]>([]);
   roomScenes = signal<IScene[]>([]);
   currentRoom: string = '';
+
+  async setCurrentScene(scene:string|IScene){
+    const realScene: IScene|undefined = typeof scene === 'string'
+      ? this.roomScenes().find(x=> x.id === scene)
+      : scene;
+    if (!realScene) { return; }
+    this.currentScene.set(realScene);
+    await this.setSceneNodes();
+  }
+
+  async setSceneNodes(){
+    if (!this.currentScene()?.nodes?.length) return;
+    // @ts-ignore
+    const [nodes] = await this.surreal.db.query<[BaseNode[]]>(`select * from [${this.currentScene().nodes.join(',')}]`);
+    this.sceneNodes.set(nodes);
+  }
 
   async setRoomScenes(room:string): Promise<void> {
     if (!room) {return;}
@@ -72,8 +87,18 @@ export class SceneService {
         {...result, isSelected: false, shadowFilter: 'url(#shadow)'}
       ]);
     await this.surreal.db.query(`UPDATE ${this.currentScene()?.id} SET nodes += ${result.id};`);
-
     // const result2 = await this.surreal.db.update(this.currentScene()?.id, scene);
+  }
+
+  async updateNode(node: {id:string} & Partial<BaseNode>, triggerUpdate = false){
+    const [updated] = await this.surreal.db.merge<BaseNode>(node.id, node);
+    if (triggerUpdate){
+      this.sceneNodes.update(x => {
+        const t = [...x];
+        t.splice(t.findIndex(c => c.id === node.id), 1, updated);
+        return t;
+      })
+    }
   }
 
 }

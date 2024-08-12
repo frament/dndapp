@@ -26,8 +26,6 @@ export class MapScenesComponent{
   }
 
   async setScene(event: string) {
-    const realScene = this.scenes().find(x=> x.id === event);
-    if (!realScene) { return; }
-    this.scenesService.currentScene.set(realScene);
+    await this.scenesService.setCurrentScene(event);
   }
 }

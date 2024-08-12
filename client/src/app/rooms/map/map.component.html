@@ -23,7 +23,8 @@
 
   </div>
   <div class="bottom-right">
-
+    <button style="background-color: red; padding: 8px" (click)="gridCubeDimension.set(gridCubeDimension()+10)">+</button>
+    <button style="background-color: red; padding: 8px" (click)="gridCubeDimension.set(gridCubeDimension()-10)">-</button>
   </div>
 </div>
 <svg
@@ -34,12 +35,12 @@
      [attr.viewBox]="'0 0 500 500'"
      #svgGrid>
   <defs>
-    <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
-      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
+    <pattern id="smallGrid" [attr.width]="gridMiniCubeBimension()" [attr.height]="gridMiniCubeBimension()" patternUnits="userSpaceOnUse">
+      <path [attr.d]="'M '+gridMiniCubeBimension()+' 0 L 0 0 0 '+gridMiniCubeBimension()" fill="none" stroke="gray" stroke-width="0.5"/>
     </pattern>
-    <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-      <rect width="100" height="100" fill="url(#smallGrid)"/>
-      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
+    <pattern id="grid" [attr.width]="gridCubeDimension()" [attr.height]="gridCubeDimension()" patternUnits="userSpaceOnUse">
+      <rect [attr.width]="gridCubeDimension()" [attr.height]="gridCubeDimension()" fill="url(#smallGrid)"/>
+      <path [attr.d]="'M '+gridCubeDimension()+' 0 L 0 0 0 '+gridCubeDimension()" fill="none" stroke="gray" stroke-width="1"/>
     </pattern>
   </defs>
   <image #bgImage x="0" y="0" width="1000" height="1000"/>
@@ -53,7 +54,7 @@
       <feDropShadow dx="4" dy="4" stdDeviation="0" flood-color="rgba(0, 0, 0, .5)" flood-opacity="0.7"/>
     </filter>
   </defs>
-  @for(nodeLayer of nodeLayers; track nodeLayer.id){
+  @for(nodeLayer of nodeLayers(); track nodeLayer.id){
     <g>
       <rect
         (pointerdown)="downHandleNodeLayer($event, nodeLayer)"

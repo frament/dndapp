@@ -73,76 +73,76 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "jest.config.ts",
-        "hash": "12333515226966617182"
-      },
-      {
-        "file": ".eslintignore",
-        "hash": "7663861978715868291"
-      },
-      {
-        "file": "README.md",
-        "hash": "757075822870446297"
-      },
-      {
-        "file": "nx.json",
-        "hash": "1028776348829327204"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12501089702037106008"
-      },
-      {
-        "file": ".vscode/extensions.json",
-        "hash": "235626400633494639"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "16936441711144470533"
-      },
-      {
         "file": ".eslintrc.json",
         "hash": "18315524891129148814"
       },
       {
-        "file": "package.json",
-        "hash": "17064416657291713631"
-      },
-      {
-        "file": "package-lock.json",
-        "hash": "7241533202796050538"
-      },
-      {
-        "file": ".prettierrc",
-        "hash": "16267754514737964994"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "7257979429042441994"
-      },
-      {
-        "file": "docker-compose.yml",
-        "hash": "10765517735483396229"
-      },
-      {
-        "file": "Dockerfile",
-        "hash": "9826843943950976168"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "6542905494607064895"
+        "file": "jest.config.ts",
+        "hash": "12333515226966617182"
       },
       {
         "file": "tailwind.config.js",
         "hash": "4578120752925562001"
       },
       {
+        "file": "Dockerfile",
+        "hash": "9826843943950976168"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12501089702037106008"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "6542905494607064895"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
+      },
+      {
+        "file": "nx.json",
+        "hash": "1028776348829327204"
+      },
+      {
+        "file": "package.json",
+        "hash": "17064416657291713631"
+      },
+      {
         "file": "jest.preset.js",
         "hash": "9430166341120122740"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "7257979429042441994"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "235626400633494639"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "16936441711144470533"
+      },
+      {
+        "file": "README.md",
+        "hash": "757075822870446297"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "10765517735483396229"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "7241533202796050538"
       }
     ],
     "projectFileMap": {
@@ -450,7 +450,7 @@
         },
         {
           "file": "client/src/app/rooms/map/map-components/scenes/MapScenes.component.ts",
-          "hash": "2525729590432265947",
+          "hash": "13637929571625074853",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -476,15 +476,15 @@
         },
         {
           "file": "client/src/app/rooms/map/map.component.html",
-          "hash": "94856726564316683"
+          "hash": "7877148539400254257"
         },
         {
           "file": "client/src/app/rooms/map/map.component.scss",
-          "hash": "5662324290615210967"
+          "hash": "3376871539501136997"
         },
         {
           "file": "client/src/app/rooms/map/map.component.ts",
-          "hash": "1005217139430933607",
+          "hash": "15164773379182248552",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common"
@@ -499,7 +499,7 @@
         },
         {
           "file": "client/src/app/rooms/map/node.ts",
-          "hash": "16295611143194362377"
+          "hash": "15534899321012430286"
         },
         {
           "file": "client/src/app/rooms/map/point.ts",
@@ -577,19 +577,49 @@
           ]
         },
         {
-          "file": "client/src/app/rooms/scene/scene-items.component.scss",
+          "file": "client/src/app/rooms/scene/scene-items/scene-items.component.html",
+          "hash": "15101452562968899963"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-items/scene-items.component.scss",
           "hash": "6215731854743895516"
         },
         {
+          "file": "client/src/app/rooms/scene/scene-items/scene-items.component.ts",
+          "hash": "15777990776603944248",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/cdk",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.html",
+          "hash": "10802756861524942408"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.scss",
+          "hash": "13706004508728869135"
+        },
+        {
+          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.ts",
+          "hash": "11458203535629962173",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms"
+          ]
+        },
+        {
           "file": "client/src/app/rooms/scene/scene.service.ts",
-          "hash": "5976090525559022448",
+          "hash": "7061381114313638372",
           "deps": [
             "npm:@angular/core"
           ]
         },
         {
           "file": "client/src/app/rooms/scene/scene.ts",
-          "hash": "5123589426979917725"
+          "hash": "13567338393638724175"
         },
         {
           "file": "client/src/app/services/data-base.service.ts",
@@ -679,34 +709,8 @@
           "hash": "2129196202529263968"
         },
         {
-          "file": "client/src/app/rooms/scene/scene-items/scene-items.component.html",
-          "hash": "15101452562968899963"
-        },
-        {
-          "file": "client/src/app/rooms/scene/scene-items/scene-items.component.ts",
-          "hash": "15777990776603944248",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/common",
-            "npm:@angular/cdk",
-            "npm:@angular/forms"
-          ]
-        },
-        {
-          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.ts",
-          "hash": "11458203535629962173",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/forms"
-          ]
-        },
-        {
-          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.scss",
-          "hash": "13706004508728869135"
-        },
-        {
-          "file": "client/src/app/rooms/scene/scene-options/scene-options.component.html",
-          "hash": "10802756861524942408"
+          "file": "client/src/app/helpers/DelayedTask.ts",
+          "hash": "12553415715855250489"
         }
       ],
       "api-e2e": [
