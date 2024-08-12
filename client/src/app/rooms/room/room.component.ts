@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, signal} from '@angular/core';
+import {Component, effect, inject, input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ChatComponent} from "../chat/chat.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
@@ -9,7 +9,6 @@ import {SceneItemsComponent} from "../scene/scene-items/scene-items.component";
 import {UserService} from "../../services/user.service";
 import {RoomService} from "../room.service";
 import {SceneOptionsComponent} from "../scene/scene-options/scene-options.component";
-import {DataBaseService} from "../../services/data-base.service";
 import {SceneService} from "../scene/scene.service";
 
 @Component({

@@ -1,12 +1,8 @@
-import {Component, computed, inject, input, Input, OnInit, signal, ViewChild} from '@angular/core';
+import {Component, inject, input, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FilesSelectorDialogComponent, IFileDialogData} from "../../../files/select-dialog/FilesSelectorDialog.component";
-import {Dialog, DialogModule} from "@angular/cdk/dialog";
+import {DialogModule} from "@angular/cdk/dialog";
 import {SceneService} from "../scene.service";
-import {IScene} from "../scene";
 import {FormsModule} from "@angular/forms";
-import {SceneAddDialogComponent} from "../scene-add-dialog/SceneAddDialog.component";
-import {RoomService} from "../../room.service";
 import {BaseNode} from "../../map/node";
 import {delayedTask} from "../../../helpers/delayed-task";
 

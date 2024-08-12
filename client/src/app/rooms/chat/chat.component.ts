@@ -1,11 +1,8 @@
 import {
   Component, computed, effect,
   ElementRef, inject, input,
-  Input,
   OnInit,
-  QueryList, signal, viewChild,
-  ViewChild, viewChildren,
-  ViewChildren
+  QueryList, signal, viewChild, viewChildren,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {DataBaseService} from "../../services/data-base.service";
