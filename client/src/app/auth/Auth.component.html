@@ -8,7 +8,7 @@
       </div>
       <div class="input">
         <label>Пароль</label>
-        <input class="input-input" type="text" autocomplete="current-password" [(ngModel)]="pass">
+        <input class="input-input" type="password" autocomplete="current-password" [(ngModel)]="pass">
       </div>
       <button class="submit-button" (click)="signin()" (keydown.enter)="signin()">ок</button>
       <button class="switch-signup-button" (click)="mode.set('signup')">регистрация</button>

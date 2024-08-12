@@ -3,7 +3,7 @@
   @for (mess of shownMessages(); track mess.id) {
     @switch (mess.type){
       @case ('text') {
-        <dndapp-text-message #messages [message]="mess" [userColor]="userColorMap[mess.user]"></dndapp-text-message>
+        <dndapp-text-message #messages [message]="mess" [userColor]="userColorMap[mess.user]"/>
       }
     }
   }

@@ -1,31 +1,22 @@
-<!--<div class="help-buttons flex flex-col">
-  <button (click)="addNodeLayer()">add</button>
-  <button (click)="zoomInButton()">+</button>
-  <button (click)="zoomOutButton()">-</button>
-  <button (click)="setBgImage()">iii</button>
-</div>-->
-<div class="top flex flex-row">
-  <div class="top-left">
-    <dndapp-map-scenes></dndapp-map-scenes>
-  </div>
-  <div class="top-center">
-    <h3 class="title">{{sceneService.currentScene()?.name}}</h3>
-  </div>
-  <div class="top-right">
-    <button></button>
-  </div>
+<div class="top-left">
+  <dndapp-map-scenes/>
 </div>
-<div class="bottom flex flex-row">
-  <div class="bottom-left">
-    <dndapp-map-zoom (zoom)="zoom($event)"></dndapp-map-zoom>
-  </div>
-  <div class="bottom-center">
+<div class="top-center">
+  @if (sceneService.currentScene()?.name){
+    <h3 class="title">{{sceneService.currentScene()?.name}}</h3>
+  }
+</div>
+<div class="top-right">
+  <button  style="background-color: red">dsfsdffs</button>
+</div>
+<div class="bottom-left">
+  <dndapp-map-zoom (zoom)="zoom($event)"/>
+</div>
+<div class="bottom-center">
 
-  </div>
-  <div class="bottom-right">
-    <button style="background-color: red; padding: 8px" (click)="gridCubeDimension.set(gridCubeDimension()+10)">+</button>
-    <button style="background-color: red; padding: 8px" (click)="gridCubeDimension.set(gridCubeDimension()-10)">-</button>
-  </div>
+</div>
+<div class="bottom-right">
+
 </div>
 <svg
      (pointerdown)="downHandleGrid($event)"
@@ -35,12 +26,16 @@
      [attr.viewBox]="'0 0 500 500'"
      #svgGrid>
   <defs>
-    <pattern id="smallGrid" [attr.width]="gridMiniCubeBimension()" [attr.height]="gridMiniCubeBimension()" patternUnits="userSpaceOnUse">
+    <pattern id="smallGrid"
+             [attr.width]="gridMiniCubeBimension()" [attr.height]="gridMiniCubeBimension()"
+             patternUnits="userSpaceOnUse">
       <path [attr.d]="'M '+gridMiniCubeBimension()+' 0 L 0 0 0 '+gridMiniCubeBimension()" fill="none" stroke="gray" stroke-width="0.5"/>
     </pattern>
-    <pattern id="grid" [attr.width]="gridCubeDimension()" [attr.height]="gridCubeDimension()" patternUnits="userSpaceOnUse">
+    <pattern id="grid" [attr.x]="sceneService.gridDX()" [attr.y]="sceneService.gridDY()"
+             [attr.width]="gridCubeDimension()" [attr.height]="gridCubeDimension()"
+             patternUnits="userSpaceOnUse">
       <rect [attr.width]="gridCubeDimension()" [attr.height]="gridCubeDimension()" fill="url(#smallGrid)"/>
-      <path [attr.d]="'M '+gridCubeDimension()+' 0 L 0 0 0 '+gridCubeDimension()" fill="none" stroke="gray" stroke-width="1"/>
+      <path [attr.d]="'M '+gridCubeDimension()+' 0 L 0 0 0 '+gridCubeDimension()" fill="none" stroke="black" stroke-width="1"/>
     </pattern>
   </defs>
   <image #bgImage x="0" y="0" width="1000" height="1000"/>
@@ -54,16 +49,16 @@
       <feDropShadow dx="4" dy="4" stdDeviation="0" flood-color="rgba(0, 0, 0, .5)" flood-opacity="0.7"/>
     </filter>
   </defs>
-  @for(nodeLayer of nodeLayers(); track nodeLayer.id){
-    <g>
+  <g>
+    @for(nodeLayer of nodeLayers(); track nodeLayer.id){
       <rect
         (pointerdown)="downHandleNodeLayer($event, nodeLayer)"
         (click)="clickHandleNodeLayer($event, nodeLayer)"
         [attr.id]="nodeLayer.id"
-        [attr.x]="nodeLayer.positionX - nodeLayer.width / 2"
-        [attr.y]="nodeLayer.positionY - nodeLayer.height / 2"
-        [attr.width]="nodeLayer.width"
-        [attr.height]="nodeLayer.height"
+        [attr.x]="nodeLayer.positionX - gridCubeDimension() / 2"
+        [attr.y]="nodeLayer.positionY - gridCubeDimension() / 2"
+        [attr.width]="gridCubeDimension()"
+        [attr.height]="gridCubeDimension()"
         [attr.rx]="nodeLayer.rx"
         [attr.ry]="nodeLayer.ry"
         stroke="black"
@@ -72,6 +67,17 @@
         [attr.fill]="nodeLayer.color"
         [attr.filter]="nodeLayer.shadowFilter">
       </rect>
-    </g>
-  }
+      <text
+        [attr.x]="nodeLayer.positionX - gridCubeDimension() / 2"
+        [attr.y]="nodeLayer.positionY"
+        [attr.width]="gridCubeDimension()"
+        [attr.height]="gridCubeDimension()"
+        [attr.rx]="nodeLayer.rx"
+        [attr.ry]="nodeLayer.ry"
+        [attr.transform]="nodeLayer.rotate ? 'rotate('+nodeLayer.rotate+'deg)':''"
+      >
+        {{nodeLayer.name}}
+      </text>
+    }
+  </g>
 </svg>

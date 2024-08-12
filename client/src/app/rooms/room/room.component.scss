@@ -6,6 +6,8 @@
 }
 .right-container{
   min-width: var(--map-side-width);
+  max-width: var(--map-side-width);
+  width: var(--map-side-width);
 }
 .left-container{
   flex: 1 1 auto;
@@ -13,4 +15,7 @@
 }
 .right-switch-button{
   @apply cursor-pointer hover:bg-slate-100 hover:dark:bg-slate-700 p-3 rounded-md text-center flex-1;
+}
+.right-switch-button:disabled{
+  @apply cursor-not-allowed bg-slate-100 dark:bg-slate-700;
 }

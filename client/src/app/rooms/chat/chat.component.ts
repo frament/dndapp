@@ -68,7 +68,7 @@ export class ChatComponent implements OnInit{
   async sendMessage():Promise<void>{
     if (!this.user.user) { return; }
     await this.surreal.db.insert('room_logs',{
-      room: 'rooms:'+this.roomId,
+      room: 'rooms:'+this.roomId(),
       type: 'text',
       user: this.user.user?.id,
       value: this.currentMessage(),

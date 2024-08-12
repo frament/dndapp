@@ -26,3 +26,35 @@
 .title{
   @apply dark:bg-slate-800 p-2 rounded-md;
 }
+.top-left{
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+.top-right{
+  position: absolute;
+  top: 16px;
+  right: calc(var(--map-side-width) + 16px);
+}
+.top-center{
+  position: absolute;
+  top: 16px;
+  left: calc(50% - var(--map-side-width) / 2);
+  transform: translate(-50%, 0);
+}
+.bottom-left{
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+}
+.bottom-right{
+  position: absolute;
+  bottom: 16px;
+  right: calc(var(--map-side-width) + 16px);
+}
+.bottom-center{
+  position: absolute;
+  bottom: 16px;
+  left: calc(50% - var(--map-side-width) / 2);
+  transform: translate(-50%, 0);
+}

@@ -1,4 +1,46 @@
-<button class="button" (click)="addPlayer()">Игрок</button>
-<button class="button" (click)="addNPC()">NPC</button>
-<button class="button" (click)="addEnemy()">Враг</button>
-<button class="button" (click)="openFileDialog()">Карта</button>
+@if (service.currentNode()){
+  <div class="flex flex-col gap-1 h-full">
+    <button class="button" (click)="service.currentNode.set(undefined)">выбрать</button>
+    <div class="input">
+      <label>Имя</label>
+      <input class="input-input" type="text" autocomplete="none"
+             [ngModel]="service.currentNode()?.name"
+             (ngModelChange)="updateNodeKey(service.currentNode()?.id ?? '', 'name', $event)"
+      >
+    </div>
+    <div class="input">
+      <label>тип</label>
+      <input class="input-input" type="text" autocomplete="none"
+             [ngModel]="service.currentNode()?.type"
+             (ngModelChange)="updateNodeKey(service.currentNode()?.id ?? '', 'type', $event)"
+      >
+    </div>
+    <div class="input">
+      <label>цвет</label>
+      <input class="input-input" type="color" autocomplete="none"
+             [ngModel]="service.currentNode()?.color"
+             (ngModelChange)="updateNodeKey(service.currentNode()?.id ?? '', 'color', $event)"
+      >
+    </div>
+    <span class="flex-auto"></span>
+    @if (!confirmDelete()){
+      <button class="button submit-button text-red-500 border border-red-500 " (click)="confirmDelete.set(true)">удалить</button>
+    } @else {
+      <button class="button submit-button bg-red-500 border border-red-500 hover:!bg-red-500" (click)="deleteNode(service.currentNode()?.id ?? '')" (mouseleave)="confirmDelete.set(false)">!УДАЛИТЬ!</button>
+    }
+  </div>
+} @else {
+  <div class="node-list">
+    <button class="button node node-add" (click)="addNode()">
+      +
+    </button>
+    @for (node of service.sceneNodes(); track node.id){
+      <div class="button node node-mini"
+           [style]="'border: 2px solid '+node.color"
+           (click)="service.currentNode.set(node)"
+      >
+        {{node.name}}
+      </div>
+    }
+  </div>
+}

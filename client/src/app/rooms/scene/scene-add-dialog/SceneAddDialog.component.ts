@@ -25,7 +25,7 @@ export class SceneAddDialogComponent {
   file = signal<File|undefined>(undefined);
 
   async saveChanges() {
-    const new_scene: Partial<IScene> = {name: this.name(), room: this.data.roomId};
+    const new_scene: Partial<IScene> = {name: this.name(), room: this.data.roomId, gridStepWidth: 100};
     await this.service.addScene(new_scene);
     const newScene = this.service.roomScenes().find(x=> x.name === new_scene.name);
     if (!newScene || !this.file()){this.dialogRef.close(); return; }

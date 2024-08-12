@@ -20,7 +20,7 @@ import {SceneService} from "../scene/scene.service";
   styleUrls: ['./room.component.scss'],
 })
 export class RoomComponent {
-  rightMode = signal<'chat'|'hero'|'scene-items'|'scene-options'>('scene-items');
+
   chatIcon = faMessage;
   heroIcon = faPerson;
   sceneIcon = faMapLocationDot;

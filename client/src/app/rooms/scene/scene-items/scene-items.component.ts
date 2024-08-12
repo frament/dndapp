@@ -7,6 +7,8 @@ import {IScene} from "../scene";
 import {FormsModule} from "@angular/forms";
 import {SceneAddDialogComponent} from "../scene-add-dialog/SceneAddDialog.component";
 import {RoomService} from "../../room.service";
+import {BaseNode} from "../../map/node";
+import {delayedTask} from "../../../helpers/delayed-task";
 
 @Component({
   selector: 'dndapp-scene-items',
@@ -17,27 +19,21 @@ import {RoomService} from "../../room.service";
 })
 export class SceneItemsComponent {
   roomId = input<string, string>('', {transform: (v: string) => v.startsWith('rooms:') ? v : 'rooms:'+v});
-  dialog = inject(Dialog);
   service = inject(SceneService);
-
-  async addPlayer(){
+  confirmDelete = signal<boolean>(false);
+  async addNode(){
     await this.service.addNode();
   }
-  async addNPC(){
-    await this.service.setRoomScenes(this.roomId());
-  }
-  addEnemy(){
 
+  async updateNodeKey(id:string, key:keyof BaseNode, value:any): Promise<void>{
+    delayedTask(async () => {
+      await this.service.updateNode({id, [key]:value}, true);
+    }, 300, 'updateNode');
   }
 
-  openFileDialog(){
-    const dialogRef = this.dialog.open<File, IFileDialogData>(FilesSelectorDialogComponent, {
-      data: {prefix: this.roomId()},
-    });
-
-    dialogRef.closed.subscribe( (x:File|undefined) => {
-      // Subscription runs after the dialog closes
-      console.log(x?.name);
-    });
+  async deleteNode(id:string){
+    await this.service.deleteNode(id);
+    this.service.currentNode.set(undefined);
   }
+
 }

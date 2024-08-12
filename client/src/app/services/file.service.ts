@@ -6,8 +6,6 @@ export type FileOutType = 'DataURL'|'ArrayBuffer'|'BinaryString'|'Text';
 })
 export class FileService {
 
-  constructor() {}
-
   db!:IDBDatabase;
 
   async init():Promise<void>{

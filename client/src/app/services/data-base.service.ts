@@ -8,7 +8,6 @@ export type LiveActionType = "CREATE" | "UPDATE" | "DELETE" | "CLOSE";
 })
 export class DataBaseService {
   public db = new Surreal();
-  constructor() {}
   async init():Promise<void>{
     await this.db.connect('http://localhost:8000/rpc', {namespace:'dnd', database: 'dnd'});
   }

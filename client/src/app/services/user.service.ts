@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {DataBaseService} from "./data-base.service";
 import {IUser} from "../auth/user";
 
@@ -6,9 +6,7 @@ import {IUser} from "../auth/user";
   providedIn: 'root'
 })
 export class UserService {
-
-  constructor(private surreal: DataBaseService) { }
-
+  private surreal = inject(DataBaseService);
   user:IUser|undefined = undefined;
 
   async loadUser(){

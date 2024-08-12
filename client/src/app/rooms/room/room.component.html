@@ -4,7 +4,7 @@
   </div>
   <div class="right-container flex flex-col">
     <div class="flex-1 overflow-scroll">
-      @switch (rightMode()){
+      @switch (sceneService.rightMode()){
         @case ('chat'){<dndapp-chat [roomId]="roomId()" />}
         @case ('hero'){ <dndapp-hero [roomId]="roomId()" />}
         @case ('scene-items'){<dndapp-scene-items [roomId]="roomId()"/>}
@@ -12,10 +12,10 @@
       }
     </div>
     <div class="flex p-2 w-full gap-1.5">
-      <button class="right-switch-button" (click)="rightMode.set('chat')"><fa-icon [icon]="chatIcon"></fa-icon></button>
-      <button class="right-switch-button" (click)="rightMode.set('hero')"><fa-icon [icon]="heroIcon"></fa-icon></button>
-      <button class="right-switch-button" [disabled]="!this.sceneService.currentScene()" (click)="rightMode.set('scene-items')"><fa-icon [icon]="sceneIcon"></fa-icon></button>
-      <button class="right-switch-button" [disabled]="!this.sceneService.currentScene()" (click)="rightMode.set('scene-options')"><fa-icon [icon]="sceneOptionsIcon"></fa-icon></button>
+      <button class="right-switch-button" (click)="sceneService.rightMode.set('chat')"><fa-icon [icon]="chatIcon"></fa-icon></button>
+      <button class="right-switch-button" (click)="sceneService.rightMode.set('hero')"><fa-icon [icon]="heroIcon"></fa-icon></button>
+      <button class="right-switch-button" [disabled]="!this.sceneService.currentScene()" (click)="sceneService.rightMode.set('scene-items')"><fa-icon [icon]="sceneIcon"></fa-icon></button>
+      <button class="right-switch-button" [disabled]="!this.sceneService.currentScene()" (click)="sceneService.rightMode.set('scene-options')"><fa-icon [icon]="sceneOptionsIcon"></fa-icon></button>
     </div>
   </div>
 }

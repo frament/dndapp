@@ -3,6 +3,8 @@ import {DataBaseService} from "../../services/data-base.service";
 import {IScene} from "./scene";
 import {BaseNode} from "../map/node";
 
+export type IRightMode = 'chat'|'hero'|'scene-items'|'scene-options';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,8 +12,14 @@ export class SceneService {
   surreal = inject(DataBaseService);
 
   currentScene = signal<IScene|undefined>(undefined);
+  currentNode =  signal<BaseNode|undefined>(undefined);
   sceneNodes = signal<BaseNode[]>([]);
   roomScenes = signal<IScene[]>([]);
+
+  gridDX = signal<number>(0);
+  gridDY = signal<number>(0);
+
+  rightMode = signal<IRightMode>('scene-options');
   currentRoom: string = '';
 
   async setCurrentScene(scene:string|IScene){
@@ -67,17 +75,18 @@ export class SceneService {
     return roomId+'\\'+ sceneId+'\\background';
   }
 
-
   async addNode(options: Partial<BaseNode> = {}) {
     const base: Partial<BaseNode> = {
       width: 100,
       height: 100,
-      positionX: 50,
-      positionY: 50,
+      positionX: 0,
+      positionY: 0,
       rotate: 0,
-      color: 'white',
+      color: '#FFFFFF',
       rx: 10,
       ry: 10,
+      name: '',
+      type: '',
       ...options
     };
     const [result] = (await this.surreal.db.insert<BaseNode, Partial<BaseNode>>('scenes_nodes', base));
@@ -99,6 +108,16 @@ export class SceneService {
         return t;
       })
     }
+  }
+
+  async deleteNode(nodeId:string){
+    if (!this.currentScene()) return;
+    await this.updateScene(
+      (this.currentScene() as IScene).id,
+      {nodes: (this.currentScene() as IScene).nodes.filter(x => x !== nodeId)}
+    );
+    await this.surreal.db.delete(nodeId);
+    this.sceneNodes.update(n => n.filter(x => x.id !== nodeId));
   }
 
 }

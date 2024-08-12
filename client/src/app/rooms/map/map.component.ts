@@ -17,7 +17,7 @@ import {RoomService} from "../room.service";
 import {SceneService} from "../scene/scene.service";
 import {MapZoomComponent, ZoomValue} from "./map-components/zoom/MapZoom.component";
 import {MapScenesComponent} from "./map-components/scenes/MapScenes.component";
-import {delayedTask} from "../../helpers/DelayedTask";
+import {delayedTask} from "../../helpers/delayed-task";
 
 type MapModes = 'navigate'|'move_items';
 
@@ -42,7 +42,6 @@ export class MapComponent implements AfterViewInit{
       this.nodeLayers.set(this.sceneService.sceneNodes().map(x => new NodeLayer(x)));
     }, {allowSignalWrites:true});
   }
-  nodelayersHasLength = false;
   roomId = input.required<string>(); // id комнаты приходит из вне
   bgImage = viewChild<any>('bgImage'); // бэкграунд
   roomService = inject(RoomService);
@@ -51,7 +50,7 @@ export class MapComponent implements AfterViewInit{
   private changeDetectorRef = inject(ChangeDetectorRef)
   private hostRef = inject(ElementRef);
 
-  gridCubeDimension = signal<number>(100); // масштаб сетки - большая часть
+  gridCubeDimension = computed<number>(() => this.sceneService.currentScene()?.gridStepWidth ?? 100); // масштаб сетки - большая часть
   gridMiniCubeBimension = computed<number>(() => Math.floor(this.gridCubeDimension() / 10)); // масштаб сетки - мелкая часть
 
   mode = signal<MapModes>('navigate'); // ???
@@ -79,15 +78,8 @@ export class MapComponent implements AfterViewInit{
     this.changeDetectorRef.detectChanges();
   }
 
-  lastResizeEvent: number = 0;
   @HostListener('window:resize', ['$event'])
   resize(){
-    /*this.lastResizeEvent = new Date().getTime();
-    setTimeout(() => {
-      if (new Date().getTime() - this.lastResizeEvent > 99){
-        this.updateMaxDimensions();
-      }
-    }, 100);*/
     delayedTask(() => this.updateMaxDimensions(), 100, 'lastResizeEvent');
   }
 
@@ -138,7 +130,8 @@ export class MapComponent implements AfterViewInit{
   @HostListener('document:keyup', ['$event'])
   public handleKeyboardEvent(keyboardEvent: KeyboardEvent) {
     keyboardEvent.preventDefault();
-    if (keyboardEvent.keyCode === 8 || keyboardEvent.keyCode === 46) {
+    // if (keyboardEvent.keyCode === 8 || keyboardEvent.keyCode === 46 ){
+    if (keyboardEvent.code === 'Backspace' || keyboardEvent.code === 'Delete') {
       if (this.selectedNodeLayers.length > 0){
         this.nodeLayers.update(x => x.filter(nodeLayer => !nodeLayer.isSelected));
       }
@@ -161,8 +154,8 @@ export class MapComponent implements AfterViewInit{
       if (!this.draggingNodeLayer) return;
       // move NodeLayer
       if (pointerEvent.offsetX) {
-        this.draggingNodeLayer.positionX = this.roundVScale((pointerEvent.offsetX * aspX) + parseInt(viewBoxList[0], 10), 50) ;
-        this.draggingNodeLayer.positionY = this.roundVScale((pointerEvent.offsetY * aspY) + parseInt(viewBoxList[1], 10), 50) ;
+        this.draggingNodeLayer.positionX = this.roundVScale((pointerEvent.offsetX * aspX) + parseInt(viewBoxList[0], 10), this.gridCubeDimension() / 2);
+        this.draggingNodeLayer.positionY = this.roundVScale((pointerEvent.offsetY * aspY) + parseInt(viewBoxList[1], 10), this.gridCubeDimension() / 2);
       } else {
         const { left, top } = (pointerEvent.target as Element).getBoundingClientRect();
         this.draggingNodeLayer.positionX = pointerEvent.clientX - left + parseInt(viewBoxList[0], 10);
@@ -277,6 +270,8 @@ export class MapComponent implements AfterViewInit{
     this.isDraggingNodeLayer = true;
     this.draggingNodeLayer = nodeLayer;
     pointerEvent.preventDefault();
+    this.sceneService.currentNode.set(this.sceneService.sceneNodes().find(x => x.id === nodeLayer.id));
+    this.sceneService.rightMode.set('scene-items');
   }
 
   clickHandleNodeLayer(pointerEvent: MouseEvent, nodeLayer: NodeLayer) {
@@ -296,30 +291,5 @@ export class MapComponent implements AfterViewInit{
     nodeLayer.isSelected = true;
     nodeLayer.shadowFilter = 'url(#liftedShadow)';
     this.selectedNodeLayers.push(nodeLayer);
-  }
-
-  //////////////////////////////////////////////////////////////////////////////
-  // Button
-  addNodeLayer() {
-    const randomColor = ['white'];
-    const w = 100;
-    const h = 100;
-    const pX = 50;
-    const pY = 50;
-
-    const newNodeLayer: NodeLayer = {
-      id: 'node'+this.nodeLayers().length,
-      width: w,
-      height: h,
-      positionX: pX,
-      positionY: pY,
-      rotate: 0,
-      color: randomColor[ Math.floor( Math.random() * randomColor.length ) ],
-      rx: 10,
-      ry: 10,
-      isSelected: false,
-      shadowFilter: 'url(#shadow)'
-    }
-    this.nodeLayers.update(x => [...x, newNodeLayer]);
   }
 }

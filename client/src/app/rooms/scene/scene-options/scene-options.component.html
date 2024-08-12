@@ -1,11 +1,34 @@
 @if (this.sceneService.currentScene()){
   <div class="input">
     <label>Название</label>
-    <input class="input-input" type="email" autocomplete="none" [ngModel]="name()" (ngModelChange)="setModelName($event)">
+    <input class="input-input" type="text" autocomplete="none"
+           [ngModel]="sceneService.currentScene()?.name"
+           (ngModelChange)="updateSceneOption('name', $event, true)">
   </div>
   <div class="input">
     <label>Фон</label>
-    <input id="preview" type="file" (change)="openfile($event)" />
+    <input type="file" (change)="openfile($event)" />
   </div>
-  <button  class="button submit-button" (click)="delete()">удалить</button>
+  <div class="input">
+    <label>шаг сетки</label>
+    <input class="input-input" type="number" autocomplete="none"
+           [ngModel]="sceneService.currentScene()?.gridStepWidth"
+           (ngModelChange)="updateSceneOption('gridStepWidth',$event)">
+  </div>
+  <div class="input">
+    <label>шаг сетки X</label>
+    <input class="input-input" type="number" autocomplete="none"
+           [(ngModel)]="sceneService.gridDX">
+  </div>
+  <div class="input">
+    <label>шаг сетки Y</label>
+    <input class="input-input" type="number" autocomplete="none"
+           [(ngModel)]="sceneService.gridDY">
+  </div>
+  <span class="flex-auto"></span>
+  @if (!confirmDelete()){
+    <button class="button submit-button text-red-500 border border-red-500 " (click)="confirmDelete.set(true)">удалить</button>
+  } @else {
+    <button class="button submit-button bg-red-500 border border-red-500 hover:!bg-red-500" (click)="delete()" (mouseleave)="confirmDelete.set(false)">!УДАЛИТЬ!</button>
+  }
 }

@@ -18,8 +18,8 @@ export type IRoomLog = {
   providedIn: 'root'
 })
 export class RoomService {
-  constructor(private surreal: DataBaseService, private user: UserService) { }
-
+  private surreal = inject(DataBaseService);
+  private user = inject(UserService);
   scenesService = inject(SceneService);
 
   async getList(): Promise<Room[]>{

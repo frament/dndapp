@@ -2,6 +2,8 @@ export class NodeLayer implements INodeLayer {
   constructor(input?: Partial<NodeLayer>) {
     if (input){ Object.assign(this, input); }
   }
+  type:string = '';
+  name: string = '';
   isSelected: boolean = false;
   shadowFilter: string = 'url(#shadow)';
   id: string = '';
@@ -30,4 +32,6 @@ export type BaseNode = {
   color: string;
   rx: number;
   ry: number;
+  type: string;
+  name: string;
 }

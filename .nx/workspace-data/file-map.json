@@ -73,12 +73,16 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".eslintrc.json",
-        "hash": "18315524891129148814"
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
       },
       {
-        "file": "jest.config.ts",
-        "hash": "12333515226966617182"
+        "file": ".prettierignore",
+        "hash": "7257979429042441994"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "9430166341120122740"
       },
       {
         "file": "tailwind.config.js",
@@ -89,44 +93,48 @@
         "hash": "9826843943950976168"
       },
       {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12501089702037106008"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "6542905494607064895"
-      },
-      {
-        "file": ".eslintignore",
-        "hash": "7663861978715868291"
-      },
-      {
-        "file": "nx.json",
-        "hash": "1028776348829327204"
+        "file": "package-lock.json",
+        "hash": "7241533202796050538"
       },
       {
         "file": "package.json",
         "hash": "17064416657291713631"
       },
       {
-        "file": "jest.preset.js",
-        "hash": "9430166341120122740"
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
       },
       {
-        "file": ".prettierignore",
-        "hash": "7257979429042441994"
+        "file": "tsconfig.base.json",
+        "hash": "16936441711144470533"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "6542905494607064895"
       },
       {
         "file": ".vscode/extensions.json",
         "hash": "235626400633494639"
       },
       {
-        "file": "tsconfig.base.json",
-        "hash": "16936441711144470533"
+        "file": "jest.config.ts",
+        "hash": "12333515226966617182"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "18315524891129148814"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12501089702037106008"
+      },
+      {
+        "file": "nx.json",
+        "hash": "1028776348829327204"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
       },
       {
         "file": "README.md",
@@ -135,14 +143,6 @@
       {
         "file": "docker-compose.yml",
         "hash": "10765517735483396229"
-      },
-      {
-        "file": ".prettierrc",
-        "hash": "16267754514737964994"
-      },
-      {
-        "file": "package-lock.json",
-        "hash": "7241533202796050538"
       }
     ],
     "projectFileMap": {
@@ -246,6 +246,50 @@
           ]
         }
       ],
+      "api-e2e": [
+        {
+          "file": "api-e2e/.eslintrc.json",
+          "hash": "11808533155536463924"
+        },
+        {
+          "file": "api-e2e/jest.config.ts",
+          "hash": "2076893759250098545"
+        },
+        {
+          "file": "api-e2e/project.json",
+          "hash": "5295657025016135421"
+        },
+        {
+          "file": "api-e2e/src/api/api.spec.ts",
+          "hash": "110394728024017389",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "api-e2e/src/support/global-setup.ts",
+          "hash": "2568409276037275290"
+        },
+        {
+          "file": "api-e2e/src/support/global-teardown.ts",
+          "hash": "5275447082211835490"
+        },
+        {
+          "file": "api-e2e/src/support/test-setup.ts",
+          "hash": "10984585515912236441",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "api-e2e/tsconfig.json",
+          "hash": "2346920493880922870"
+        },
+        {
+          "file": "api-e2e/tsconfig.spec.json",
+          "hash": "14226830188665428950"
+        }
+      ],
       "client": [
         {
           "file": "client/.eslintrc.json",
@@ -300,7 +344,7 @@
         },
         {
           "file": "client/src/app/auth/Auth.component.html",
-          "hash": "14778687205568323395"
+          "hash": "2148313322815152306"
         },
         {
           "file": "client/src/app/auth/Auth.component.scss",
@@ -399,7 +443,7 @@
         },
         {
           "file": "client/src/app/rooms/chat/chat.component.html",
-          "hash": "11625953184773907624"
+          "hash": "6911030684236380870"
         },
         {
           "file": "client/src/app/rooms/chat/chat.component.scss",
@@ -407,7 +451,7 @@
         },
         {
           "file": "client/src/app/rooms/chat/chat.component.ts",
-          "hash": "16571346651111436465",
+          "hash": "15551497630269884858",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -476,15 +520,15 @@
         },
         {
           "file": "client/src/app/rooms/map/map.component.html",
-          "hash": "7877148539400254257"
+          "hash": "9495809283044802953"
         },
         {
           "file": "client/src/app/rooms/map/map.component.scss",
-          "hash": "3376871539501136997"
+          "hash": "14011960988448010364"
         },
         {
           "file": "client/src/app/rooms/map/map.component.ts",
-          "hash": "15164773379182248552",
+          "hash": "18200323664961648669",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common"
@@ -499,7 +543,7 @@
         },
         {
           "file": "client/src/app/rooms/map/node.ts",
-          "hash": "15534899321012430286"
+          "hash": "10975055190462940349"
         },
         {
           "file": "client/src/app/rooms/map/point.ts",
@@ -515,7 +559,7 @@
         },
         {
           "file": "client/src/app/rooms/room.service.ts",
-          "hash": "5136858904185009437",
+          "hash": "14040354577909881803",
           "deps": [
             "npm:@angular/core"
           ]
@@ -526,15 +570,15 @@
         },
         {
           "file": "client/src/app/rooms/room/room.component.html",
-          "hash": "15931792994314823920"
+          "hash": "11488519636168684123"
         },
         {
           "file": "client/src/app/rooms/room/room.component.scss",
-          "hash": "12143408241332193329"
+          "hash": "8875950572534991076"
         },
         {
           "file": "client/src/app/rooms/room/room.component.ts",
-          "hash": "12741948135966523103",
+          "hash": "9565754190275690590",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -568,7 +612,7 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene-add-dialog/SceneAddDialog.component.ts",
-          "hash": "5262580824323582855",
+          "hash": "2568883086923837520",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -578,15 +622,15 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene-items/scene-items.component.html",
-          "hash": "15101452562968899963"
+          "hash": "11361649835703562345"
         },
         {
           "file": "client/src/app/rooms/scene/scene-items/scene-items.component.scss",
-          "hash": "6215731854743895516"
+          "hash": "18081221807274191924"
         },
         {
           "file": "client/src/app/rooms/scene/scene-items/scene-items.component.ts",
-          "hash": "15777990776603944248",
+          "hash": "13256721906005674642",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -596,15 +640,15 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene-options/scene-options.component.html",
-          "hash": "10802756861524942408"
+          "hash": "789079721201052607"
         },
         {
           "file": "client/src/app/rooms/scene/scene-options/scene-options.component.scss",
-          "hash": "13706004508728869135"
+          "hash": "13663069872245403449"
         },
         {
           "file": "client/src/app/rooms/scene/scene-options/scene-options.component.ts",
-          "hash": "11458203535629962173",
+          "hash": "17356712011467249268",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/forms"
@@ -612,18 +656,18 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene.service.ts",
-          "hash": "7061381114313638372",
+          "hash": "12873361529459938545",
           "deps": [
             "npm:@angular/core"
           ]
         },
         {
           "file": "client/src/app/rooms/scene/scene.ts",
-          "hash": "13567338393638724175"
+          "hash": "9119929035530230190"
         },
         {
           "file": "client/src/app/services/data-base.service.ts",
-          "hash": "12399791629012443567",
+          "hash": "2996120552425075076",
           "deps": [
             "npm:@angular/core",
             "npm:surrealdb.js"
@@ -631,7 +675,7 @@
         },
         {
           "file": "client/src/app/services/file.service.ts",
-          "hash": "3019081192358593074",
+          "hash": "15028023796867978734",
           "deps": [
             "npm:@angular/core"
           ]
@@ -649,7 +693,7 @@
         },
         {
           "file": "client/src/app/services/user.service.ts",
-          "hash": "14747988483379257639",
+          "hash": "573721562762385245",
           "deps": [
             "npm:@angular/core"
           ]
@@ -709,52 +753,8 @@
           "hash": "2129196202529263968"
         },
         {
-          "file": "client/src/app/helpers/DelayedTask.ts",
+          "file": "client/src/app/helpers/delayed-task.ts",
           "hash": "12553415715855250489"
-        }
-      ],
-      "api-e2e": [
-        {
-          "file": "api-e2e/.eslintrc.json",
-          "hash": "11808533155536463924"
-        },
-        {
-          "file": "api-e2e/jest.config.ts",
-          "hash": "2076893759250098545"
-        },
-        {
-          "file": "api-e2e/project.json",
-          "hash": "5295657025016135421"
-        },
-        {
-          "file": "api-e2e/src/api/api.spec.ts",
-          "hash": "110394728024017389",
-          "deps": [
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "api-e2e/src/support/global-setup.ts",
-          "hash": "2568409276037275290"
-        },
-        {
-          "file": "api-e2e/src/support/global-teardown.ts",
-          "hash": "5275447082211835490"
-        },
-        {
-          "file": "api-e2e/src/support/test-setup.ts",
-          "hash": "10984585515912236441",
-          "deps": [
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "api-e2e/tsconfig.json",
-          "hash": "2346920493880922870"
-        },
-        {
-          "file": "api-e2e/tsconfig.spec.json",
-          "hash": "14226830188665428950"
         }
       ]
     }
