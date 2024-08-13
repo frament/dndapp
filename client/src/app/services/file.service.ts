@@ -68,9 +68,14 @@ export class FileService {
   async getFile(name:string): Promise<File> {
     return new Promise<any>((resolve,reject) => {
       const request = this.db.transaction("files").objectStore("files").get(name);
-      request.addEventListener("success", () => resolve(request.result.data));
+      request.addEventListener("success", () => resolve(request.result?.data));
       request.addEventListener('error', () => reject(request.error));
     })
+  }
+
+  async getObjUrlForFile(name:string):Promise<string>{
+    const file = await this.getFile(name);
+    return file ? URL.createObjectURL(file) : '';
   }
 
   deleteFile(name:string):Promise<void> {

@@ -1,31 +1,22 @@
-export class NodeLayer implements INodeLayer {
-  constructor(input?: Partial<NodeLayer>) {
+export class BaseNode implements IBaseNode {
+  constructor(input?: Partial<BaseNode>) {
     if (input){ Object.assign(this, input); }
   }
   type:string = '';
   name: string = '';
-  isSelected: boolean = false;
-  shadowFilter: string = 'url(#shadow)';
   id: string = '';
-  width: number = 100;
-  height: number = 100;
+  scale: number = 1;
   positionX: number = 50;
   positionY: number = 50;
   rotate: number = 0;
-  color: string = 'white';
+  color: string = '#FFFFFF';
   rx: number = 10;
   ry: number = 10;
 }
 
-export type INodeLayer = {
-  isSelected: boolean;
-  shadowFilter: string;
-} & BaseNode;
-
-export type BaseNode = {
+export type IBaseNode = {
   id: string;
-  width: number;
-  height: number;
+  scale:number;
   positionX: number;
   positionY: number;
   rotate: number;

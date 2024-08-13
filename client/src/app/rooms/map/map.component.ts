@@ -8,7 +8,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {NodeLayer} from "./node";
+import {IBaseNode} from "./node";
 import {Point} from "./point";
 import {WidthHeight} from "./width-height";
 import {FileService} from "../../services/file.service";
@@ -38,9 +38,6 @@ export class MapComponent implements AfterViewInit{
       );
       await this.setBgImage(fileName);
     });
-    effect(() =>{
-      this.nodeLayers.set(this.sceneService.sceneNodes().map(x => new NodeLayer(x)));
-    }, {allowSignalWrites:true});
   }
   roomId = input.required<string>(); // id комнаты приходит из вне
   bgImage = viewChild<any>('bgImage'); // бэкграунд
@@ -49,6 +46,7 @@ export class MapComponent implements AfterViewInit{
   files = inject(FileService)
   private changeDetectorRef = inject(ChangeDetectorRef)
   private hostRef = inject(ElementRef);
+  selectedNode = signal<IBaseNode|undefined>(undefined);
 
   gridCubeDimension = computed<number>(() => this.sceneService.currentScene()?.gridStepWidth ?? 100); // масштаб сетки - большая часть
   gridMiniCubeBimension = computed<number>(() => Math.floor(this.gridCubeDimension() / 10)); // масштаб сетки - мелкая часть
@@ -107,9 +105,7 @@ export class MapComponent implements AfterViewInit{
 
   // Node
   isDraggingNodeLayer = false;
-  draggingNodeLayer: NodeLayer|undefined;
-  nodeLayers = signal<NodeLayer[]>([]);
-  selectedNodeLayers: NodeLayer[] = [];
+  draggingNodeLayer: IBaseNode|undefined;
 
   setGridWH(svg:SVGSVGElement){
     const viewBoxList = (svg ?? this.svgGrid?.nativeElement)?.getAttribute('viewBox')?.split(' ');
@@ -128,12 +124,12 @@ export class MapComponent implements AfterViewInit{
   }
 
   @HostListener('document:keyup', ['$event'])
-  public handleKeyboardEvent(keyboardEvent: KeyboardEvent) {
+  public async handleKeyboardEvent(keyboardEvent: KeyboardEvent) {
     keyboardEvent.preventDefault();
     // if (keyboardEvent.keyCode === 8 || keyboardEvent.keyCode === 46 ){
     if (keyboardEvent.code === 'Backspace' || keyboardEvent.code === 'Delete') {
-      if (this.selectedNodeLayers.length > 0){
-        this.nodeLayers.update(x => x.filter(nodeLayer => !nodeLayer.isSelected));
+      if (this.selectedNode()){
+        await this.sceneService.deleteNode(this.selectedNode()?.id as string);
       }
     }
   }
@@ -210,12 +206,8 @@ export class MapComponent implements AfterViewInit{
 
   clickHandleGrid(pointerEvent: MouseEvent) {
     pointerEvent.preventDefault();
-    if (this.selectedNodeLayers.length > 0){
-      this.selectedNodeLayers.forEach((selectedNodeLayer: NodeLayer) => {
-        selectedNodeLayer.isSelected = false;
-        selectedNodeLayer.shadowFilter = 'url(#shadow)';
-      });
-      this.selectedNodeLayers = [];
+    if (this.selectedNode()){
+      this.selectedNode.set(undefined);
     }
   }
 
@@ -265,7 +257,7 @@ export class MapComponent implements AfterViewInit{
 
   //////////////////////////////////////////////////////////////////////////////
   // NodeLayer
-  downHandleNodeLayer(pointerEvent: PointerEvent, nodeLayer: NodeLayer) {
+  downHandleNodeLayer(pointerEvent: PointerEvent, nodeLayer: IBaseNode) {
     this.isDraggingGrid = false;
     this.isDraggingNodeLayer = true;
     this.draggingNodeLayer = nodeLayer;
@@ -274,22 +266,9 @@ export class MapComponent implements AfterViewInit{
     this.sceneService.rightMode.set('scene-items');
   }
 
-  clickHandleNodeLayer(pointerEvent: MouseEvent, nodeLayer: NodeLayer) {
+  clickHandleNodeLayer(pointerEvent: MouseEvent, nodeLayer: IBaseNode) {
     pointerEvent.preventDefault();
     pointerEvent.stopPropagation();
-
-    if (!pointerEvent.shiftKey) {
-      if (this.selectedNodeLayers.length > 0){
-        this.selectedNodeLayers.forEach((selectedSVGLayer: NodeLayer) => {
-          selectedSVGLayer.isSelected = false;
-          selectedSVGLayer.shadowFilter = 'url(#shadow)';
-        });
-        this.selectedNodeLayers = [];
-      }
-    }
-
-    nodeLayer.isSelected = true;
-    nodeLayer.shadowFilter = 'url(#liftedShadow)';
-    this.selectedNodeLayers.push(nodeLayer);
+    this.selectedNode.set(nodeLayer);
   }
 }

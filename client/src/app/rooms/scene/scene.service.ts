@@ -1,7 +1,8 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {DataBaseService} from "../../services/data-base.service";
 import {IScene} from "./scene";
-import {BaseNode} from "../map/node";
+import {BaseNode, IBaseNode} from "../map/node";
+import {FileService} from "../../services/file.service";
 
 export type IRightMode = 'chat'|'hero'|'scene-items'|'scene-options';
 
@@ -10,11 +11,14 @@ export type IRightMode = 'chat'|'hero'|'scene-items'|'scene-options';
 })
 export class SceneService {
   surreal = inject(DataBaseService);
+  files = inject(FileService);
 
   currentScene = signal<IScene|undefined>(undefined);
-  currentNode =  signal<BaseNode|undefined>(undefined);
-  sceneNodes = signal<BaseNode[]>([]);
+  currentNode =  signal<IBaseNode|undefined>(undefined);
+  sceneNodes = signal<IBaseNode[]>([]);
   roomScenes = signal<IScene[]>([]);
+
+  nodesAvatars = new Map<string, string>();
 
   gridDX = signal<number>(0);
   gridDY = signal<number>(0);
@@ -34,8 +38,20 @@ export class SceneService {
   async setSceneNodes(){
     if (!this.currentScene()?.nodes?.length) return;
     // @ts-ignore
-    const [nodes] = await this.surreal.db.query<[BaseNode[]]>(`select * from [${this.currentScene().nodes.join(',')}]`);
+    const [nodes] = await this.surreal.db.query<[IBaseNode[]]>(`select * from [${this.currentScene().nodes.join(',')}]`);
+    for (const node of nodes){
+      await this.updateNodeAvatar(node.id);
+    }
     this.sceneNodes.set(nodes);
+  }
+
+  async updateNodeAvatar(nodeid:string){
+    const url = await this.files.getObjUrlForFile(nodeid+'_avatar');
+    if (url) {
+      this.nodesAvatars.set(nodeid, url);
+    } else if (this.nodesAvatars.has(nodeid)) {
+      this.nodesAvatars.delete(nodeid);
+    }
   }
 
   async setRoomScenes(room:string): Promise<void> {
@@ -75,32 +91,20 @@ export class SceneService {
     return roomId+'\\'+ sceneId+'\\background';
   }
 
-  async addNode(options: Partial<BaseNode> = {}) {
-    const base: Partial<BaseNode> = {
-      width: 100,
-      height: 100,
-      positionX: 0,
-      positionY: 0,
-      rotate: 0,
-      color: '#FFFFFF',
-      rx: 10,
-      ry: 10,
-      name: '',
-      type: '',
-      ...options
-    };
-    const [result] = (await this.surreal.db.insert<BaseNode, Partial<BaseNode>>('scenes_nodes', base));
+  async addNode(options: Partial<IBaseNode> = {}) {
+    const base: BaseNode = new BaseNode({...options});
+    const [result] = (await this.surreal.db.insert<IBaseNode, Partial<IBaseNode>>('scenes_nodes', base));
     this.sceneNodes.update(all =>
       [
         ...all,
-        {...result, isSelected: false, shadowFilter: 'url(#shadow)'}
+        {...result}
       ]);
     await this.surreal.db.query(`UPDATE ${this.currentScene()?.id} SET nodes += ${result.id};`);
     // const result2 = await this.surreal.db.update(this.currentScene()?.id, scene);
   }
 
-  async updateNode(node: {id:string} & Partial<BaseNode>, triggerUpdate = false){
-    const [updated] = await this.surreal.db.merge<BaseNode>(node.id, node);
+  async updateNode(node: {id:string} & Partial<IBaseNode>, triggerUpdate = false){
+    const [updated] = await this.surreal.db.merge<IBaseNode>(node.id, node);
     if (triggerUpdate){
       this.sceneNodes.update(x => {
         const t = [...x];
@@ -118,6 +122,9 @@ export class SceneService {
     );
     await this.surreal.db.delete(nodeId);
     this.sceneNodes.update(n => n.filter(x => x.id !== nodeId));
+    if (this.nodesAvatars.has(nodeId)){
+      this.nodesAvatars.delete(nodeId);
+    }
   }
 
 }

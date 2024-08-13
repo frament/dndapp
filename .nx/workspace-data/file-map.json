@@ -73,56 +73,20 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": "tsconfig.base.json",
+        "hash": "16936441711144470533"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "18315524891129148814"
+      },
+      {
         "file": "package.json",
         "hash": "17064416657291713631"
       },
       {
         "file": "tailwind.config.js",
         "hash": "4578120752925562001"
-      },
-      {
-        "file": ".vscode/extensions.json",
-        "hash": "235626400633494639"
-      },
-      {
-        "file": "Dockerfile",
-        "hash": "9826843943950976168"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12501089702037106008"
-      },
-      {
-        "file": "jest.config.ts",
-        "hash": "12333515226966617182"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "9430166341120122740"
-      },
-      {
-        "file": "nx.json",
-        "hash": "1028776348829327204"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "16936441711144470533"
-      },
-      {
-        "file": ".eslintignore",
-        "hash": "7663861978715868291"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": "docker-compose.yml",
-        "hash": "10765517735483396229"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "6542905494607064895"
       },
       {
         "file": ".prettierignore",
@@ -133,163 +97,55 @@
         "hash": "7241533202796050538"
       },
       {
-        "file": "README.md",
-        "hash": "757075822870446297"
-      },
-      {
         "file": ".prettierrc",
         "hash": "16267754514737964994"
       },
       {
-        "file": ".eslintrc.json",
-        "hash": "18315524891129148814"
+        "file": ".vscode/extensions.json",
+        "hash": "235626400633494639"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12501089702037106008"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "10765517735483396229"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "9826843943950976168"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "12333515226966617182"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": "README.md",
+        "hash": "757075822870446297"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "6542905494607064895"
+      },
+      {
+        "file": "nx.json",
+        "hash": "1028776348829327204"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "9430166341120122740"
       }
     ],
     "projectFileMap": {
-      "api": [
-        {
-          "file": "api/.eslintrc.json",
-          "hash": "11808533155536463924"
-        },
-        {
-          "file": "api/jest.config.ts",
-          "hash": "10410655590686536064"
-        },
-        {
-          "file": "api/project.json",
-          "hash": "1863469258418927434"
-        },
-        {
-          "file": "api/src/app/app.controller.spec.ts",
-          "hash": "9499997688052526633",
-          "deps": [
-            "npm:@nestjs/testing"
-          ]
-        },
-        {
-          "file": "api/src/app/app.controller.ts",
-          "hash": "15276891910009544695",
-          "deps": [
-            "npm:@nestjs/common"
-          ]
-        },
-        {
-          "file": "api/src/app/app.module.ts",
-          "hash": "366354733060812715",
-          "deps": [
-            "npm:@nestjs/common"
-          ]
-        },
-        {
-          "file": "api/src/app/app.service.spec.ts",
-          "hash": "8587461140686713758",
-          "deps": [
-            "npm:@nestjs/testing"
-          ]
-        },
-        {
-          "file": "api/src/app/app.service.ts",
-          "hash": "1105021467405428582",
-          "deps": [
-            "npm:@nestjs/common"
-          ]
-        },
-        {
-          "file": "api/src/app/data-base.service.ts",
-          "hash": "3522698815750037392",
-          "deps": [
-            "npm:@nestjs/common",
-            "npm:surrealdb.js"
-          ]
-        },
-        {
-          "file": "api/src/app/user.controller.ts",
-          "hash": "9081832861611303954",
-          "deps": [
-            "npm:@nestjs/common",
-            "npm:surrealdb.js"
-          ]
-        },
-        {
-          "file": "api/src/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "api/src/main.ts",
-          "hash": "16364066265253830606",
-          "deps": [
-            "npm:@nestjs/common",
-            "npm:@nestjs/core"
-          ]
-        },
-        {
-          "file": "api/tests.http",
-          "hash": "11050084085337721142"
-        },
-        {
-          "file": "api/tsconfig.app.json",
-          "hash": "12134917424893484864"
-        },
-        {
-          "file": "api/tsconfig.json",
-          "hash": "9420862676426701392"
-        },
-        {
-          "file": "api/tsconfig.spec.json",
-          "hash": "17313551537729802733"
-        },
-        {
-          "file": "api/webpack.config.js",
-          "hash": "10619490397189790225",
-          "deps": [
-            "npm:@nx/webpack"
-          ]
-        }
-      ],
-      "api-e2e": [
-        {
-          "file": "api-e2e/.eslintrc.json",
-          "hash": "11808533155536463924"
-        },
-        {
-          "file": "api-e2e/jest.config.ts",
-          "hash": "2076893759250098545"
-        },
-        {
-          "file": "api-e2e/project.json",
-          "hash": "5295657025016135421"
-        },
-        {
-          "file": "api-e2e/src/api/api.spec.ts",
-          "hash": "110394728024017389",
-          "deps": [
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "api-e2e/src/support/global-setup.ts",
-          "hash": "2568409276037275290"
-        },
-        {
-          "file": "api-e2e/src/support/global-teardown.ts",
-          "hash": "5275447082211835490"
-        },
-        {
-          "file": "api-e2e/src/support/test-setup.ts",
-          "hash": "10984585515912236441",
-          "deps": [
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "api-e2e/tsconfig.json",
-          "hash": "2346920493880922870"
-        },
-        {
-          "file": "api-e2e/tsconfig.spec.json",
-          "hash": "14226830188665428950"
-        }
-      ],
       "client": [
         {
           "file": "client/.eslintrc.json",
@@ -415,6 +271,10 @@
           ]
         },
         {
+          "file": "client/src/app/helpers/delayed-task.ts",
+          "hash": "12553415715855250489"
+        },
+        {
           "file": "client/src/app/heroes/Hero.ts",
           "hash": "14616839029104763885"
         },
@@ -520,7 +380,7 @@
         },
         {
           "file": "client/src/app/rooms/map/map.component.html",
-          "hash": "9495809283044802953"
+          "hash": "7014070941535509765"
         },
         {
           "file": "client/src/app/rooms/map/map.component.scss",
@@ -528,7 +388,7 @@
         },
         {
           "file": "client/src/app/rooms/map/map.component.ts",
-          "hash": "18200323664961648669",
+          "hash": "8501309117844960997",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common"
@@ -543,7 +403,7 @@
         },
         {
           "file": "client/src/app/rooms/map/node.ts",
-          "hash": "10975055190462940349"
+          "hash": "557860253530154694"
         },
         {
           "file": "client/src/app/rooms/map/point.ts",
@@ -622,15 +482,15 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene-items/scene-items.component.html",
-          "hash": "11361649835703562345"
+          "hash": "2728399258273175399"
         },
         {
           "file": "client/src/app/rooms/scene/scene-items/scene-items.component.scss",
-          "hash": "18081221807274191924"
+          "hash": "5223298491764692078"
         },
         {
           "file": "client/src/app/rooms/scene/scene-items/scene-items.component.ts",
-          "hash": "6233614011683577273",
+          "hash": "15560000519513369540",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -656,7 +516,7 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene.service.ts",
-          "hash": "12873361529459938545",
+          "hash": "8845122693152541435",
           "deps": [
             "npm:@angular/core"
           ]
@@ -675,7 +535,7 @@
         },
         {
           "file": "client/src/app/services/file.service.ts",
-          "hash": "15028023796867978734",
+          "hash": "5539966758402346946",
           "deps": [
             "npm:@angular/core"
           ]
@@ -753,8 +613,155 @@
           "hash": "2129196202529263968"
         },
         {
-          "file": "client/src/app/helpers/delayed-task.ts",
-          "hash": "12553415715855250489"
+          "file": "client/src/app/helpers/async-computed.ts",
+          "hash": "17460293418817005090",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        }
+      ],
+      "api-e2e": [
+        {
+          "file": "api-e2e/.eslintrc.json",
+          "hash": "11808533155536463924"
+        },
+        {
+          "file": "api-e2e/jest.config.ts",
+          "hash": "2076893759250098545"
+        },
+        {
+          "file": "api-e2e/project.json",
+          "hash": "5295657025016135421"
+        },
+        {
+          "file": "api-e2e/src/api/api.spec.ts",
+          "hash": "110394728024017389",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "api-e2e/src/support/global-setup.ts",
+          "hash": "2568409276037275290"
+        },
+        {
+          "file": "api-e2e/src/support/global-teardown.ts",
+          "hash": "5275447082211835490"
+        },
+        {
+          "file": "api-e2e/src/support/test-setup.ts",
+          "hash": "10984585515912236441",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "api-e2e/tsconfig.json",
+          "hash": "2346920493880922870"
+        },
+        {
+          "file": "api-e2e/tsconfig.spec.json",
+          "hash": "14226830188665428950"
+        }
+      ],
+      "api": [
+        {
+          "file": "api/.eslintrc.json",
+          "hash": "11808533155536463924"
+        },
+        {
+          "file": "api/jest.config.ts",
+          "hash": "10410655590686536064"
+        },
+        {
+          "file": "api/project.json",
+          "hash": "1863469258418927434"
+        },
+        {
+          "file": "api/src/app/app.controller.spec.ts",
+          "hash": "9499997688052526633",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "api/src/app/app.controller.ts",
+          "hash": "15276891910009544695",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "api/src/app/app.module.ts",
+          "hash": "366354733060812715",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "api/src/app/app.service.spec.ts",
+          "hash": "8587461140686713758",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "api/src/app/app.service.ts",
+          "hash": "1105021467405428582",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "api/src/app/data-base.service.ts",
+          "hash": "3522698815750037392",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:surrealdb.js"
+          ]
+        },
+        {
+          "file": "api/src/app/user.controller.ts",
+          "hash": "9081832861611303954",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:surrealdb.js"
+          ]
+        },
+        {
+          "file": "api/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "api/src/main.ts",
+          "hash": "16364066265253830606",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "api/tests.http",
+          "hash": "11050084085337721142"
+        },
+        {
+          "file": "api/tsconfig.app.json",
+          "hash": "12134917424893484864"
+        },
+        {
+          "file": "api/tsconfig.json",
+          "hash": "9420862676426701392"
+        },
+        {
+          "file": "api/tsconfig.spec.json",
+          "hash": "17313551537729802733"
+        },
+        {
+          "file": "api/webpack.config.js",
+          "hash": "10619490397189790225",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
         }
       ]
     }

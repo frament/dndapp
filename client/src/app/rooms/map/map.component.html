@@ -3,11 +3,11 @@
 </div>
 <div class="top-center">
   @if (sceneService.currentScene()?.name){
-    <h3 class="title">{{sceneService.currentScene()?.name}}</h3>
+    <button class="title" (click)="sceneService.rightMode.set('scene-options')">{{sceneService.currentScene()?.name}}</button>
   }
 </div>
 <div class="top-right">
-  <button  style="background-color: red">dsfsdffs</button>
+
 </div>
 <div class="bottom-left">
   <dndapp-map-zoom (zoom)="zoom($event)"/>
@@ -50,31 +50,42 @@
     </filter>
   </defs>
   <g>
-    @for(nodeLayer of nodeLayers(); track nodeLayer.id){
+    @for(nodeLayer of sceneService.sceneNodes(); track nodeLayer.id){
+      <defs>
+        @if (sceneService.nodesAvatars.has(nodeLayer.id)){
+          <pattern [id]="'avatar_'+nodeLayer.id" x="0%" y="0%" height="100%" width="100%"
+                   viewBox="0 0 512 512">
+            <image x="0%" y="0%" width="512" height="512"
+                   [attr.href]="sceneService.nodesAvatars.get(nodeLayer.id)"
+            ></image>
+          </pattern>
+        }
+      </defs>
       <rect
         (pointerdown)="downHandleNodeLayer($event, nodeLayer)"
         (click)="clickHandleNodeLayer($event, nodeLayer)"
+        class="cursor-pointer"
         [attr.id]="nodeLayer.id"
-        [attr.x]="nodeLayer.positionX - gridCubeDimension() / 2"
-        [attr.y]="nodeLayer.positionY - gridCubeDimension() / 2"
-        [attr.width]="gridCubeDimension()"
-        [attr.height]="gridCubeDimension()"
+        [attr.x]="nodeLayer.positionX - (gridCubeDimension() * nodeLayer.scale) / 2"
+        [attr.y]="nodeLayer.positionY - (gridCubeDimension() * nodeLayer.scale) / 2"
+        [attr.width]="gridCubeDimension() * nodeLayer.scale"
+        [attr.height]="gridCubeDimension() * nodeLayer.scale"
         [attr.rx]="nodeLayer.rx"
         [attr.ry]="nodeLayer.ry"
-        stroke="black"
-        stroke-width="0.1"
+        [attr.stroke]="nodeLayer.color"
+        [attr.stroke-width]="2"
         [attr.transform]="nodeLayer.rotate ? 'rotate('+nodeLayer.rotate+'deg)':''"
-        [attr.fill]="nodeLayer.color"
-        [attr.filter]="nodeLayer.shadowFilter">
+        [attr.fill]="sceneService.nodesAvatars.has(nodeLayer.id) ? 'url(#avatar_'+nodeLayer.id+')' : nodeLayer.color"
+        [attr.filter]="selectedNode()?.id === nodeLayer.id ? 'url(#liftedShadow)' : 'url(#shadow)'">
       </rect>
       <text
-        [attr.x]="nodeLayer.positionX - gridCubeDimension() / 2"
-        [attr.y]="nodeLayer.positionY"
-        [attr.width]="gridCubeDimension()"
-        [attr.height]="gridCubeDimension()"
-        [attr.rx]="nodeLayer.rx"
-        [attr.ry]="nodeLayer.ry"
+        [attr.x]="nodeLayer.positionX - (gridCubeDimension() * nodeLayer.scale) / 2"
+        [attr.y]="nodeLayer.positionY - (gridCubeDimension() * nodeLayer.scale) / 2 - 4"
+        [attr.width]="gridCubeDimension() * nodeLayer.scale"
+        [attr.height]="gridCubeDimension() * nodeLayer.scale"
         [attr.transform]="nodeLayer.rotate ? 'rotate('+nodeLayer.rotate+'deg)':''"
+        [attr.fill]="nodeLayer.color"
+        [attr.filter]="selectedNode()?.id === nodeLayer.id ? 'url(#liftedShadow)' : 'url(#shadow)'"
       >
         {{nodeLayer.name}}
       </text>

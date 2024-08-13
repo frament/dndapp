@@ -1,13 +1,20 @@
 @if (service.currentNode()){
   <div class="flex flex-col gap-1 h-full">
     <button class="button" (click)="service.currentNode.set(undefined)">выбрать</button>
-    <div class="input">
-      <label>Имя</label>
-      <input class="input-input" type="text" autocomplete="none"
-             [ngModel]="service.currentNode()?.name"
-             (ngModelChange)="updateNodeKey(service.currentNode()?.id ?? '', 'name', $event)"
-      >
+    <div class="flex w-full">
+      <label for="avatar" class="cursor-pointer">
+        <img class="w-16" [src]="avatarObjUrl()" alt="">
+        <input type="file" id="avatar" style="display:none" (change)="setavatar($event)">
+      </label>
+      <div class="input">
+        <label>Имя</label>
+        <input class="input-input" type="text" autocomplete="none"
+               [ngModel]="service.currentNode()?.name"
+               (ngModelChange)="updateNodeKey(service.currentNode()?.id ?? '', 'name', $event)"
+        >
+      </div>
     </div>
+
     <div class="input">
       <label>тип</label>
       <input class="input-input" type="text" autocomplete="none"
@@ -20,6 +27,13 @@
       <input class="input-input" type="color" autocomplete="none"
              [ngModel]="service.currentNode()?.color"
              (ngModelChange)="updateNodeKey(service.currentNode()?.id ?? '', 'color', $event)"
+      >
+    </div>
+    <div class="input">
+      <label>размер</label>
+      <input class="input-input" type="number" autocomplete="none"
+             [ngModel]="service.currentNode()?.scale"
+             (ngModelChange)="updateNodeKey(service.currentNode()?.id ?? '', 'scale', $event)"
       >
     </div>
     <span class="flex-auto"></span>
@@ -35,12 +49,10 @@
       +
     </button>
     @for (node of service.sceneNodes(); track node.id){
-      <div class="button node node-mini"
-           [style]="'border: 2px solid '+node.color"
-           (click)="service.currentNode.set(node)"
-      >
-        {{node.name}}
-      </div>
+      <img class="button node"
+           [style]="'border-color: '+node.color" alt=""
+           [src]="service.nodesAvatars.get(node.id)"
+           (click)="setCurrentNode(node)">
     }
   </div>
 }
