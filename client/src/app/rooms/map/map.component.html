@@ -55,9 +55,8 @@
         @if (sceneService.nodesAvatars.has(nodeLayer.id)){
           <pattern [id]="'avatar_'+nodeLayer.id" x="0%" y="0%" height="100%" width="100%"
                    viewBox="0 0 512 512">
-            <image x="0%" y="0%" width="512" height="512"
-                   [attr.href]="sceneService.nodesAvatars.get(nodeLayer.id)"
-            ></image>
+            <rect width="512" height="512" [attr.fill]="nodeLayer.color"/>
+            <image [attr.href]="sceneService.nodesAvatars.get(nodeLayer.id)"></image>
           </pattern>
         }
       </defs>
