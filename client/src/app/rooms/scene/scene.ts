@@ -4,4 +4,6 @@ export type IScene = {
   room: string;
   gridStepWidth: number;
   nodes: string[];
+  gridDX: number;
+  gridDY: number;
 }

@@ -7,24 +7,33 @@
   </div>
   <div class="input">
     <label>Фон</label>
-    <input type="file" (change)="openfile($event)" />
+    <label for="avatar" class="cursor-pointer">
+      <img class="w-full" [src]="backgroundURL()" alt="Фон">
+      <input type="file" id="avatar" style="display:none" (change)="openfile($event)">
+    </label>
   </div>
-  <div class="input">
-    <label>шаг сетки</label>
-    <input class="input-input" type="number" autocomplete="none"
-           [ngModel]="sceneService.currentScene()?.gridStepWidth"
-           (ngModelChange)="updateSceneOption('gridStepWidth',$event)">
+  <label>Сетка</label>
+  <div class="flex gap-1">
+    <div class="input">
+      <label>шаг</label>
+      <input class="input-input-inline" type="number" autocomplete="none"
+             [ngModel]="sceneService.currentScene()?.gridStepWidth"
+             (ngModelChange)="updateSceneOption('gridStepWidth',$event)">
+    </div>
+    <div class="input">
+      <label>смещение X</label>
+      <input class="input-input-inline" type="number" autocomplete="none"
+             [ngModel]="sceneService.currentScene()?.gridDX"
+             (ngModelChange)="updateSceneOption('gridDX',$event)">
+    </div>
+    <div class="input">
+      <label>смещение Y</label>
+      <input class="input-input-inline" type="number" autocomplete="none"
+             [ngModel]="sceneService.currentScene()?.gridDY"
+             (ngModelChange)="updateSceneOption('gridDY',$event)">
+    </div>
   </div>
-  <div class="input">
-    <label>шаг сетки X</label>
-    <input class="input-input" type="number" autocomplete="none"
-           [(ngModel)]="sceneService.gridDX">
-  </div>
-  <div class="input">
-    <label>шаг сетки Y</label>
-    <input class="input-input" type="number" autocomplete="none"
-           [(ngModel)]="sceneService.gridDY">
-  </div>
+
   <span class="flex-auto"></span>
   @if (!confirmDelete()){
     <button class="button submit-button text-red-500 border border-red-500 " (click)="confirmDelete.set(true)">удалить</button>

@@ -73,44 +73,24 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "nx.json",
-        "hash": "1028776348829327204"
-      },
-      {
         "file": "package-lock.json",
         "hash": "7241533202796050538"
       },
       {
-        "file": ".prettierignore",
-        "hash": "7257979429042441994"
+        "file": "nx.json",
+        "hash": "1028776348829327204"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "235626400633494639"
       },
       {
         "file": "jest.config.ts",
         "hash": "12333515226966617182"
       },
       {
-        "file": "Dockerfile",
-        "hash": "9826843943950976168"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "9430166341120122740"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "16936441711144470533"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": "tailwind.config.js",
-        "hash": "4578120752925562001"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "18315524891129148814"
+        "file": ".gitignore",
+        "hash": "12501089702037106008"
       },
       {
         "file": "migrations.json",
@@ -121,28 +101,48 @@
         "hash": "16267754514737964994"
       },
       {
-        "file": "docker-compose.yml",
-        "hash": "10765517735483396229"
+        "file": ".prettierignore",
+        "hash": "7257979429042441994"
       },
       {
-        "file": ".eslintignore",
-        "hash": "7663861978715868291"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12501089702037106008"
+        "file": "package.json",
+        "hash": "17064416657291713631"
       },
       {
         "file": "README.md",
         "hash": "757075822870446297"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "235626400633494639"
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
       },
       {
-        "file": "package.json",
-        "hash": "17064416657291713631"
+        "file": "tailwind.config.js",
+        "hash": "4578120752925562001"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "16936441711144470533"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "9430166341120122740"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "18315524891129148814"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "9826843943950976168"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "10765517735483396229"
       }
     ],
     "projectFileMap": {
@@ -487,7 +487,7 @@
         },
         {
           "file": "client/src/app/rooms/map/map.component.html",
-          "hash": "8846945577448940585"
+          "hash": "2812464238397425264"
         },
         {
           "file": "client/src/app/rooms/map/map.component.scss",
@@ -607,15 +607,15 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene-options/scene-options.component.html",
-          "hash": "789079721201052607"
+          "hash": "12944207963157867298"
         },
         {
           "file": "client/src/app/rooms/scene/scene-options/scene-options.component.scss",
-          "hash": "13663069872245403449"
+          "hash": "3745410922424480731"
         },
         {
           "file": "client/src/app/rooms/scene/scene-options/scene-options.component.ts",
-          "hash": "17356712011467249268",
+          "hash": "6563905827767463164",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/forms"
@@ -623,14 +623,14 @@
         },
         {
           "file": "client/src/app/rooms/scene/scene.service.ts",
-          "hash": "8845122693152541435",
+          "hash": "14690726234756246342",
           "deps": [
             "npm:@angular/core"
           ]
         },
         {
           "file": "client/src/app/rooms/scene/scene.ts",
-          "hash": "9119929035530230190"
+          "hash": "6467653091354144867"
         },
         {
           "file": "client/src/app/services/data-base.service.ts",

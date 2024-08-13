@@ -20,9 +20,6 @@ export class SceneService {
 
   nodesAvatars = new Map<string, string>();
 
-  gridDX = signal<number>(0);
-  gridDY = signal<number>(0);
-
   rightMode = signal<IRightMode>('scene-options');
   currentRoom: string = '';
 

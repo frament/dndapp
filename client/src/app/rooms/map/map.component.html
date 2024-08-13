@@ -31,7 +31,8 @@
              patternUnits="userSpaceOnUse">
       <path [attr.d]="'M '+gridMiniCubeBimension()+' 0 L 0 0 0 '+gridMiniCubeBimension()" fill="none" stroke="gray" stroke-width="0.5"/>
     </pattern>
-    <pattern id="grid" [attr.x]="sceneService.gridDX()" [attr.y]="sceneService.gridDY()"
+    <pattern id="grid"
+             [attr.x]="sceneService.currentScene()?.gridDX ?? 0" [attr.y]="sceneService.currentScene()?.gridDY ?? 0"
              [attr.width]="gridCubeDimension()" [attr.height]="gridCubeDimension()"
              patternUnits="userSpaceOnUse">
       <rect [attr.width]="gridCubeDimension()" [attr.height]="gridCubeDimension()" fill="url(#smallGrid)"/>

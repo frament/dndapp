@@ -3,6 +3,7 @@ import {SceneService} from "../scene.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IScene} from "../scene";
 import {delayedTask} from "../../../helpers/delayed-task";
+import {FileService} from "../../../services/file.service";
 
 @Component({
   selector: 'dndapp-scene-options',
@@ -17,14 +18,24 @@ import {delayedTask} from "../../../helpers/delayed-task";
 export class SceneOptionsComponent {
   roomId = input.required<string>();
   sceneService = inject(SceneService);
-  name = signal<string>('');
+  fileService = inject(FileService);
+  name = computed<string>(() => this.sceneService.currentScene()?.name ?? '');
   sceneId = computed(() => this.sceneService.currentScene()?.id  ?? '');
-  file = signal<File|undefined>(undefined);
   confirmDelete = signal<boolean>(false);
+  backgroundURL = signal<string>('');
   constructor() {
-    effect(() => {
-      this.name.set(this.sceneService.currentScene()?.name ?? '');
+    effect(async () => {
+      if (!this.roomId() || !this.sceneId()) return;
+      await this.setUrl();
     }, {allowSignalWrites:true});
+  }
+
+  async setUrl() {
+    const fileprefix = this.sceneService.getSceneBackgroundFileName('rooms:'+this.roomId(), this.sceneId());
+    const file = await this.fileService.getObjUrlForFile(fileprefix);
+    if (file) {
+      this.backgroundURL.set(file);
+    }
   }
 
   async updateSceneOption(key:keyof IScene, value:any, delayed = false){
@@ -35,7 +46,9 @@ export class SceneOptionsComponent {
     }
   }
   async openfile(event:any) {
-    this.file.set(event.target.files[0]);
+    const fileprefix = this.sceneService.getSceneBackgroundFileName(this.roomId(), this.sceneId());
+    await this.fileService.saveFile(fileprefix, event.target.files[0] as File);
+    await this.setUrl();
   }
   async delete(){
     await this.sceneService.deleteScene(this.sceneId());
