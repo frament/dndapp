@@ -2,7 +2,14 @@
   "name": "@dndapp/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --host 0.0.0.0",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
   "private": true,
   "devDependencies": {
     "@angular-devkit/build-angular": "18.1.4",
