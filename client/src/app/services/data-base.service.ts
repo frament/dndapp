@@ -9,7 +9,7 @@ export type LiveActionType = "CREATE" | "UPDATE" | "DELETE" | "CLOSE";
 export class DataBaseService {
   public db = new Surreal();
   async init():Promise<void>{
-    await this.db.connect(`http://${location.host}:8000/rpc`, {namespace:'dnd', database: 'dnd'});
+    await this.db.connect(`http://${location.hostname}:8000/rpc`, {namespace:'dnd', database: 'dnd'});
   }
 
   async select<T>(query: string, vars?: Record<string, unknown>): Promise<T[]>{
