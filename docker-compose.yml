@@ -16,6 +16,7 @@ services:
     image: surrealdb/surrealdb:latest
     container_name: surrealdb
     restart: always
+    user: root
     command: start --user admin --pass admin file:/data/database.db
     ports:
       - "8000:8000"
