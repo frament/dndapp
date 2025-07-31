@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import {Surreal} from "surrealdb.js";
+import {Surreal} from "surrealdb";
 
 @Injectable()
 export class DataBaseService {
   public db = new Surreal();
   async init(): Promise<void> {
     await this.db.connect('http://localhost:8000/rpc', {
-      ns:'dnd', db: 'dnd',
-      auth:  { user: 'admin', pass: 'admin' }
+      namespace:'dnd', database: 'dnd',
+      auth:  { username: 'admin', password: 'admin' }
     });
     // await this.firstTimeInit();
     // setInterval(async () => console.log(await this.db.select('select * from user;')), 10000);

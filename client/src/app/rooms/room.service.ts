@@ -64,7 +64,7 @@ export class RoomService {
   async subRoomLogs(room:string): Promise<void>{
     const sql = `SELECT * FROM room_logs WHERE room = ${room}`;
     const [liveId] = await this.surreal.db.query<[string]>('LIVE '+sql);
-    await this.surreal.db.listenLive<IRoomLog>(liveId, ({ action, result}) => {
+    await this.surreal.db.live<IRoomLog>(liveId, (action, result) => {
       if (action === "CREATE" && result){
         this.currentRoomLogs.update(old =>  [...old, result]);
       }

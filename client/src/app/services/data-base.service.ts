@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Surreal} from "surrealdb.js";
+import {Surreal} from "surrealdb";
 
 export type LiveActionType = "CREATE" | "UPDATE" | "DELETE" | "CLOSE";
 
